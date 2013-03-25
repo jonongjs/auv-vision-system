@@ -13,7 +13,8 @@ int main(int argc, char **argv)
     camwidget.show();
 
     CameraStream stream;
-    QObject::connect(&stream, SIGNAL(imageUpdated(QImage*)), &camwidget, SLOT(setImage(QImage*)));
+
+    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), &camwidget, SLOT(setImage(const cv::Mat&)));
 
     return app.exec();
 }

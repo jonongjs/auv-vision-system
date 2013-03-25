@@ -6,7 +6,7 @@
 #define CAMERASTREAM_H
 
 #include <QObject>
-#include <QImage>
+#include <opencv2/core/core.hpp>
 
 namespace cv {
     class VideoCapture;
@@ -24,11 +24,11 @@ public slots:
     void retrieveFrame();
 
 signals:
-    void imageUpdated(QImage *updatedImage);
+    void imageUpdated(const cv::Mat &updatedImage);
 
 private:
     cv::VideoCapture *vidCapture;
-    QImage currentFrame;
+    cv::Mat currentFrame;
 };
 
 #endif//CAMERASTREAM_H

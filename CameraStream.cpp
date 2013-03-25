@@ -4,7 +4,6 @@
 
 #include <QTimer>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include "CameraStream.h"
 
 CameraStream::CameraStream(int cameraIndex)
@@ -31,13 +30,7 @@ void CameraStream::retrieveFrame()
     }
 
     // Retrieve the image from the capture device
-    cv::Mat frame;
-    (*vidCapture) >> frame;
+    (*vidCapture) >> currentFrame;
 
-    // Perform conversion from cv::Mat to QImage
-    cv::flip(frame, frame, 1); // Original image is inverted
-    cv::cvtColor(frame, frame, CV_BGR2RGB); // Original is in BGR
-    currentFrame = QImage(frame.data, frame.cols, frame.rows, QImage::Format_RGB888);
-
-    emit imageUpdated(&currentFrame);
+    emit imageUpdated(currentFrame);
 }

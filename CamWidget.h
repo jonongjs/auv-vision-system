@@ -7,6 +7,7 @@
 #define CAMWIDGET_H
 
 #include <QWidget>
+#include <opencv2/core/core.hpp>
 
 class CamWidget: public QWidget
 {
@@ -16,7 +17,7 @@ public:
     CamWidget(QWidget *parent = 0);
 
 public slots:
-    void setImage(QImage *updatedImage);
+    void setImage(const cv::Mat &updatedImage);
 
 protected:
     void paintEvent(QPaintEvent *event);
