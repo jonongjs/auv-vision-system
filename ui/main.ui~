@@ -123,9 +123,6 @@ background-color: rgb(127, 101, 255);</string>
               <height>45</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 130, 130);</string>
-            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
@@ -182,12 +179,6 @@ background-color: rgb(127, 101, 255);</string>
          <layout class="QVBoxLayout" name="rawVideoLayout">
           <item>
            <widget class="QFrame" name="rawVideoContents">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
             <property name="minimumSize">
              <size>
               <width>200</width>
@@ -195,8 +186,7 @@ background-color: rgb(127, 101, 255);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-color: rgb(0, 0, 0);
-background-color: rgb(96, 218, 255);</string>
+             <string notr="true">border-color: rgb(0, 0, 0);</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::Box</enum>
@@ -236,7 +226,7 @@ background-color: rgb(96, 218, 255);</string>
                <x>0</x>
                <y>0</y>
                <width>198</width>
-               <height>198</height>
+               <height>239</height>
               </rect>
              </property>
             </widget>
@@ -251,6 +241,11 @@ background-color: rgb(96, 218, 255);</string>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAsd">
+   <property name="text">
+    <string>asd</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -3,6 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
+FORMS = ./ui/main.ui
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .

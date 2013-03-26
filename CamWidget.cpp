@@ -9,9 +9,9 @@
 CamWidget::CamWidget(QWidget *parent)
     : QWidget(parent)
 {
-    setMinimumSize(300, 200);
-    setMaximumSize(1000, 680);
-    resize(320, 240);
+    //setMinimumSize(0, 0);
+    //setMaximumSize(1000, 680);
+    //resize(320, 240);
 }
 
 // Slots
