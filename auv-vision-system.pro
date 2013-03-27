@@ -3,12 +3,12 @@
 ######################################################################
 
 TEMPLATE = app
-FORMS = ./ui/main.ui
+FORMS =
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
 include(opencv.pro)
 
 # Input
-HEADERS += CameraStream.h CamWidget.h GrayFilter.h HSVFilter.h ImageFilterBase.h
-SOURCES += CameraStream.cpp CamWidget.cpp GrayFilter.cpp HSVFilter.cpp main.cpp
+HEADERS += CameraStream.h CamWidget.h GrayFilter.h HSVFilter.h ImageFilterBase.h AuvMainWindow.h
+SOURCES += CameraStream.cpp CamWidget.cpp GrayFilter.cpp HSVFilter.cpp AuvMainWindow.cpp main.cpp
