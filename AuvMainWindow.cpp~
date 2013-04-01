@@ -74,7 +74,7 @@ void AuvMainWindow::createLeftLayout(){
 	filterWidget->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 	
-	FilterCamWidget *filterWidget2 = new FilterCamWidget(&stream);
+	FilterCamWidget *filterWidget2 = new FilterCamWidget;
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	filterWidget2->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget2);

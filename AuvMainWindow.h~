@@ -25,6 +25,7 @@ class AuvMainWindow: public QMainWindow
 public:
     AuvMainWindow();
     void print();
+    CamWidget* getRawCamWidget();
  
 private:
 	//	Init methods

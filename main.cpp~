@@ -3,6 +3,8 @@
 // Main program
 
 #include <QApplication>
+#include "CamWidget.h"
+
 #include "AuvMainWindow.h"
 #include <iostream>
 using namespace std;
