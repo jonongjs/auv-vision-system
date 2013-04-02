@@ -89,12 +89,16 @@ void AuvMainWindow::createRightLayout(){
 	menuContentsLayout = new QHBoxLayout;
 	menuContentsLayout->setAlignment(Qt::AlignRight);
 	menuContents->setLayout(menuContentsLayout);
-	rawVideoContents = new QWidget(centralRightWidget);
-	rawVideoContents->setStyleSheet("QWidget { background-color: gray; }");
+	
+	//	Create raw video feed widget
+	rawCamWidget = new CamWidget;
+    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
+    rawCamWidget->setStyleSheet("QWidget { background-color: black; }");
+    
 	settingsContents = new QWidget(centralRightWidget);
 	settingsContents->setStyleSheet("QWidget { background-color: purple; }");
 	centralRightWidgetLayout->addWidget(menuContents);
-	centralRightWidgetLayout->addWidget(rawVideoContents);
+	centralRightWidgetLayout->addWidget(rawCamWidget);
 	centralRightWidgetLayout->addWidget(settingsContents);
 
 	//	Create menu button
@@ -112,11 +116,6 @@ void AuvMainWindow::createRightLayout(){
     menuButton->setCheckable(false);
     menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
     menuContentsLayout->addWidget(menuButton);
-        
-	//	Create raw video feed widget
-	rawCamWidget = new CamWidget;
-    rawCamWidget->setParent(rawVideoContents);
-    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
 }
 
 

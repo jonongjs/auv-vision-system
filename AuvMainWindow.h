@@ -53,7 +53,6 @@ private:
     QVBoxLayout *centralRightWidgetLayout;
     QWidget *menuContents;
     QHBoxLayout *menuContentsLayout;
-    QWidget *rawVideoContents;
     QWidget *settingsContents;
     QPushButton *menuButton;
     CamWidget *rawCamWidget;
