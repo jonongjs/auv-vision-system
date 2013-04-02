@@ -68,7 +68,7 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout(){
 	//	Add 2 filter widgets
 	QStringList filters;
-	filters << "Raw" << "Gray" << "Red";
+	filters << "GaussianBlur" << "Gray" << "HSV";
 	FilterCamWidget *filterWidget = new FilterCamWidget(&stream);
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	filterWidget->setFilterList(filters);

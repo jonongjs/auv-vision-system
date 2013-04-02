@@ -3,14 +3,23 @@
 // Widget for displaying a video feed with filter
 
 #include "FilterCamWidget.h"
-#include "GrayFilter.h"
+#include "FilterCreator.h"
+#include "CameraStream.h"
+#include "ImageFilterBase.h"
 #include <iostream>
+
 using namespace std;
 
-FilterCamWidget::FilterCamWidget(CameraStream *stream)
+//TODO: This class shouldn't need to know about CameraStream
+FilterCamWidget::FilterCamWidget(CameraStream *camstream)
+    : stream(camstream), filter(NULL)
 {
-	this->stream = stream;
+    //HACK: create a FilterCreator for now
+    filterCreator = new FilterCreator;
     createLayout();
+
+	camWidget = new CamWidget;
+	filterLayout->addWidget(camWidget);
 }
 
 
@@ -40,9 +49,7 @@ void FilterCamWidget::setCurrentFilter(int index){
 		return;
 	cout << "Setting filter to index " << index << endl;
 	
-	filterLayout->removeWidget(filterBase);
-	filterBase = filterFromName(filterComboBox->currentText());
-	filterLayout->addWidget(filterBase);
+	filterFromName(filterComboBox->currentText());
 	
 	if (index != filterComboBox->currentIndex())
 		filterComboBox->setCurrentIndex(index);
@@ -50,8 +57,12 @@ void FilterCamWidget::setCurrentFilter(int index){
 
 
 
-CamWidget* FilterCamWidget::filterFromName(QString filterName){
-	CamWidget *camWidget = new CamWidget;
-	QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
-	return camWidget;	//	dummy stub
+void FilterCamWidget::filterFromName(QString filterName){
+    //TODO: filters should be handled by some other class; this class only
+    //      should only be displaying filter outputs
+    delete filter;
+    filter = filterCreator->createFilter(filterName.toStdString());
+
+    QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), filter, SLOT(setImage(const cv::Mat&)));
+	QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
 }

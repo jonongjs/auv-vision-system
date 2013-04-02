@@ -10,32 +10,37 @@
 #include <QLayout>
 #include <QVBoxLayout>
 #include <QComboBox>
-#include "ImageFilterBase.h"
 #include "CamWidget.h"
-#include "CameraStream.h"
+
+class CameraStream;
+class FilterCreator;
+class ImageFilterBase;
 
 class FilterCamWidget: public QWidget
 {
     Q_OBJECT
 
 public:
-    FilterCamWidget(CameraStream *stream);
+    FilterCamWidget(CameraStream *camstream);
+
 	void setFilterList(QStringList filterList);
 	void setCurrentFilter(int index);
-	CamWidget* filterBase;
 	
 public slots:
     void filterDidChange(int index);
 	
 private:
+	CamWidget *camWidget;
+    CameraStream *stream;
+
+    FilterCreator *filterCreator;
+    ImageFilterBase *filter;
+
 	QVBoxLayout *filterLayout;
 	QComboBox *filterComboBox;
 	
-	CameraStream *stream;
-	
-	CamWidget* filterFromName(QString filterName);
+	void filterFromName(QString filterName);
 	void createLayout();
 };
 
-#endif
-    
+#endif//FILTERCAMWIDGET_H
