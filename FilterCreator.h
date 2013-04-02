@@ -18,14 +18,15 @@ class FilterCreator
 
         // Creates a filter based on its name.
         // NOTE: The caller must delete the returned pointer.
-        ImageFilterBase* createFilter(std::string filterName);
+        ImageFilterBase* createFilter(const std::string& filterName);
 
         const std::vector<std::string>& getFilterNames() const;
 
     private:
         typedef ImageFilterBase* (*FilterCreationFunc)();
+        typedef std::map<std::string, FilterCreationFunc> FilterMap;
 
-        std::map<std::string, FilterCreationFunc> filterMap;
+        FilterMap filterMap;
         std::vector<std::string> filterNames;
 };
 
