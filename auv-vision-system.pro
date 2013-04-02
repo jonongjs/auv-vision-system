@@ -10,5 +10,5 @@ INCLUDEPATH += .
 include(opencv.pro)
 
 # Input
-HEADERS += CameraStream.h CamWidget.h GrayFilter.h HSVFilter.h ImageFilterBase.h AuvMainWindow.h FilterCamWidget.h
-SOURCES += CameraStream.cpp CamWidget.cpp GrayFilter.cpp HSVFilter.cpp AuvMainWindow.cpp FilterCamWidget.cpp main.cpp
+HEADERS += CameraStream.h CamWidget.h FilterCreator.h GrayFilter.h HSVFilter.h ImageFilterBase.h AuvMainWindow.h FilterCamWidget.h
+SOURCES += CameraStream.cpp CamWidget.cpp FilterCreator.cpp GrayFilter.cpp HSVFilter.cpp AuvMainWindow.cpp FilterCamWidget.cpp main.cpp
