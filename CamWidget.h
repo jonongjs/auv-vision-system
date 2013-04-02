@@ -22,6 +22,8 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *event);
 
+    float calcZoom(const QSize &imageSize);
+
 private:
     QPixmap pixmap;
 };

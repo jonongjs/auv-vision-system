@@ -9,9 +9,6 @@
 CamWidget::CamWidget(QWidget *parent)
     : QWidget(parent)
 {
-    //setMinimumSize(0, 0);
-    //setMaximumSize(1000, 680);
-    //resize(320, 240);
 }
 
 // Slots
@@ -34,6 +31,8 @@ void CamWidget::setImage(const cv::Mat &updatedImage)
         pixmap.convertFromImage(qImage);
     }
 
+    pixmap = pixmap.scaled(calcZoom(pixmap.size())*pixmap.size());
+
     update();
 }
 
@@ -46,3 +45,14 @@ void CamWidget::paintEvent(QPaintEvent * /*event*/)
     painter.drawPixmap(0, 0, pixmap);
 }
 
+// Helper functions
+
+float CamWidget::calcZoom(const QSize &imageSize)
+{
+    QSize widgetSize = size();
+
+    float widthRatio = widgetSize.width() / (float)imageSize.width();
+    float heightRatio = widgetSize.height() / (float)imageSize.height();
+
+    return std::min(widthRatio, heightRatio);
+}
