@@ -13,6 +13,7 @@
 #include "FilterCamWidget.h"
 #include "CameraStream.h"
 #include "CustomButton.h"
+#include "QListWidgetWithDrop.h"
 
 //	Class declaration without loading .h files. Faster compilation.
 class QHBoxLayout;
@@ -64,15 +65,14 @@ private:
     QPushButton *menuButton;
     CamWidget *rawCamWidget;
     CustomButton *cb;
-    QListWidget *filterList;
+    QListWidgetWithDrop *filterList;
     
     
     //	Other Variables
     CameraStream stream;
    
 public slots:
-void createFilterDropdown();
-void deleteFilterDropdown(QListWidgetItem *listItem);
+	void createFilterDropdown();
 
 };
 

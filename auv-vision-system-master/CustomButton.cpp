@@ -5,14 +5,14 @@
 #include <QPixmap>
 #include "CustomButton.h"
 
- CustomButton::CustomButton(QWidget *parent): QWidget(parent)
- {
-    deleteButton = createDeleteButton();
+CustomButton::CustomButton(QWidget *parent): QWidget(parent)
+{
+	deleteButton = createDeleteButton();
 
-    filtersComboBox = createComboBox();
-    
-    numberLabel = new QLabel(tr("F1:"));
-   
+	filtersComboBox = createComboBox();
+
+	numberLabel = new QLabel(tr("F1:"));
+
 	QVBoxLayout *rightLayout = new QVBoxLayout;
 	rightLayout->addWidget(deleteButton);
 	QHBoxLayout *topLeftLayout = new QHBoxLayout;
@@ -23,12 +23,11 @@
 	mainLayout->addLayout(topLeftLayout);
 	setLayout(mainLayout);
 
-    connect(deleteButton,SIGNAL(clicked()),this,SLOT(buttonDelete()));		
- }
+	connect(deleteButton,SIGNAL(clicked()),this,SLOT(buttonDelete()));		
+}
 
 void CustomButton::buttonDelete()
 {
-	printf("hello\n");
 	emit deleteFilterDropdown(listItem);
 }
 

@@ -81,6 +81,10 @@ void AuvMainWindow::createLeftLayout()
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	filterWidget2->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
+	
+	//	Connect filterWidget to backend
+	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget,SLOT(filterListChanged(QStringList filterList)));
+	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget2,SLOT(filterListChanged(QStringList filterList)));
 }
 
 
@@ -93,13 +97,10 @@ void AuvMainWindow::createFilterDropdown()
 	Listitem->setSizeHint(cb->size());
 	cb->listItem = Listitem;
   
-	connect(cb,SIGNAL(deleteFilterDropdown(QListWidgetItem *)),this,SLOT(deleteFilterDropdown(QListWidgetItem *)));
+	connect(cb,SIGNAL(deleteFilterDropdown(QListWidgetItem *)),filterList,SLOT(deleteItem(QListWidgetItem *)));
 }
 
 
-void AuvMainWindow::deleteFilterDropdown(QListWidgetItem *listItem){
-	delete listItem;
-}
 
 
 void AuvMainWindow::createMiddleLayout()
@@ -109,7 +110,7 @@ QPixmap pixmap("plus.jpg");
 QIcon ButtonIcon(pixmap);
 myButton->setIcon(ButtonIcon);
 myButton->setIconSize(pixmap.rect().size());
-filterList = new QListWidget;
+filterList = new QListWidgetWithDrop;
 filterList->setStyleSheet("QWidget { background-color: pink; }");
 
 //	Drag and drop
@@ -122,7 +123,12 @@ filterList->setDropIndicatorShown(true);
 centralMiddleWidgetLayout->addWidget(filterList);
 centralMiddleWidgetLayout->addWidget(myButton);
 
-connect(myButton,SIGNAL(clicked()),this,SLOT(createFilterDropdown()));	
+connect(myButton,SIGNAL(clicked()),this,SLOT(createFilterDropdown()));
+
+//	Connect filterList to backend
+//connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
+//connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
+//connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
 }
 
 
@@ -165,9 +171,3 @@ void AuvMainWindow::createRightLayout(){
 }
 
 
-void AuvMainWindow::print(){
-	cout << centralWidget->sizeIncrement().width() << endl;
-	cout << centralLeftWidget->sizeIncrement().width() << endl;
-	cout << centralMiddleWidget->sizeIncrement().width() << endl;
-	cout << centralRightWidget->sizeIncrement().width() << endl;
-}

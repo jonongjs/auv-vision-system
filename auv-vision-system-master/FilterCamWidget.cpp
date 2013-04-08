@@ -25,9 +25,20 @@ void FilterCamWidget::createLayout(){
 }
 
 
+void FilterCamWidget::filterListChanged(QStringList filterList){
+	setFilterList(filterList);
+}
+
+
 void FilterCamWidget::setFilterList(QStringList filterList){
+	int index = filterComboBox->currentIndex();
 	filterComboBox->clear();
 	filterComboBox->addItems(filterList);
+	if (index >= filterComboBox->count())
+		index = filterComboBox->count() - 1;
+	if (index == -1)
+		index = 0;
+	filterComboBox->setCurrentIndex(index);
 }
 
 void FilterCamWidget::filterDidChange(int index){

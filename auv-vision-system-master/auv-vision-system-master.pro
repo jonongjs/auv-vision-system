@@ -15,7 +15,8 @@ HEADERS += AuvMainWindow.h \
            FilterCamWidget.h \
            GrayFilter.h \
            HSVFilter.h \
-           ImageFilterBase.h
+           ImageFilterBase.h \
+           QListWidgetWithDrop.h
 SOURCES += AuvMainWindow.cpp \
            CameraStream.cpp \
            CamWidget.cpp \
@@ -23,4 +24,6 @@ SOURCES += AuvMainWindow.cpp \
            FilterCamWidget.cpp \
            GrayFilter.cpp \
            HSVFilter.cpp \
+           QListWidgetWithDrop.cpp \
            main.cpp
+           

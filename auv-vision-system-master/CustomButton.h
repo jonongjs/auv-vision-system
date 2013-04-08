@@ -1,13 +1,13 @@
- #ifndef CUSTOMBUTTON_H
- #define CUSTOMBUTTON_H
+#ifndef CUSTOMBUTTON_H
+#define CUSTOMBUTTON_H
 
- #include <QWidget>
- #include <QDir>
+#include <QWidget>
+#include <QDir>
 
- class QComboBox;
- class QLabel;
- class QPushButton;
- class QListWidgetItem;
+class QComboBox;
+class QLabel;
+class QPushButton;
+class QListWidgetItem;
 
 class CustomButton : public QWidget
  {
