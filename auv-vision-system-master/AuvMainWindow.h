@@ -20,6 +20,7 @@ class QVBoxLayout;
 class QScrollArea;
 class QFrame;
 class QPushButton;
+class QListWidgetItem;
 
 class AuvMainWindow: public QMainWindow
 {
@@ -71,8 +72,7 @@ private:
    
 public slots:
 void createFilterDropdown();
-void moveFilterUp(QListWidgetItem *);
-void moveFilterDown(QListWidgetItem *);
+void deleteFilterDropdown(QListWidgetItem *listItem);
 
 };
 

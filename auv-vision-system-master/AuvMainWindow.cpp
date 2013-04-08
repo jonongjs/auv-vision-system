@@ -24,18 +24,18 @@ void AuvMainWindow::createStatusBar()
 void AuvMainWindow::createMainLayout()
 {
 	//Set size
-        setGeometry(0, 0, 800, 600);
-    
-        //Set main central horizontal widget/layout (horizontal)
-        centralWidget = new QWidget;
-        centralWidgetLayout = new QHBoxLayout;
+    setGeometry(0, 0, 800, 600);
+
+    //Set main central horizontal widget/layout (horizontal)
+    centralWidget = new QWidget;
+    centralWidgetLayout = new QHBoxLayout;
 	centralWidget->setLayout(centralWidgetLayout);
 	centralWidget->setStyleSheet("QWidget { background-color: yellow; }");
 	setCentralWidget(centralWidget);
 	
 	//Set centralWidget left, middle, right widget/layout (vertical)
 	centralLeftWidget = new QWidget;
-        centralLeftWidgetLayout = new QVBoxLayout;
+    centralLeftWidgetLayout = new QVBoxLayout;
 	centralLeftWidget->setLayout(centralLeftWidgetLayout);
 	centralLeftWidgetLayout->setAlignment(Qt::AlignTop);
 	centralLeftWidget->setStyleSheet("QWidget { background-color: red; }");
@@ -45,7 +45,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralLeftScrollArea);
 	
 	centralMiddleWidget = new QWidget;
-        centralMiddleWidgetLayout = new QVBoxLayout;
+    centralMiddleWidgetLayout = new QVBoxLayout;
 	centralMiddleWidget->setLayout(centralMiddleWidgetLayout);
 	centralMiddleWidgetLayout->setAlignment(Qt::AlignTop);
 	centralMiddleWidget->setStyleSheet("QWidget { background-color: blue; }");
@@ -55,7 +55,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralMiddleScrollArea);
 	
 	centralRightWidget = new QWidget;
-        centralRightWidgetLayout = new QVBoxLayout;
+    centralRightWidgetLayout = new QVBoxLayout;
 	centralRightWidget->setLayout(centralRightWidgetLayout);
 	centralRightWidget->setStyleSheet("QWidget { background-color: green; }");
 	centralWidgetLayout->addWidget(centralRightWidget);
@@ -63,7 +63,7 @@ void AuvMainWindow::createMainLayout()
 	
 	//Create individual layout contents
 	createLeftLayout();
-        createMiddleLayout();
+    createMiddleLayout();
 	createRightLayout();
 }
 
@@ -83,63 +83,24 @@ void AuvMainWindow::createLeftLayout()
 	centralLeftWidgetLayout->addWidget(filterWidget2);
 }
 
-void AuvMainWindow::moveFilterDown(QListWidgetItem *current) 
-{
-//    QListWidgetItem *current = filterList->currentItem();
-    int currIndex = filterList->row(current);
-    //Debug
-    printf("%p %d %d\n", current, currIndex, filterList->count());
-     if (currIndex >= filterList->count()-1)
-	return;
-   // QListWidgetItem *next = filterList->item(filterList->row(current) + 1);
-   // int nextIndex = filterList->row(next);
-   QWidget *t = filterList->itemWidget(current);
-   //filterList->takeItem(currIndex);
-//delete current;   
-	QListWidgetItem *Listitem = new QListWidgetItem();
-   filterList->insertItem(0,Listitem);
-   filterList->setItemWidget(Listitem,t);
-   Listitem->setSizeHint(t->size());
-   ((CustomButton*)t)->listItem = Listitem;
-
-
-printf("asd\n");
-   filterList->removeItemWidget(current);
-	delete current;
-  // printf("t: %p\n", filterList->itemWidget(current));
-   // filterList->insertItem(currIndex, temp);
-}
-     
-void AuvMainWindow::moveFilterUp(QListWidgetItem *current) 
-{
-     //QListWidgetItem *current = (QListWidgetItem*)QObject::sender();//filterList->currentItem();
-     int currIndex = filterList->row(current);
-     //Debug
-     printf("%p %d %d\n", current, currIndex, filterList->count());
-   // QListWidgetItem *next = filterList->item(filterList->row(current) + 1);
-   // int nextIndex = filterList->row(next);
-     
-    QListWidgetItem *temp = filterList->takeItem(currIndex);
-   // filterList->insertItem(currIndex, temp);
-if (currIndex > 0)
-    filterList->insertItem(currIndex-1, temp);
-}
 
 void AuvMainWindow::createFilterDropdown()
 {
-
-  cb = new CustomButton;
-  //cb->show();
-  //centralMiddleWidgetLayout->addWidget(cb);
-  QListWidgetItem *Listitem = new QListWidgetItem();
-  filterList->addItem(Listitem);
-  filterList->setItemWidget(Listitem,cb);
-  Listitem->setSizeHint(cb->size());
-  cb->listItem = Listitem;
+	cb = new CustomButton;
+	QListWidgetItem *Listitem = new QListWidgetItem();
+	filterList->addItem(Listitem);
+	filterList->setItemWidget(Listitem,cb);
+	Listitem->setSizeHint(cb->size());
+	cb->listItem = Listitem;
   
-  connect(cb,SIGNAL(moveFilterUp(QListWidgetItem *)),this,SLOT(moveFilterUp(QListWidgetItem *)));	
-  connect(cb,SIGNAL(moveFilterDown(QListWidgetItem *)),this,SLOT(moveFilterDown(QListWidgetItem *)));	
+	connect(cb,SIGNAL(deleteFilterDropdown(QListWidgetItem *)),this,SLOT(deleteFilterDropdown(QListWidgetItem *)));
 }
+
+
+void AuvMainWindow::deleteFilterDropdown(QListWidgetItem *listItem){
+	delete listItem;
+}
+
 
 void AuvMainWindow::createMiddleLayout()
 {
@@ -150,8 +111,17 @@ myButton->setIcon(ButtonIcon);
 myButton->setIconSize(pixmap.rect().size());
 filterList = new QListWidget;
 filterList->setStyleSheet("QWidget { background-color: pink; }");
-centralMiddleWidgetLayout->addWidget(myButton);
+
+//	Drag and drop
+filterList->setSelectionMode(QAbstractItemView::SingleSelection);
+filterList->setDragEnabled(true);
+filterList->setDragDropMode(QAbstractItemView::InternalMove);
+filterList->viewport()->setAcceptDrops(true);
+filterList->setDropIndicatorShown(true);
+
 centralMiddleWidgetLayout->addWidget(filterList);
+centralMiddleWidgetLayout->addWidget(myButton);
+
 connect(myButton,SIGNAL(clicked()),this,SLOT(createFilterDropdown()));	
 }
 

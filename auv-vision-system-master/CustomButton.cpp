@@ -7,16 +7,14 @@
 
  CustomButton::CustomButton(QWidget *parent): QWidget(parent)
  {
-        upButton = createupButton();
-        downButton = createdownButton();
+    deleteButton = createDeleteButton();
 
-        filtersComboBox = createComboBox();
+    filtersComboBox = createComboBox();
     
-        numberLabel = new QLabel(tr("F1:"));
+    numberLabel = new QLabel(tr("F1:"));
    
 	QVBoxLayout *rightLayout = new QVBoxLayout;
-	rightLayout->addWidget(upButton);
-	rightLayout->addWidget(downButton);
+	rightLayout->addWidget(deleteButton);
 	QHBoxLayout *topLeftLayout = new QHBoxLayout;
 	topLeftLayout->addWidget(numberLabel);
 	topLeftLayout->addWidget(filtersComboBox);
@@ -25,43 +23,27 @@
 	mainLayout->addLayout(topLeftLayout);
 	setLayout(mainLayout);
 
-        connect(upButton,SIGNAL(clicked()),this,SLOT(buttonUp()));	
-        connect(downButton,SIGNAL(clicked()),this,SLOT(buttonDown()));	
-
+    connect(deleteButton,SIGNAL(clicked()),this,SLOT(buttonDelete()));		
  }
 
-void CustomButton::buttonUp()
+void CustomButton::buttonDelete()
 {
 	printf("hello\n");
-	emit moveFilterUp(listItem);
-}
-
-void CustomButton::buttonDown()
-{
-	printf("bye\n");
-	emit moveFilterDown(listItem);
+	emit deleteFilterDropdown(listItem);
 }
 
 
- QPushButton *CustomButton::createupButton()
+ QPushButton *CustomButton::createDeleteButton()
  {
-	upButton = new QPushButton;
-	QPixmap pixmap("uparrow.png");
-	QIcon ButtonIcon(pixmap);
-	upButton->setIcon(ButtonIcon);
-	upButton->setIconSize(pixmap.rect().size());
-        return upButton ;
+	deleteButton = new QPushButton;
+	//QPixmap pixmap("uparrow.png");
+	//QIcon ButtonIcon(pixmap);
+	//deleteButton->setIcon(ButtonIcon);
+	//deleteButton->setIconSize(pixmap.rect().size());
+	deleteButton->setText("X");
+    return deleteButton;
  }
 
-QPushButton *CustomButton::createdownButton()
- {
-        downButton = new QPushButton;
-	QPixmap pixmap("downarrow.png");
-	QIcon ButtonIcon(pixmap);
-	downButton->setIcon(ButtonIcon);
-	downButton->setIconSize(pixmap.rect().size());
-        return downButton;
- }
 
  QComboBox *CustomButton::createComboBox()
  {

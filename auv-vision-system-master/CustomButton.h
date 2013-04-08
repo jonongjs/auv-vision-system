@@ -15,26 +15,22 @@ class CustomButton : public QWidget
 
  public:
      CustomButton(QWidget *parent = 0);
-     QPushButton *upButton;
-     QPushButton *downButton;
+     QPushButton *deleteButton;
      QListWidgetItem *listItem;
+     QComboBox *filtersComboBox;
  
  private:
      
-     QPushButton *createupButton();
-     QPushButton *createdownButton();
+     QPushButton *createDeleteButton();
      QComboBox *createComboBox();
    
-     QComboBox *filtersComboBox;
      QLabel *numberLabel;
 
 signals:
-    void moveFilterUp(QListWidgetItem *);
-    void moveFilterDown(QListWidgetItem *);
+    void deleteFilterDropdown(QListWidgetItem *);
 
 private slots:
-     void buttonUp();
-     void buttonDown();
+     void buttonDelete();
      
  };
 
