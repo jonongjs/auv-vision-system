@@ -61,6 +61,8 @@ private:
 
     QWidget *menuContents;
     QHBoxLayout *menuContentsLayout;
+    QScrollArea *rawVideoScrollArea;
+    QVBoxLayout *rawVideoLayout;
     QWidget *rawVideoContents;
     QWidget *settingsContents;
     QPushButton *menuButton;
@@ -68,6 +70,8 @@ private:
     CustomButton *cb;
     QListWidgetWithDrop *filterList;
     FilterSettingWidget *settingWidget;
+    QVBoxLayout *filterLayout;
+    QScrollArea *filterSettingScrollArea;
     
     //	Other Variables
     CameraStream stream;

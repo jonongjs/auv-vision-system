@@ -5,6 +5,7 @@
 
 #include "FilterSettingWidget.h"
 #include <cstdio>
+#include <QLabel>
 
 FilterSettingWidget::FilterSettingWidget(){
 	createLayout();
@@ -12,9 +13,14 @@ FilterSettingWidget::FilterSettingWidget(){
 
 void FilterSettingWidget::createLayout(){
 	filterLayout = new QVBoxLayout;
-	setLayout(filterLayout);
-	setStyleSheet("QWidget { background-color: brown; }");
+	this->setLayout(filterLayout);
 
+	
+	setStyleSheet("QWidget { background-color: brown; }");
+	for (int i = 0; i < 100; i++){
+		QLabel *label = new QLabel(QString::number(i)+" asd");
+		filterLayout->addWidget(label);
+	}
 }
 
 
@@ -28,17 +34,26 @@ void FilterSettingWidget::filterChanged(int index){
 	 	foreach(QWidget * widget, widgets)
    			delete widget;
 		
+		//	Add new filter name
+		QLabel *label = new QLabel(QString::number(index+1)+" "+it->getName());
+        filterLayout->addWidget(label, Qt::AlignCenter);
+        	
+		
+		
 	 	//	Add new filter properties
-        const FilterProperties& properties = filter->getFilterProperties();
+        const FilterProperties& properties = backend->filters[index]->getFilterProperties();
         for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
+        	QLabel *label = new QLabel(it->name);
+        	filterLayout->addWidget(label, Qt::AlignCenter);
+        
             QWidget *tmp;
             switch (it->type) {
                 case INT_RANGE:
                     {
-                        QSpinBox *spin = new QSpinBox(this);
+             l          QSpinBox *spin = new QSpinBox(this);
                         tmp = spin;
                         spin->setMinimum(it->intMin);
-                        spin->setMaximum(it->intMax);
+                        spin->setMaximum(it-ll>intMax);
                         spin->setSingleStep(it->intStep);
                     }
                     break;

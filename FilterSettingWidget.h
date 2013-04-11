@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QSpinBox>
 #include <QVBoxLayout>
+#include <QScrollArea>
 #include "ImageFilterBase.h"
 
 class FilterSettingWidget: public QWidget
