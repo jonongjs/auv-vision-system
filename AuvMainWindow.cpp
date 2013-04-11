@@ -5,14 +5,15 @@
 #include "AuvMainWindow.h"
 #include "FilterCamWidget.h"
 #include <QtGui>
+#include <QHBoxLayout>
 #include <iostream>
+
 using namespace std;
 
 AuvMainWindow::AuvMainWindow(void)
 {
 	createStatusBar();
 	createMainLayout();
-	
 }
 
 void AuvMainWindow::createStatusBar()
@@ -22,17 +23,17 @@ void AuvMainWindow::createStatusBar()
 
 void AuvMainWindow::createMainLayout()
 {
-	//	Set size
+	//Set size
     setGeometry(0, 0, 800, 600);
-    
-    //	Set main central horizontal widget/layout (horizontal)
+
+    //Set main central horizontal widget/layout (horizontal)
     centralWidget = new QWidget;
     centralWidgetLayout = new QHBoxLayout;
 	centralWidget->setLayout(centralWidgetLayout);
 	centralWidget->setStyleSheet("QWidget { background-color: yellow; }");
 	setCentralWidget(centralWidget);
 	
-	//	Set centralWidget left, middle, right widget/layout (vertical)
+	//Set centralWidget left, middle, right widget/layout (vertical)
 	centralLeftWidget = new QWidget;
     centralLeftWidgetLayout = new QVBoxLayout;
 	centralLeftWidget->setLayout(centralLeftWidgetLayout);
@@ -60,12 +61,14 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralRightWidget);
 	centralRightWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	
-	//	Create individual layout contents
+	//Create individual layout contents
 	createLeftLayout();
+    createMiddleLayout();
 	createRightLayout();
 }
 
-void AuvMainWindow::createLeftLayout(){
+void AuvMainWindow::createLeftLayout()
+{
 	//	Add 2 filter widgets
 	QStringList filters;
 	filters << "GaussianBlur" << "Gray" << "HSV";
@@ -78,6 +81,54 @@ void AuvMainWindow::createLeftLayout(){
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	filterWidget2->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
+	
+	//	Connect filterWidget to backend
+	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget,SLOT(filterListChanged(QStringList filterList)));
+	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget2,SLOT(filterListChanged(QStringList filterList)));
+}
+
+
+void AuvMainWindow::createFilterDropdown()
+{
+	cb = new CustomButton;
+	QListWidgetItem *Listitem = new QListWidgetItem();
+	filterList->addItem(Listitem);
+	filterList->setItemWidget(Listitem,cb);
+	Listitem->setSizeHint(cb->size());
+	cb->listItem = Listitem;
+  
+	connect(cb,SIGNAL(deleteFilterDropdown(QListWidgetItem *)),filterList,SLOT(deleteItem(QListWidgetItem *)));
+}
+
+
+
+
+void AuvMainWindow::createMiddleLayout()
+{
+QPushButton *myButton = new QPushButton;
+QPixmap pixmap("plus.jpg");
+QIcon ButtonIcon(pixmap);
+myButton->setIcon(ButtonIcon);
+myButton->setIconSize(pixmap.rect().size());
+filterList = new QListWidgetWithDrop;
+filterList->setStyleSheet("QWidget { background-color: pink; }");
+
+//	Drag and drop
+filterList->setSelectionMode(QAbstractItemView::SingleSelection);
+filterList->setDragEnabled(true);
+filterList->setDragDropMode(QAbstractItemView::InternalMove);
+filterList->viewport()->setAcceptDrops(true);
+filterList->setDropIndicatorShown(true);
+
+centralMiddleWidgetLayout->addWidget(filterList);
+centralMiddleWidgetLayout->addWidget(myButton);
+
+connect(myButton,SIGNAL(clicked()),this,SLOT(createFilterDropdown()));
+
+//	Connect filterList to backend
+//connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
+//connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
+//connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
 }
 
 
@@ -89,20 +140,16 @@ void AuvMainWindow::createRightLayout(){
 	menuContentsLayout = new QHBoxLayout;
 	menuContentsLayout->setAlignment(Qt::AlignRight);
 	menuContents->setLayout(menuContentsLayout);
-	
-	//	Create raw video feed widget
-	rawCamWidget = new CamWidget;
-    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
-    rawCamWidget->setStyleSheet("QWidget { background-color: black; }");
-    
+	rawVideoContents = new QWidget(centralRightWidget);
+	rawVideoContents->setStyleSheet("QWidget { background-color: gray; }");
 	settingsContents = new QWidget(centralRightWidget);
 	settingsContents->setStyleSheet("QWidget { background-color: purple; }");
 	centralRightWidgetLayout->addWidget(menuContents);
-	centralRightWidgetLayout->addWidget(rawCamWidget);
+	centralRightWidgetLayout->addWidget(rawVideoContents);
 	centralRightWidgetLayout->addWidget(settingsContents);
 
 	//	Create menu button
-	menuButton = new QPushButton(menuContents);
+    menuButton = new QPushButton(menuContents);
     menuButton->setGeometry(QRect(0, 0, 40, 40));
     menuButton->setMaximumWidth(40);
     menuButton->setMaximumHeight(40);
@@ -116,12 +163,11 @@ void AuvMainWindow::createRightLayout(){
     menuButton->setCheckable(false);
     menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
     menuContentsLayout->addWidget(menuButton);
+        
+	//	Create raw video feed widget
+	rawCamWidget = new CamWidget;
+    rawCamWidget->setParent(rawVideoContents);
+    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
 }
 
 
-void AuvMainWindow::print(){
-	cout << centralWidget->sizeIncrement().width() << endl;
-	cout << centralLeftWidget->sizeIncrement().width() << endl;
-	cout << centralMiddleWidget->sizeIncrement().width() << endl;
-	cout << centralRightWidget->sizeIncrement().width() << endl;
-}

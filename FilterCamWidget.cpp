@@ -37,9 +37,20 @@ void FilterCamWidget::createLayout(){
 }
 
 
+void FilterCamWidget::filterListChanged(QStringList filterList){
+	setFilterList(filterList);
+}
+
+
 void FilterCamWidget::setFilterList(QStringList filterList){
+	int index = filterComboBox->currentIndex();
 	filterComboBox->clear();
 	filterComboBox->addItems(filterList);
+	if (index >= filterComboBox->count())
+		index = filterComboBox->count() - 1;
+	if (index == -1)
+		index = 0;
+	filterComboBox->setCurrentIndex(index);
 }
 
 void FilterCamWidget::filterDidChange(int index){
@@ -70,38 +81,43 @@ void FilterCamWidget::filterFromName(QString filterName){
     //      should only be displaying filter outputs
     std::for_each(settingsList.begin(), settingsList.end(), removeWindow);
     settingsList.clear();
+
+//    filterLayout->removeWidget(filter);
     delete filter;
     filter = filterCreator->createFilter(filterName.toStdString());
+//    filterLayout->addWidget(filter);
 
     //HACK: create a settings window
-    const FilterProperties& properties = filter->getFilterProperties();
-    for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
-        QWidget *tmp;
-        switch (it->type) {
-            case INT_RANGE:
-                {
-                    QSpinBox *spin = new QSpinBox(this);
-                    tmp = spin;
-                    spin->setMinimum(it->intMin);
-                    spin->setMaximum(it->intMax);
-                    spin->setSingleStep(it->intStep);
-                }
-                break;
-            case FLOAT_RANGE:
-                {
-                    QDoubleSpinBox *spin = new QDoubleSpinBox(this);
-                    tmp = spin;
-                    spin->setMinimum(it->floatMin);
-                    spin->setMaximum(it->floatMax);
-                    spin->setSingleStep(it->floatStep);
-                }
-                break;
+    if (filter) {
+        const FilterProperties& properties = filter->getFilterProperties();
+        for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
+            QWidget *tmp;
+            switch (it->type) {
+                case INT_RANGE:
+                    {
+                        QSpinBox *spin = new QSpinBox(this);
+                        tmp = spin;
+                        spin->setMinimum(it->intMin);
+                        spin->setMaximum(it->intMax);
+                        spin->setSingleStep(it->intStep);
+                    }
+                    break;
+                case FLOAT_RANGE:
+                    {
+                        QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+                        tmp = spin;
+                        spin->setMinimum(it->floatMin);
+                        spin->setMaximum(it->floatMax);
+                        spin->setSingleStep(it->floatStep);
+                    }
+                    break;
+            }
+            tmp->show();
+            settingsList.push_back(tmp);
         }
-        tmp->show();
-        settingsList.push_back(tmp);
-    }
-    //ENDHACK
+        //ENDHACK
 
-    QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), filter, SLOT(setImage(const cv::Mat&)));
-	QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
+        QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), filter, SLOT(setImage(const cv::Mat&)));
+        QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
+    }
 }

@@ -7,9 +7,13 @@
 #define AUVMAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include "CamWidget.h"
 #include "FilterCamWidget.h"
 #include "CameraStream.h"
+#include "CustomButton.h"
+#include "QListWidgetWithDrop.h"
 
 //	Class declaration without loading .h files. Faster compilation.
 class QHBoxLayout;
@@ -17,6 +21,7 @@ class QVBoxLayout;
 class QScrollArea;
 class QFrame;
 class QPushButton;
+class QListWidgetItem;
 
 class AuvMainWindow: public QMainWindow
 {
@@ -25,15 +30,16 @@ class AuvMainWindow: public QMainWindow
 public:
     AuvMainWindow();
     void print();
- 
+    
 private:
 	//	Init methods
-	void createStatusBar();
+    void createStatusBar();
     void createMainLayout();
     void createLeftLayout();	//	used by createMainLayout
+    void createMiddleLayout();
     void createRightLayout();	//	used by createMainLayout
     
-    
+     
     //	Main Layout variables
     QWidget *centralWidget;
     QWidget *centralLeftWidget;
@@ -51,15 +57,23 @@ private:
     
     //	CentralRight Layout Variables
     QVBoxLayout *centralRightWidgetLayout;
+
     QWidget *menuContents;
     QHBoxLayout *menuContentsLayout;
+    QWidget *rawVideoContents;
     QWidget *settingsContents;
     QPushButton *menuButton;
     CamWidget *rawCamWidget;
+    CustomButton *cb;
+    QListWidgetWithDrop *filterList;
     
     
     //	Other Variables
     CameraStream stream;
+   
+public slots:
+	void createFilterDropdown();
+
 };
 
 #endif

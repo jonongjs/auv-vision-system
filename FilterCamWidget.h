@@ -28,6 +28,7 @@ public:
 	
 public slots:
     void filterDidChange(int index);
+    void filterListChanged(QStringList filterList);
 	
 private:
 	CamWidget *camWidget;
