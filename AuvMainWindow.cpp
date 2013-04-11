@@ -168,6 +168,11 @@ void AuvMainWindow::createRightLayout(){
 	rawCamWidget = new CamWidget;
     rawCamWidget->setParent(rawVideoContents);
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
+    
+    //	Settings widget
+    settingWidget = new FilterSettingWidget;
+    settingWidget->setParent(settingsContents);
+    connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
 }
 
 
