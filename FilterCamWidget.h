@@ -41,6 +41,9 @@ private:
 	
 	void filterFromName(QString filterName);
 	void createLayout();
+
+    //TODO: shift this out somewhere else
+    std::vector<QWidget*> settingsList;
 };
 
 #endif//FILTERCAMWIDGET_H

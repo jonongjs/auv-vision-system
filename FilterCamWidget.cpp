@@ -8,6 +8,9 @@
 #include "ImageFilterBase.h"
 #include <iostream>
 
+//HACK: temporary stuff
+#include <QSpinBox>
+
 using namespace std;
 
 //TODO: This class shouldn't need to know about CameraStream
@@ -56,12 +59,48 @@ void FilterCamWidget::setCurrentFilter(int index){
 }
 
 
+//HACK: helper function
+void removeWindow(QWidget* widget)
+{
+    delete widget;
+}
 
 void FilterCamWidget::filterFromName(QString filterName){
     //TODO: filters should be handled by some other class; this class only
     //      should only be displaying filter outputs
+    std::for_each(settingsList.begin(), settingsList.end(), removeWindow);
+    settingsList.clear();
     delete filter;
     filter = filterCreator->createFilter(filterName.toStdString());
+
+    //HACK: create a settings window
+    const FilterProperties& properties = filter->getFilterProperties();
+    for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
+        QWidget *tmp;
+        switch (it->type) {
+            case INT_RANGE:
+                {
+                    QSpinBox *spin = new QSpinBox(this);
+                    tmp = spin;
+                    spin->setMinimum(it->intMin);
+                    spin->setMaximum(it->intMax);
+                    spin->setSingleStep(it->intStep);
+                }
+                break;
+            case FLOAT_RANGE:
+                {
+                    QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+                    tmp = spin;
+                    spin->setMinimum(it->floatMin);
+                    spin->setMaximum(it->floatMax);
+                    spin->setSingleStep(it->floatStep);
+                }
+                break;
+        }
+        tmp->show();
+        settingsList.push_back(tmp);
+    }
+    //ENDHACK
 
     QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), filter, SLOT(setImage(const cv::Mat&)));
 	QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));

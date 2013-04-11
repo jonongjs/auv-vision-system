@@ -9,6 +9,13 @@
 GaussianBlurFilter::GaussianBlurFilter()
     : sigma(1.5f), kernelSize(5,5)
 {
+    FilterProperty kernelSizeP("kernelSize", INT_RANGE);
+    kernelSizeP.intMin = 3;
+    kernelSizeP.intStep = 2;
+    filterProperties.push_back(kernelSizeP);
+
+    FilterProperty sigmaP("sigma", FLOAT_RANGE);
+    filterProperties.push_back(sigmaP);
 }
 
 void GaussianBlurFilter::setProperty(const std::string& propertyName, const std::string& value)
