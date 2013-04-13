@@ -73,7 +73,6 @@ private:
     QPushButton *recordButton;
     QPushButton *snapshotButton;
     CamWidget *rawCamWidget;
-    CustomButton *cb;
     QListWidgetWithDrop *filterList;
     FilterSettingWidget *settingWidget;
     QVBoxLayout *filterLayout;

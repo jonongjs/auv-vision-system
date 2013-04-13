@@ -93,7 +93,7 @@ void AuvMainWindow::createLeftLayout()
 
 void AuvMainWindow::createFilterDropdown()
 {
-	cb = new CustomButton;
+	CustomButton *cb = new CustomButton;
 	QListWidgetItem *Listitem = new QListWidgetItem();
 	filterList->addItem(Listitem);
 	filterList->setItemWidget(Listitem,cb);
