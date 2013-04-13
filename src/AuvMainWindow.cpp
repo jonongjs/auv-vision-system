@@ -9,6 +9,7 @@
 #include "FilterCreator.h"
 #include <QtGui>
 #include <QHBoxLayout>
+#include <QFileDialog>
 #include <iostream>
 
 using namespace std;
@@ -28,21 +29,46 @@ void AuvMainWindow::createStatusBar()
     statusBar()->showMessage(tr(""));
 }
 
+void AuvMainWindow::open()
+{
+  
+	QString fileName = QFileDialog::getOpenFileName(this,tr("Open existing videos"),".",tr("(*.wmv);(*.mpg);Any image files (*)"));
+	if (!fileName.isEmpty())
+	loadFile(fileName);
+  
+}
+
+void AuvMainWindow::loadFile(const QString &fileName)
+{
+QFile file(fileName);
+if (!file.open(QFile::ReadOnly | QFile::Text))
+{
+QMessageBox::warning(this, tr("MyEditor"),tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()));
+return;
+}
+QTextStream in(&file);
+QApplication::setOverrideCursor(Qt::WaitCursor);
+//textEdit->setPlainText(in.readAll());
+QApplication::restoreOverrideCursor();
+//setCurrentFile(fileName);
+//statusBar()->showMessage(tr("File loaded"), 2000);
+}
+
 void AuvMainWindow::createMainLayout()
 {
 	//Set size
-    setGeometry(0, 0, 800, 600);
+        setGeometry(0, 0, 800, 600);
 
-    //Set main central horizontal widget/layout (horizontal)
-    centralWidget = new QWidget;
-    centralWidgetLayout = new QHBoxLayout;
-	centralWidget->setLayout(centralWidgetLayout);
+        //Set main central horizontal widget/layout (horizontal)
+        centralWidget = new QWidget;
+        centralWidgetLayout = new QHBoxLayout;
+ 	centralWidget->setLayout(centralWidgetLayout);
 	centralWidget->setStyleSheet("QWidget { background-color: #FFFFCC; }");
 	setCentralWidget(centralWidget);
 	
 	//Set centralWidget left, middle, right widget/layout (vertical)
 	centralLeftWidget = new QWidget;
-    centralLeftWidgetLayout = new QVBoxLayout;
+        centralLeftWidgetLayout = new QVBoxLayout;
 	centralLeftWidget->setLayout(centralLeftWidgetLayout);
 	centralLeftWidgetLayout->setAlignment(Qt::AlignTop);
 	centralLeftWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
@@ -52,7 +78,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralLeftScrollArea);
 	
 	centralMiddleWidget = new QWidget;
-    centralMiddleWidgetLayout = new QVBoxLayout;
+        centralMiddleWidgetLayout = new QVBoxLayout;
 	centralMiddleWidget->setLayout(centralMiddleWidgetLayout);
 	centralMiddleWidgetLayout->setAlignment(Qt::AlignTop);
 	centralMiddleWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
@@ -62,7 +88,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralMiddleScrollArea);
 	
 	centralRightWidget = new QWidget;
-    centralRightWidgetLayout = new QVBoxLayout;
+        centralRightWidgetLayout = new QVBoxLayout;
 	centralRightWidget->setLayout(centralRightWidgetLayout);
 	centralRightWidget->setStyleSheet("QWidget { background-color: #E6E6E0; }");
 	centralWidgetLayout->addWidget(centralRightWidget);
@@ -70,7 +96,7 @@ void AuvMainWindow::createMainLayout()
 	
 	//Create individual layout contents
 	createLeftLayout();
-    createMiddleLayout();
+        createMiddleLayout();
 	createRightLayout();
 }
 
@@ -130,7 +156,7 @@ void AuvMainWindow::createMiddleLayout()
 {
 	// Create the button for adding filters to the chain
 	QPushButton *addFilterButton = new QPushButton;
-	QPixmap pixmap("plusbutton.png");
+	QPixmap pixmap(":/images/plusbutton.png");
 	QIcon ButtonIcon(pixmap);
 	addFilterButton->setIcon(ButtonIcon);
 	addFilterButton->setIconSize(pixmap.rect().size());
@@ -178,33 +204,38 @@ void AuvMainWindow::createRightLayout(){
 	centralRightWidgetLayout->addWidget(rawVideoContents);
 	centralRightWidgetLayout->addWidget(settingsContents);
 
-
-
-   //videorecording button
+        //videorecording button
         recordButton = new QPushButton;
-	QPixmap pixmap("recordicon.png");
+	QPixmap pixmap(":/images/record.jpg");
 	QIcon ButtonIcon(pixmap);
 	recordButton->setIcon(ButtonIcon);
-	recordButton->setIconSize(pixmap.rect().size());
+	recordButton->setIconSize(pixmap.rect().size()*0.7);
+        recordButton->setStyleSheet("QPushButton{color:black;height:35px;width:37px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+
         
   
-   //snapshot button
-  snapshotButton = new QPushButton;
-	QPixmap pixmap2("downarrow.png");
-	QIcon ButtonIcon2(pixmap);
-	snapshotButton->setIcon(ButtonIcon2);
-	snapshotButton->setIconSize(pixmap2.rect().size());
+        //snapshot button
+        snapshotButton = new QPushButton;
+	QPixmap snapshotPixmap(":/images/snapshot.png");
+	QIcon snapshotButtonIcon(snapshotPixmap);
+	snapshotButton->setIcon(snapshotButtonIcon);
+	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
+        snapshotButton->setStyleSheet("QPushButton{color:black;height:35px;width:35px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+
+        //open button
+        openButton = new QPushButton;
+	QPixmap openPixmap(":/images/open.png");
+	QIcon openButtonIcon(openPixmap);
+	openButton->setIcon(openButtonIcon);
+	openButton->setIconSize(openPixmap.rect().size());
+        openButton->setStyleSheet("QPushButton{color:black;height:35px;width:35px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+        connect(openButton,SIGNAL(clicked()),this,SLOT(open()));
   
-  menuContentsLayout->addWidget(recordButton);
-  menuContentsLayout->addWidget(snapshotButton);       
+        menuContentsLayout->addWidget(recordButton);
+        menuContentsLayout->addWidget(snapshotButton);  
+        menuContentsLayout->addWidget(openButton);       
  
-
-
-
-
-
-
-	//	Create menu button
+    //Create menu button
     menuButton = new QPushButton(menuContents);
     menuButton->setGeometry(QRect(0, 0, 40, 40));
     menuButton->setMaximumWidth(40);
@@ -218,7 +249,7 @@ void AuvMainWindow::createRightLayout(){
     menuButton->setIconSize(QSize(20, 20));
     menuButton->setCheckable(false);
     menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
-    menuButton->setStyleSheet("QPushButton{color:black;height:30px;length:30px;border-style:outset;border-color: grey;border-radius: 1px;border-width:   2px;background-color: #FFFFCC;}");
+    menuButton->setStyleSheet("QPushButton{color:black;height:40px;width:40px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
     connect(menuButton,SIGNAL(clicked()),this,SLOT(displaySaveSettings()));	
     menuContentsLayout->addWidget(menuButton);
         
@@ -235,7 +266,8 @@ void AuvMainWindow::createRightLayout(){
 
 void AuvMainWindow::displaySaveSettings()
 {
-	popup = new SavePopup;
+
+        popup = new SavePopup;
 	popup->show();
 }
 

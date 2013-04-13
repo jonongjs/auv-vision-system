@@ -3,20 +3,20 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
+
  #include <QFileDialog>
 #include "SavePopup.h"
 
   SavePopup:: SavePopup(QWidget *parent): QWidget(parent)
  {
-        setWindowTitle(tr("Save Preferences"));
-        saveLabel = new QLabel(tr("Save Destination"));
+        setWindowTitle(tr("Additional Options"));
         this->setGeometry(QRect(200, 200, 600, 100));
+        saveLabel = new QLabel(tr("Save Destination")); 
         directoryComboBox = createComboBox(QDir::currentPath());
         browseButton = createButton(tr("&Browse..."), SLOT(browse()));
         okButton = createButton(tr("&OK"), SLOT(close()));
+        okButton->setStyleSheet("QPushButton{color:black;background-color:#FF9147;border-radius:4px;height:25px;}");
         cancelButton = createButton(tr("&Cancel"), SLOT(close()));
-	QVBoxLayout *rightLayout = new QVBoxLayout;
-
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
 	mainLayout->addWidget(saveLabel, 0, 0);

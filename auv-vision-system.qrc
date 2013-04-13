@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>images/downarrow.png</file>
+	<file>images/open.png</file>
+	<file>images/plusbutton.png</file>
+	<file>images/plus.jpg</file>
+	<file>images/record.jpg</file>
+	<file>images/save.png</file>
+	<file>images/snapshot.png</file>
+	<file>images/stop.png</file>
+	<file>images/uparrow.png</file>
+</qresource>
+</RCC>

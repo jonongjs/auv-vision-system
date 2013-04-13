@@ -16,11 +16,11 @@ void FilterSettingWidget::createLayout(){
 	this->setLayout(filterLayout);
 
 	
-	setStyleSheet("QWidget { background-color: #FFFFCC; }");
+	//setStyleSheet("QWidget { background-color: #FFFFCC; }");
         
 	for (int i = 0; i < 100; i++){
 		QLabel *label = new QLabel(QString::number(i)+" asd");
-                label->setStyleSheet("QLabel{color:black;font-size:14px;background-color: #FFFFCC;}");
+                label->setStyleSheet("QLabel{color:black;font-size:14px;}");
 		filterLayout->addWidget(label);
 	}
 }

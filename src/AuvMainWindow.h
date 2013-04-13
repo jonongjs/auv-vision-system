@@ -43,6 +43,7 @@ private:
     void createMiddleLayout();
     void createRightLayout();	//	used by createMainLayout
     void createNewChain();
+    void loadFile(const QString &fileName);
 
      
     //	Main Layout variables
@@ -72,12 +73,15 @@ private:
     QPushButton *menuButton;
     QPushButton *recordButton;
     QPushButton *snapshotButton;
+    QPushButton *openButton;
     CamWidget *rawCamWidget;
     QListWidgetWithDrop *filterList;
     FilterSettingWidget *settingWidget;
     QVBoxLayout *filterLayout;
     QScrollArea *filterSettingScrollArea;
     SavePopup *popup;
+    QMenu *popupMenu;
+ 
     
     //	Other Variables
     CameraStream stream;
@@ -85,6 +89,7 @@ private:
     FilterChain *filterChain;
    
 public slots:
+        void open();
 	void appendFilterButton();
 	void displaySaveSettings();
 	void listChanged();
