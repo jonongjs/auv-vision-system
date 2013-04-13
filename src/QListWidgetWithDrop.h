@@ -4,15 +4,13 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 
-class QListWidget;
-
 class QListWidgetWithDrop : public QListWidget
 {
      Q_OBJECT
 
 public:
 	void dropEvent(QDropEvent *);
-	void addItem(QListWidgetItem *item);
+	QListWidgetItem* addItem(QWidget *item);
 	
 public slots:
 	void deleteItem(QListWidgetItem *item);

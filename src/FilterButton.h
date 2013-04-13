@@ -18,15 +18,17 @@ class FilterButton : public QWidget
      Q_OBJECT
 
  public:
-     FilterButton(QWidget *parent = 0);
+     FilterButton(const QString& name, const QStringList& options, QWidget *parent = 0);
 
      QPushButton *deleteButton;
      QListWidgetItem *listItem;
      QComboBox *filtersComboBox;
+
+	 QString getName();
  
  private:
      QPushButton *createDeleteButton();
-     QComboBox *createComboBox();
+     QComboBox *createComboBox(const QStringList&);
    
      QLabel *numberLabel;
 

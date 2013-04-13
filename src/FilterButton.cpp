@@ -5,14 +5,14 @@
 #include <QPixmap>
 #include "FilterButton.h"
 
-FilterButton::FilterButton(QWidget *parent)
+FilterButton::FilterButton(const QString& name, const QStringList& options, QWidget *parent)
 	: QWidget(parent)
 {
 	deleteButton = createDeleteButton();
 
-	filtersComboBox = createComboBox();
+	filtersComboBox = createComboBox(options);
 
-	numberLabel = new QLabel(tr("Filter1"));
+	numberLabel = new QLabel(name);
 	numberLabel->setStyleSheet("QLabel{color:black;height:20px;length:20px;background-color: #FFFFCC;}");
 
 	//QVBoxLayout *rightLayout = new QVBoxLayout;
@@ -47,18 +47,12 @@ QPushButton* FilterButton::createDeleteButton()
 }
 
 
-QComboBox* FilterButton::createComboBox()
+QComboBox* FilterButton::createComboBox(const QStringList& options)
 {
-	QLabel label("F1"); // create label
-	label.show();
-
 	filtersComboBox = new QComboBox;
 
 	QListView * listView = new QListView(filtersComboBox);
-	filtersComboBox->addItem("Greyscale");
-	filtersComboBox->addItem("Red");
-	filtersComboBox->addItem("Sepia");
-	filtersComboBox->addItem("Invert");
+	filtersComboBox->addItems(options);
 	listView->setStyleSheet("QListView::item {     \
         margin:3px; }                                  \
 	QListView::item:selected {                     \
@@ -73,4 +67,9 @@ QComboBox* FilterButton::createComboBox()
 	filtersComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;selection-background-color: lightgray;}");
 	//filtersComboBox->setStyleSheet("QComboBox QAbstractItemView { outline:none;}");
 	return filtersComboBox;
+}
+
+QString FilterButton::getName()
+{
+	return numberLabel->text();
 }

@@ -23,9 +23,15 @@ void QListWidgetWithDrop::dropEvent(QDropEvent *e){
 }
 
 
-void QListWidgetWithDrop::addItem(QListWidgetItem *item){
-	QListWidget::addItem(item);
+QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
+	QListWidgetItem *listitem = new QListWidgetItem();
+	QListWidget::addItem(listitem);
+	setItemWidget(listitem, item);
+	listitem->setSizeHint(item->size());
+
 	emit listItemAdded();
+
+	return listitem;
 }
 
 

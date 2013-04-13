@@ -19,7 +19,7 @@ class FilterChain : public QObject
 	public:
 		typedef std::deque<ImageFilterBase*> Chain;
 
-		FilterChain();
+		FilterChain(FilterCreator *);
 		~FilterChain();
 
 		ImageFilterBase* appendNewFilter();

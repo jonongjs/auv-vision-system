@@ -8,16 +8,13 @@
 #include "CameraStream.h"
 #include <algorithm>
 
-FilterChain::FilterChain()
-	: stream(0)
+FilterChain::FilterChain(FilterCreator *creator)
+	: stream(0), filterCreator(creator)
 {
-	filterCreator = new FilterCreator;
 }
 
 FilterChain::~FilterChain()
 {
-	delete filterCreator;
-
 	for (Chain::iterator it=filterList.begin(); it!=filterList.end(); ++it) {
 		delete (*it);
 	}
@@ -26,7 +23,6 @@ FilterChain::~FilterChain()
 ImageFilterBase* FilterChain::appendNewFilter()
 {
 	ImageFilterBase *filter = filterCreator->createFilter("GaussianBlur");
-	filterList.push_back(filter);
 
 	if (filterList.empty()) {
 		if (stream) {
@@ -38,6 +34,7 @@ ImageFilterBase* FilterChain::appendNewFilter()
 				filter, SLOT(setImage(const cv::Mat&)));
 	}
 
+	filterList.push_back(filter);
 	return filter;
 }
 

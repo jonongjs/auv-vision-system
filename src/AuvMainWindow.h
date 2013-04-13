@@ -25,6 +25,7 @@ class QPushButton;
 class QListWidgetItem;
 
 class FilterChain;
+class FilterCreator;
 
 class AuvMainWindow: public QMainWindow
 {
@@ -80,11 +81,16 @@ private:
     
     //	Other Variables
     CameraStream stream;
+    FilterCreator *filterCreator;
     FilterChain *filterChain;
    
 public slots:
 	void appendFilterButton();
 	void displaySaveSettings();
+	void listChanged();
+
+signals:
+	void filterListChanged(QStringList& filterList);
 };
 
 #endif

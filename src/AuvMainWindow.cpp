@@ -6,6 +6,7 @@
 #include "FilterButton.h"
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
+#include "FilterCreator.h"
 #include <QtGui>
 #include <QHBoxLayout>
 #include <iostream>
@@ -15,6 +16,8 @@ using namespace std;
 AuvMainWindow::AuvMainWindow(void)
 	: filterChain(NULL)
 {
+	filterCreator = new FilterCreator;
+
 	createNewChain();
 	createStatusBar();
 	createMainLayout();
@@ -74,21 +77,23 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout()
 {
 	//	Add 2 filter widgets
-	QStringList filters;
-	filters << "GaussianBlur" << "Gray" << "HSV";
-	FilterCamWidget *filterWidget = new FilterCamWidget(&stream);
+//	QStringList filters;
+
+	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
-	filterWidget->setFilterList(filters);
+//	filterWidget->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget);
-	
-	FilterCamWidget *filterWidget2 = new FilterCamWidget(&stream);
+
+	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
-	filterWidget2->setFilterList(filters);
+//	filterWidget2->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
 	
 	//	Connect filterWidget to backend
-	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget,SLOT(filterListChanged(QStringList filterList)));
-	//connect(backend,SIGNAL(filterListChanged(QStringList filterList)),filterWidget2,SLOT(filterListChanged(QStringList filterList)));
+	connect(this, SIGNAL(filterListChanged(QStringList&)),
+			filterWidget, SLOT(filterListChanged(QStringList&)));
+	connect(this, SIGNAL(filterListChanged(QStringList&)),
+			filterWidget2, SLOT(filterListChanged(QStringList&)));
 }
 
 
@@ -96,17 +101,19 @@ void AuvMainWindow::createLeftLayout()
 void AuvMainWindow::appendFilterButton()
 {
 	// Create the filter
-	ImageFilterBase *filter = filterChain->appendNewFilter();
+	filterChain->appendNewFilter();
 
 	// Create the widgets
-	FilterButton *filterButton = new FilterButton;
-	QListWidgetItem *listitem = new QListWidgetItem();
+	const FilterCreator::StringList& filterNames = filterCreator->getFilterNames();
+	QStringList filters;
+	// Stupid hack to convert vector of strings to QStringList
+	for (FilterCreator::StringList::const_iterator it=filterNames.begin(); it!=filterNames.end(); ++it) {
+		filters << (*it).c_str();
+	}
+	QString btnName = QString("Filter") + QString::number(filterChain->getChain().size());
+	FilterButton *filterButton = new FilterButton(btnName, filters);
 
-	filterList->addItem(listitem);
-	filterList->setItemWidget(listitem, filterButton);
-
-	listitem->setSizeHint(filterButton->size());
-	filterButton->listItem = listitem;
+	filterButton->listItem = filterList->addItem(filterButton);
   
 	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
 			filterList, SLOT(deleteItem(QListWidgetItem *)));
@@ -143,9 +150,11 @@ void AuvMainWindow::createMiddleLayout()
 			this, SLOT(appendFilterButton()));
 
 	//	Connect filterList to backend
-	//connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
-	//connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
-	//connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
+//	connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
+//	connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
+//	connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
+	connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listChanged()));
+	connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listChanged()));
 }
 
 
@@ -230,7 +239,17 @@ void AuvMainWindow::displaySaveSettings()
 void AuvMainWindow::createNewChain()
 {
 	//TODO: make new chains?
-	filterChain = new FilterChain;
+	filterChain = new FilterChain(filterCreator);
 	filterChain->setStream(&stream);
 }
 
+void AuvMainWindow::listChanged()
+{
+	QStringList list;
+	for (int i=0; i<filterList->count(); ++i) {
+		QListWidgetItem *item = filterList->item(i);
+		FilterButton *filterBtn = (FilterButton*)filterList->itemWidget(item);
+		list << filterBtn->getName();
+	}
+	emit filterListChanged(list);
+}

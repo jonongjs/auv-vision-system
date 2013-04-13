@@ -32,7 +32,7 @@ ImageFilterBase* FilterCreator::createFilter(const std::string& filterName)
     return NULL;
 }
 
-const std::vector<std::string>& FilterCreator::getFilterNames() const
+const FilterCreator::StringList& FilterCreator::getFilterNames() const
 {
     return filterNames;
 }

@@ -3,6 +3,7 @@
 // Widget for displaying a video feed with filter
 
 #include "FilterCamWidget.h"
+#include "FilterChain.h"
 #include "FilterCreator.h"
 #include "CameraStream.h"
 #include "ImageFilterBase.h"
@@ -14,11 +15,9 @@
 using namespace std;
 
 //TODO: This class shouldn't need to know about CameraStream
-FilterCamWidget::FilterCamWidget(CameraStream *camstream)
-    : stream(camstream), filter(NULL)
+FilterCamWidget::FilterCamWidget(FilterChain *chain)
+	: filterChain(chain)
 {
-    //HACK: create a FilterCreator for now
-    filterCreator = new FilterCreator;
     createLayout();
 
 	camWidget = new CamWidget;
@@ -26,24 +25,27 @@ FilterCamWidget::FilterCamWidget(CameraStream *camstream)
 }
 
 
-void FilterCamWidget::createLayout(){
+void FilterCamWidget::createLayout()
+{
 	filterLayout = new QVBoxLayout;
 	setLayout(filterLayout);
 	setStyleSheet("QWidget { background-color: #E6E6E0;}");
 	filterComboBox = new QComboBox(this);
 	//filterComboBox->setMaximumHeight(40);
-        filterComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;height:25px;selection-background-color: lightgray;}");
+	filterComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;height:25px;selection-background-color: lightgray;}");
 	filterLayout->addWidget(filterComboBox);
 	connect(filterComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(filterDidChange(int)));
 }
 
 
-void FilterCamWidget::filterListChanged(QStringList filterList){
+void FilterCamWidget::filterListChanged(QStringList& filterList)
+{
 	setFilterList(filterList);
 }
 
 
-void FilterCamWidget::setFilterList(QStringList filterList){
+void FilterCamWidget::setFilterList(QStringList& filterList)
+{
 	int index = filterComboBox->currentIndex();
 	filterComboBox->clear();
 	filterComboBox->addItems(filterList);
@@ -55,7 +57,8 @@ void FilterCamWidget::setFilterList(QStringList filterList){
 	filterComboBox->setCurrentIndex(index);
 }
 
-void FilterCamWidget::filterDidChange(int index){
+void FilterCamWidget::filterDidChange(int index)
+{
 	setCurrentFilter(index);
 }
 
@@ -65,8 +68,17 @@ void FilterCamWidget::setCurrentFilter(int index)
 	if (index >= filterComboBox->count())
 		return;
 	cout << "Setting filter to index " << index << endl;
-	
-	filterFromName(filterComboBox->currentText());
+
+	const FilterChain::Chain& chain = filterChain->getChain();
+	if (chain.empty()) {
+		// Clear out the screen
+	} else {
+		if (index < chain.size()) {
+			//TODO: disconnect?
+			connect(chain[index], SIGNAL(imageUpdated(const cv::Mat&)),
+					camWidget, SLOT(setImage(const cv::Mat&)));
+		}
+	}
 	
 	if (index != filterComboBox->currentIndex())
 		filterComboBox->setCurrentIndex(index);
@@ -79,16 +91,13 @@ void removeWindow(QWidget* widget)
     delete widget;
 }
 
-void FilterCamWidget::filterFromName(QString filterName){
+/*
+void FilterCamWidget::filterFromName(QString filterName)
+{
     //TODO: filters should be handled by some other class; this class only
     //      should only be displaying filter outputs
     std::for_each(settingsList.begin(), settingsList.end(), removeWindow);
     settingsList.clear();
-
-//    filterLayout->removeWidget(filter);
-    delete filter;
-    filter = filterCreator->createFilter(filterName.toStdString());
-//    filterLayout->addWidget(filter);
 
     //HACK: create a settings window
     if (filter) {
@@ -120,7 +129,7 @@ void FilterCamWidget::filterFromName(QString filterName){
         }
         //ENDHACK
 
-        QObject::connect(stream, SIGNAL(imageUpdated(const cv::Mat&)), filter, SLOT(setImage(const cv::Mat&)));
-        QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
-    }
+		QObject::connect(filter, SIGNAL(imageUpdated(const cv::Mat&)), camWidget, SLOT(setImage(const cv::Mat&)));
+	}
 }
+*/
