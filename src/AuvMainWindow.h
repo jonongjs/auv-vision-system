@@ -83,7 +83,7 @@ private:
     FilterChain *filterChain;
    
 public slots:
-	void createFilterDropdown();
+	void appendFilterButton();
 	void displaySaveSettings();
 };
 

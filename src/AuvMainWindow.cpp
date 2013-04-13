@@ -92,16 +92,24 @@ void AuvMainWindow::createLeftLayout()
 }
 
 
-void AuvMainWindow::createFilterDropdown()
+// Add a filter (and button) to the chain
+void AuvMainWindow::appendFilterButton()
 {
-	FilterButton *cb = new FilterButton;
-	QListWidgetItem *Listitem = new QListWidgetItem();
-	filterList->addItem(Listitem);
-	filterList->setItemWidget(Listitem,cb);
-	Listitem->setSizeHint(cb->size());
-	cb->listItem = Listitem;
+	// Create the filter
+	ImageFilterBase *filter = filterChain->appendNewFilter();
+
+	// Create the widgets
+	FilterButton *filterButton = new FilterButton;
+	QListWidgetItem *listitem = new QListWidgetItem();
+
+	filterList->addItem(listitem);
+	filterList->setItemWidget(listitem, filterButton);
+
+	listitem->setSizeHint(filterButton->size());
+	filterButton->listItem = listitem;
   
-	connect(cb,SIGNAL(deleteFilterDropdown(QListWidgetItem *)),filterList,SLOT(deleteItem(QListWidgetItem *)));
+	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
+			filterList, SLOT(deleteItem(QListWidgetItem *)));
 }
 
 
@@ -109,33 +117,35 @@ void AuvMainWindow::createFilterDropdown()
 
 void AuvMainWindow::createMiddleLayout()
 {
-QPushButton *myButton = new QPushButton;
-QPixmap pixmap("plusbutton.png");
-QIcon ButtonIcon(pixmap);
-myButton->setIcon(ButtonIcon);
-myButton->setIconSize(pixmap.rect().size());
-myButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
-//myButton->setStyleSheet( "QPushButton:pressed {height:40px;border-style:inset;border-radius:10px;border-color: grey;border-width: 2px;}");
+	// Create the button for adding filters to the chain
+	QPushButton *addFilterButton = new QPushButton;
+	QPixmap pixmap("plusbutton.png");
+	QIcon ButtonIcon(pixmap);
+	addFilterButton->setIcon(ButtonIcon);
+	addFilterButton->setIconSize(pixmap.rect().size());
+	addFilterButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
+	//addFilterButton->setStyleSheet( "QPushButton:pressed {height:40px;border-style:inset;border-radius:10px;border-color: grey;border-width: 2px;}");
 
-filterList = new QListWidgetWithDrop;
-filterList->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
+	filterList = new QListWidgetWithDrop;
+	filterList->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
 
-//	Drag and drop
-filterList->setSelectionMode(QAbstractItemView::SingleSelection);
-filterList->setDragEnabled(true);
-filterList->setDragDropMode(QAbstractItemView::InternalMove);
-filterList->viewport()->setAcceptDrops(true);
-filterList->setDropIndicatorShown(true);
+	//	Drag and drop
+	filterList->setSelectionMode(QAbstractItemView::SingleSelection);
+	filterList->setDragEnabled(true);
+	filterList->setDragDropMode(QAbstractItemView::InternalMove);
+	filterList->viewport()->setAcceptDrops(true);
+	filterList->setDropIndicatorShown(true);
 
-centralMiddleWidgetLayout->addWidget(filterList);
-centralMiddleWidgetLayout->addWidget(myButton);
+	centralMiddleWidgetLayout->addWidget(filterList);
+	centralMiddleWidgetLayout->addWidget(addFilterButton);
 
-connect(myButton,SIGNAL(clicked()),this,SLOT(createFilterDropdown()));
+	connect(addFilterButton, SIGNAL(clicked()),
+			this, SLOT(appendFilterButton()));
 
-//	Connect filterList to backend
-//connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
-//connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
-//connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
+	//	Connect filterList to backend
+	//connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
+	//connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
+	//connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
 }
 
 
@@ -221,5 +231,6 @@ void AuvMainWindow::createNewChain()
 {
 	//TODO: make new chains?
 	filterChain = new FilterChain;
+	filterChain->setStream(&stream);
 }
 

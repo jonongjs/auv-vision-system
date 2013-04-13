@@ -30,7 +30,7 @@ FilterButton::FilterButton(QWidget *parent)
 
 void FilterButton::buttonDelete()
 {
-	emit deleteFilterDropdown(listItem);
+	emit deleteFilterButton(listItem);
 }
 
 

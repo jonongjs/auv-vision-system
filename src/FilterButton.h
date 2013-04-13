@@ -31,7 +31,7 @@ class FilterButton : public QWidget
      QLabel *numberLabel;
 
 signals:
-    void deleteFilterDropdown(QListWidgetItem *);
+    void deleteFilterButton(QListWidgetItem *);
 
 private slots:
      void buttonDelete();

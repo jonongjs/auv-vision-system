@@ -6,8 +6,10 @@
 #define FILTERCHAIN_H
 
 #include <QObject>
-#include <vector>
+#include <deque>
 
+class CameraStream;
+class FilterCreator;
 class ImageFilterBase;
 
 class FilterChain : public QObject
@@ -15,7 +17,7 @@ class FilterChain : public QObject
 	Q_OBJECT
 
 	public:
-		typedef std::vector<ImageFilterBase*> Chain;
+		typedef std::deque<ImageFilterBase*> Chain;
 
 		FilterChain();
 		~FilterChain();
@@ -26,6 +28,8 @@ class FilterChain : public QObject
 
 		const Chain& getChain();
 
+		void setStream(CameraStream *str);
+
 		/*
 	public slots:
 		void listItemSwapped(int, int);
@@ -35,6 +39,8 @@ class FilterChain : public QObject
 
 	private:
 		Chain filterList;
+		CameraStream  *stream;
+		FilterCreator *filterCreator;
 };
 
 #endif//FILTERCHAIN_H
