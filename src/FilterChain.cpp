@@ -93,10 +93,16 @@ void FilterChain::changeFilterType(int index, const std::string& type)
 	delete filterList[index];
 	filterList[index] = filterCreator->createFilter(type);
 
-	if (stream && index == 0) {
-		connect(stream, SIGNAL(imageUpdated(const cv::Mat&)),
+	if (index == 0) {
+		if (stream) {
+			connect(stream, SIGNAL(imageUpdated(const cv::Mat&)),
+				filterList[index], SLOT(setImage(const cv::Mat&)));
+		}
+	} else {
+		connect(filterList[index-1], SIGNAL(imageUpdated(const cv::Mat&)),
 			filterList[index], SLOT(setImage(const cv::Mat&)));
 	}
+
 	if (index != filterList.size()-1) {
 		connect(filterList[index], SIGNAL(imageUpdated(const cv::Mat&)),
 			filterList[index+1], SLOT(setImage(const cv::Mat&)));
