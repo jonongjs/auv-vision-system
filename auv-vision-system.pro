@@ -14,22 +14,26 @@ HEADERS += AuvMainWindow.h \
            CamWidget.h \
            CustomButton.h \
            FilterCamWidget.h \
+           FilterChain.h \
            FilterCreator.h \
            FilterSettingWidget.h \
            GaussianBlurFilter.h \
            GrayFilter.h \
            HSVFilter.h \
            ImageFilterBase.h \
-           QListWidgetWithDrop.h
+           QListWidgetWithDrop.h \
+	   SavePopup.h
 SOURCES += AuvMainWindow.cpp \
            CameraStream.cpp \
            CamWidget.cpp \
            CustomButton.cpp \
            FilterCamWidget.cpp \
+           FilterChain.cpp \
            FilterCreator.cpp \
            FilterSettingWidget.cpp \
            GaussianBlurFilter.cpp \
            GrayFilter.cpp \
            HSVFilter.cpp \
            main.cpp \
-           QListWidgetWithDrop.cpp
+           QListWidgetWithDrop.cpp \
+	   SavePopup.cpp

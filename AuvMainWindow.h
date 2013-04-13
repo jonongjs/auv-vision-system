@@ -13,6 +13,7 @@
 #include "FilterCamWidget.h"
 #include "CameraStream.h"
 #include "CustomButton.h"
+#include "SavePopup.h"
 #include "QListWidgetWithDrop.h"
 #include "FilterSettingWidget.h"
 
@@ -23,6 +24,8 @@ class QScrollArea;
 class QFrame;
 class QPushButton;
 class QListWidgetItem;
+
+class FilterChain;
 
 class AuvMainWindow: public QMainWindow
 {
@@ -39,7 +42,8 @@ private:
     void createLeftLayout();	//	used by createMainLayout
     void createMiddleLayout();
     void createRightLayout();	//	used by createMainLayout
-    
+    void createNewChain();
+
      
     //	Main Layout variables
     QWidget *centralWidget;
@@ -66,19 +70,23 @@ private:
     QWidget *rawVideoContents;
     QWidget *settingsContents;
     QPushButton *menuButton;
+    QPushButton *recordButton;
+    QPushButton *snapshotButton;
     CamWidget *rawCamWidget;
     CustomButton *cb;
     QListWidgetWithDrop *filterList;
     FilterSettingWidget *settingWidget;
     QVBoxLayout *filterLayout;
     QScrollArea *filterSettingScrollArea;
+    SavePopup *popup;
     
     //	Other Variables
     CameraStream stream;
+    FilterChain *filterChain;
    
 public slots:
 	void createFilterDropdown();
-
+	void displaySaveSettings();
 };
 
 #endif

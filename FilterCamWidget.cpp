@@ -29,9 +29,10 @@ FilterCamWidget::FilterCamWidget(CameraStream *camstream)
 void FilterCamWidget::createLayout(){
 	filterLayout = new QVBoxLayout;
 	setLayout(filterLayout);
-	setStyleSheet("QWidget { background-color: violet; }");
+	setStyleSheet("QWidget { background-color: #E6E6E0;}");
 	filterComboBox = new QComboBox(this);
-	filterComboBox->setMaximumHeight(40);
+	//filterComboBox->setMaximumHeight(40);
+        filterComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;height:25px;selection-background-color: lightgray;}");
 	filterLayout->addWidget(filterComboBox);
 	connect(filterComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(filterDidChange(int)));
 }
@@ -46,6 +47,7 @@ void FilterCamWidget::setFilterList(QStringList filterList){
 	int index = filterComboBox->currentIndex();
 	filterComboBox->clear();
 	filterComboBox->addItems(filterList);
+       
 	if (index >= filterComboBox->count())
 		index = filterComboBox->count() - 1;
 	if (index == -1)
@@ -58,7 +60,8 @@ void FilterCamWidget::filterDidChange(int index){
 }
 
 
-void FilterCamWidget::setCurrentFilter(int index){
+void FilterCamWidget::setCurrentFilter(int index)
+{
 	if (index >= filterComboBox->count())
 		return;
 	cout << "Setting filter to index " << index << endl;

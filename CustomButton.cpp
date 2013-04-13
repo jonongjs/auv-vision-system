@@ -11,14 +11,15 @@ CustomButton::CustomButton(QWidget *parent): QWidget(parent)
 
 	filtersComboBox = createComboBox();
 
-	numberLabel = new QLabel(tr("F1:"));
+	numberLabel = new QLabel(tr("Filter1"));
+        numberLabel->setStyleSheet("QLabel{color:black;height:20px;length:20px;background-color: #FFFFCC;}");
 
-	QVBoxLayout *rightLayout = new QVBoxLayout;
-	rightLayout->addWidget(deleteButton);
+	//QVBoxLayout *rightLayout = new QVBoxLayout;
+	//rightLayout->addWidget(deleteButton);
 	QHBoxLayout *topLeftLayout = new QHBoxLayout;
 	topLeftLayout->addWidget(numberLabel);
-	topLeftLayout->addWidget(filtersComboBox);
-	topLeftLayout->addLayout(rightLayout);
+	topLeftLayout->addWidget(filtersComboBox,1.3);
+	topLeftLayout->addWidget(deleteButton,0.3);
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	mainLayout->addLayout(topLeftLayout);
 	setLayout(mainLayout);
@@ -40,7 +41,8 @@ void CustomButton::buttonDelete()
 	//deleteButton->setIcon(ButtonIcon);
 	//deleteButton->setIconSize(pixmap.rect().size());
 	deleteButton->setText("X");
-    return deleteButton;
+        deleteButton->setStyleSheet("QPushButton{color:white;height:20px;length:20px;border-style:outset;border-color: grey;border-radius: 1px;border-width: 2px;background-color: #FF8080;}");
+        return deleteButton;
  }
 
 
@@ -57,13 +59,18 @@ void CustomButton::buttonDelete()
 	filtersComboBox->addItem("Sepia");
 	filtersComboBox->addItem("Invert");
 	listView->setStyleSheet("QListView::item {     \
-	border-bottom: 5px solid white; margin:3px; }  \
+        margin:3px; }                                  \
 	QListView::item:selected {                     \
-	border-bottom: 5px solid black; margin:3px;    \
+        margin:3px;                                    \
 	color: black;                                  \
 	}                                              \
 	");
+        
+
 	filtersComboBox->setView(listView);
+       // filtersComboBox->lineEdit()->setReadOnly(true);
+        filtersComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;selection-background-color: lightgray;}");
+        //filtersComboBox->setStyleSheet("QComboBox QAbstractItemView { outline:none;}");
         return filtersComboBox;
  }
 
