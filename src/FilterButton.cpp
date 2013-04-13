@@ -66,6 +66,11 @@ QComboBox* FilterButton::createComboBox(const QStringList& options)
 	// filtersComboBox->lineEdit()->setReadOnly(true);
 	filtersComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;selection-background-color: lightgray;}");
 	//filtersComboBox->setStyleSheet("QComboBox QAbstractItemView { outline:none;}");
+
+	// Connect the combobox's signal to our own
+	connect(filtersComboBox, SIGNAL(currentIndexChanged(const QString&)),
+			this, SIGNAL(selectionChanged(const QString&)));
+
 	return filtersComboBox;
 }
 

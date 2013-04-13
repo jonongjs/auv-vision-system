@@ -77,23 +77,23 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout()
 {
 	//	Add 2 filter widgets
-//	QStringList filters;
-
 	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
-//	filterWidget->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 
 	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
-//	filterWidget2->setFilterList(filters);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
 	
 	//	Connect filterWidget to backend
 	connect(this, SIGNAL(filterListChanged(QStringList&)),
 			filterWidget, SLOT(filterListChanged(QStringList&)));
+	connect(this, SIGNAL(filterTypeChanged(int)),
+			filterWidget, SLOT(filterTypeChanged(int)));
 	connect(this, SIGNAL(filterListChanged(QStringList&)),
 			filterWidget2, SLOT(filterListChanged(QStringList&)));
+	connect(this, SIGNAL(filterTypeChanged(int)),
+			filterWidget2, SLOT(filterTypeChanged(int)));
 }
 
 
@@ -116,7 +116,11 @@ void AuvMainWindow::appendFilterButton()
 	filterButton->listItem = filterList->addItem(filterButton);
   
 	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
+			this, SLOT(deleteItem(QListWidgetItem *)));
+	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
 			filterList, SLOT(deleteItem(QListWidgetItem *)));
+	connect(filterButton, SIGNAL(selectionChanged(const QString&)),
+			this, SLOT(changeFilterType(const QString&)));
 }
 
 
@@ -252,4 +256,19 @@ void AuvMainWindow::listChanged()
 		list << filterBtn->getName();
 	}
 	emit filterListChanged(list);
+}
+
+void AuvMainWindow::deleteItem(QListWidgetItem *item)
+{
+	int row = filterList->row(item);
+	filterChain->removeFilter(filterChain->getChain()[row]);
+}
+
+void AuvMainWindow::changeFilterType(const QString& text)
+{
+	FilterButton *button = (FilterButton*)QObject::sender();
+	int row = filterList->row(button->listItem);
+	filterChain->changeFilterType(row, text.toStdString());
+
+	emit filterTypeChanged(row);
 }

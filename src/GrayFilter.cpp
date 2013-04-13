@@ -8,7 +8,11 @@
 void GrayFilter::setImage(const cv::Mat& image)
 {
     // Convert to grayscale
-    cv::cvtColor(image, output, CV_BGR2GRAY);
+	cv::Mat tmp;
+    cv::cvtColor(image, tmp, CV_BGR2GRAY);
+
+	cv::Mat channels[] = { tmp, tmp, tmp};
+	cv::merge(channels, 3, output);
 
     emit imageUpdated(output);
 }

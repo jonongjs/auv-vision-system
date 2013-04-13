@@ -16,7 +16,7 @@ using namespace std;
 
 //TODO: This class shouldn't need to know about CameraStream
 FilterCamWidget::FilterCamWidget(FilterChain *chain)
-	: filterChain(chain)
+	: filterChain(chain), prevSelection(-1)
 {
     createLayout();
 
@@ -57,6 +57,15 @@ void FilterCamWidget::setFilterList(QStringList& filterList)
 	filterComboBox->setCurrentIndex(index);
 }
 
+// One of the filters changed types
+void FilterCamWidget::filterTypeChanged(int index)
+{
+	if (index == filterComboBox->currentIndex()) {
+		connect(filterChain->getChain()[index], SIGNAL(imageUpdated(const cv::Mat&)),
+				camWidget, SLOT(setImage(const cv::Mat&)));
+	}
+}
+
 void FilterCamWidget::filterDidChange(int index)
 {
 	setCurrentFilter(index);
@@ -71,15 +80,21 @@ void FilterCamWidget::setCurrentFilter(int index)
 
 	const FilterChain::Chain& chain = filterChain->getChain();
 	if (chain.empty()) {
-		// Clear out the screen
+		//TODO: Clear out the screen
 	} else {
 		if (index < chain.size()) {
-			//TODO: disconnect?
+			if (prevSelection >= 0 && prevSelection < chain.size()) {
+				disconnect(chain[prevSelection], SIGNAL(imageUpdated(const cv::Mat&)),
+						camWidget, SLOT(setImage(const cv::Mat&)));
+			}
+
 			connect(chain[index], SIGNAL(imageUpdated(const cv::Mat&)),
 					camWidget, SLOT(setImage(const cv::Mat&)));
 		}
 	}
-	
+
+	prevSelection = index;
+
 	if (index != filterComboBox->currentIndex())
 		filterComboBox->setCurrentIndex(index);
 }

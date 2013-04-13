@@ -26,6 +26,7 @@ public:
 
 public slots:
     void filterDidChange(int index);
+    void filterTypeChanged(int index);
     void filterListChanged(QStringList& filterList);
 	
 private:
@@ -35,6 +36,8 @@ private:
 
 	QVBoxLayout *filterLayout;
 	QComboBox *filterComboBox;
+
+	int prevSelection;
 	
 	void createLayout();
 

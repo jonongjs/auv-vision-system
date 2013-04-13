@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <deque>
+#include <string>
 
 class CameraStream;
 class FilterCreator;
@@ -25,6 +26,8 @@ class FilterChain : public QObject
 		ImageFilterBase* appendNewFilter();
 		void appendFilter(ImageFilterBase*);
 		void removeFilter(ImageFilterBase*);
+
+		void changeFilterType(int index, const std::string& type);
 
 		const Chain& getChain();
 

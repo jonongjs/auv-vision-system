@@ -88,9 +88,12 @@ public slots:
 	void appendFilterButton();
 	void displaySaveSettings();
 	void listChanged();
+	void deleteItem(QListWidgetItem*);
+	void changeFilterType(const QString& text);
 
 signals:
 	void filterListChanged(QStringList& filterList);
+	void filterTypeChanged(int index);
 };
 
 #endif
