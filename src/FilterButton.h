@@ -1,5 +1,9 @@
-#ifndef CUSTOMBUTTON_H
-#define CUSTOMBUTTON_H
+// FilterButton.h
+//
+// Button representing a filter in the list of filters
+
+#ifndef FILTERBUTTON_H
+#define FILTERBUTTON_H
 
 #include <QWidget>
 #include <QDir>
@@ -9,18 +13,18 @@ class QLabel;
 class QPushButton;
 class QListWidgetItem;
 
-class CustomButton : public QWidget
- {
+class FilterButton : public QWidget
+{
      Q_OBJECT
 
  public:
-     CustomButton(QWidget *parent = 0);
+     FilterButton(QWidget *parent = 0);
+
      QPushButton *deleteButton;
      QListWidgetItem *listItem;
      QComboBox *filtersComboBox;
  
  private:
-     
      QPushButton *createDeleteButton();
      QComboBox *createComboBox();
    
@@ -31,7 +35,6 @@ signals:
 
 private slots:
      void buttonDelete();
-     
- };
+};
 
- #endif
+#endif//FILTERBUTTON

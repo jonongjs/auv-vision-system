@@ -12,7 +12,6 @@
 #include "CamWidget.h"
 #include "FilterCamWidget.h"
 #include "CameraStream.h"
-#include "CustomButton.h"
 #include "SavePopup.h"
 #include "QListWidgetWithDrop.h"
 #include "FilterSettingWidget.h"

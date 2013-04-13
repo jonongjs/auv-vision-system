@@ -3,9 +3,9 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPixmap>
-#include "CustomButton.h"
+#include "FilterButton.h"
 
-CustomButton::CustomButton(QWidget *parent)
+FilterButton::FilterButton(QWidget *parent)
 	: QWidget(parent)
 {
 	deleteButton = createDeleteButton();
@@ -28,13 +28,13 @@ CustomButton::CustomButton(QWidget *parent)
 	connect(deleteButton,SIGNAL(clicked()),this,SLOT(buttonDelete()));		
 }
 
-void CustomButton::buttonDelete()
+void FilterButton::buttonDelete()
 {
 	emit deleteFilterDropdown(listItem);
 }
 
 
-QPushButton* CustomButton::createDeleteButton()
+QPushButton* FilterButton::createDeleteButton()
 {
 	deleteButton = new QPushButton;
 	//QPixmap pixmap("uparrow.png");
@@ -47,7 +47,7 @@ QPushButton* CustomButton::createDeleteButton()
 }
 
 
-QComboBox* CustomButton::createComboBox()
+QComboBox* FilterButton::createComboBox()
 {
 	QLabel label("F1"); // create label
 	label.show();

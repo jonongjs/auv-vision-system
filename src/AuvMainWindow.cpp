@@ -3,6 +3,7 @@
 // Main Window for AUV software
 
 #include "AuvMainWindow.h"
+#include "FilterButton.h"
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
 #include <QtGui>
@@ -93,7 +94,7 @@ void AuvMainWindow::createLeftLayout()
 
 void AuvMainWindow::createFilterDropdown()
 {
-	CustomButton *cb = new CustomButton;
+	FilterButton *cb = new FilterButton;
 	QListWidgetItem *Listitem = new QListWidgetItem();
 	filterList->addItem(Listitem);
 	filterList->setItemWidget(Listitem,cb);

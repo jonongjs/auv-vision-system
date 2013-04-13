@@ -14,7 +14,7 @@ include(opencv.pro)
 HEADERS += src/AuvMainWindow.h \
            src/CameraStream.h \
            src/CamWidget.h \
-           src/CustomButton.h \
+           src/FilterButton.h \
            src/FilterCamWidget.h \
            src/FilterChain.h \
            src/FilterCreator.h \
@@ -28,7 +28,7 @@ HEADERS += src/AuvMainWindow.h \
 SOURCES += src/AuvMainWindow.cpp \
            src/CameraStream.cpp \
            src/CamWidget.cpp \
-           src/CustomButton.cpp \
+           src/FilterButton.cpp \
            src/FilterCamWidget.cpp \
            src/FilterChain.cpp \
            src/FilterCreator.cpp \
