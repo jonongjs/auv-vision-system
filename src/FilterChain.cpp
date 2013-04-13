@@ -44,7 +44,6 @@ void FilterChain::appendFilter(ImageFilterBase *filter)
 
 void FilterChain::removeFilter(ImageFilterBase *filter)
 {
-	//TODO: disconnect the filter?
 	Chain::iterator it = std::find(filterList.begin(), filterList.end(), filter);
 	int index = it - filterList.begin(); 
 

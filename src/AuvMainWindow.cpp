@@ -40,35 +40,35 @@ void AuvMainWindow::open()
 
 void AuvMainWindow::loadFile(const QString &fileName)
 {
-QFile file(fileName);
-if (!file.open(QFile::ReadOnly | QFile::Text))
-{
-QMessageBox::warning(this, tr("MyEditor"),tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()));
-return;
-}
-QTextStream in(&file);
-QApplication::setOverrideCursor(Qt::WaitCursor);
-//textEdit->setPlainText(in.readAll());
-QApplication::restoreOverrideCursor();
-//setCurrentFile(fileName);
-//statusBar()->showMessage(tr("File loaded"), 2000);
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text))
+	{
+		QMessageBox::warning(this, tr("MyEditor"),tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()));
+		return;
+	}
+	QTextStream in(&file);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//textEdit->setPlainText(in.readAll());
+	QApplication::restoreOverrideCursor();
+	//setCurrentFile(fileName);
+	//statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
 void AuvMainWindow::createMainLayout()
 {
 	//Set size
-        setGeometry(0, 0, 800, 600);
+	setGeometry(0, 0, 800, 600);
 
-        //Set main central horizontal widget/layout (horizontal)
-        centralWidget = new QWidget;
-        centralWidgetLayout = new QHBoxLayout;
- 	centralWidget->setLayout(centralWidgetLayout);
+	//Set main central horizontal widget/layout (horizontal)
+	centralWidget = new QWidget;
+	centralWidgetLayout = new QHBoxLayout;
+	centralWidget->setLayout(centralWidgetLayout);
 	centralWidget->setStyleSheet("QWidget { background-color: #FFFFCC; }");
 	setCentralWidget(centralWidget);
 	
 	//Set centralWidget left, middle, right widget/layout (vertical)
 	centralLeftWidget = new QWidget;
-        centralLeftWidgetLayout = new QVBoxLayout;
+	centralLeftWidgetLayout = new QVBoxLayout;
 	centralLeftWidget->setLayout(centralLeftWidgetLayout);
 	centralLeftWidgetLayout->setAlignment(Qt::AlignTop);
 	centralLeftWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
@@ -78,7 +78,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralLeftScrollArea);
 	
 	centralMiddleWidget = new QWidget;
-        centralMiddleWidgetLayout = new QVBoxLayout;
+	centralMiddleWidgetLayout = new QVBoxLayout;
 	centralMiddleWidget->setLayout(centralMiddleWidgetLayout);
 	centralMiddleWidgetLayout->setAlignment(Qt::AlignTop);
 	centralMiddleWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
@@ -88,7 +88,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidgetLayout->addWidget(centralMiddleScrollArea);
 	
 	centralRightWidget = new QWidget;
-        centralRightWidgetLayout = new QVBoxLayout;
+	centralRightWidgetLayout = new QVBoxLayout;
 	centralRightWidget->setLayout(centralRightWidgetLayout);
 	centralRightWidget->setStyleSheet("QWidget { background-color: #E6E6E0; }");
 	centralWidgetLayout->addWidget(centralRightWidget);
@@ -96,7 +96,7 @@ void AuvMainWindow::createMainLayout()
 	
 	//Create individual layout contents
 	createLeftLayout();
-        createMiddleLayout();
+	createMiddleLayout();
 	createRightLayout();
 }
 
