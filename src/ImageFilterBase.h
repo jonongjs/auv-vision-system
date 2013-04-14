@@ -10,7 +10,7 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 
-enum FilterPropertyType { INT_RANGE, FLOAT_RANGE };
+enum FilterPropertyType { INT_RANGE, FLOAT_RANGE, STR_SELECTION };
 
 struct FilterProperty
 {
@@ -18,6 +18,7 @@ struct FilterProperty
     FilterPropertyType type;
     int intMin, intMax, intStep;
     float floatMin, floatMax, floatStep;
+	std::string options; // Newline-separated options
 
     FilterProperty(const std::string& propertyName, FilterPropertyType _type)
         : name(propertyName), type(_type),

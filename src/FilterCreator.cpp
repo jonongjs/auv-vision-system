@@ -5,10 +5,9 @@
 #include <algorithm>
 #include "FilterCreator.h"
 // Headers for all the filters
+#include "ConvertColourFilter.h"
 #include "GaussianBlurFilter.h"
-#include "GrayFilter.h"
 #include "EqualizeHistFilter.h"
-#include "HSVFilter.h"
 #include "InvertFilter.h"
 #include "SobelFilter.h"
 
@@ -18,10 +17,9 @@ template<class T> ImageFilterBase* filterCreator() { return new T; }
 FilterCreator::FilterCreator()
 {
 	// Build up a list of methods to create the filters
+    filterMap["ConvertColour"] = &filterCreator<ConvertColourFilter>;
     filterMap["GaussianBlur"] = &filterCreator<GaussianBlurFilter>;
     filterMap["EqualizeHist"] =  &filterCreator<EqualizeHistFilter>;
-    filterMap["Gray"] =  &filterCreator<GrayFilter>;
-    filterMap["HSV"]  =  &filterCreator<HSVFilter>;
     filterMap["Invert"]= &filterCreator<InvertFilter>;
     filterMap["Sobel"] = &filterCreator<SobelFilter>;
 

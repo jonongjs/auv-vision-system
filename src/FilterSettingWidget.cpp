@@ -5,6 +5,7 @@
 #include "FilterSettingWidget.h"
 #include <iostream>
 #include <QLabel>
+#include <QComboBox>
 #include "PropertyAdaptor.h"
 using namespace std;
 
@@ -71,6 +72,9 @@ void FilterSettingWidget::filterChanged(int i){
 						spin->setMaximum(it->intMax);
 						spin->setSingleStep(it->intStep);
 						spin->setValue(curValue.toInt());
+
+						connect(spin, SIGNAL(valueChanged(const QString&)),
+								adaptor, SLOT(valueChanged(const QString&)));
 					}
 					break;
 				case FLOAT_RANGE:
@@ -82,11 +86,35 @@ void FilterSettingWidget::filterChanged(int i){
 						spin->setMaximum(it->floatMax);
 						spin->setSingleStep(it->floatStep);
 						spin->setValue(curValue.toDouble());
+
+						connect(spin, SIGNAL(valueChanged(const QString&)),
+								adaptor, SLOT(valueChanged(const QString&)));
+					}
+					break;
+				case STR_SELECTION:
+					{
+						QComboBox *combo = new QComboBox(this);
+						tmp = combo;
+						QStringList options =
+							QString::fromStdString(it->options)
+								.split("\n", QString::SkipEmptyParts);
+
+						combo->addItems(options);
+
+						int index = 0;
+						foreach (QString option, options) {
+							if (option == curValue) {
+								combo->setCurrentIndex(index);
+								break;
+							}
+							++index;
+						}
+
+						connect(combo, SIGNAL(currentIndexChanged(const QString&)),
+								adaptor, SLOT(valueChanged(const QString&)));
 					}
 					break;
 			}
-			connect(tmp, SIGNAL(valueChanged(const QString&)),
-					adaptor, SLOT(valueChanged(const QString&)));
 
 			tmp->setMinimumHeight(30);
 			filterLayout->addWidget(tmp);
