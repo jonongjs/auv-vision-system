@@ -30,6 +30,7 @@ private:
 	void createLayout();	
 	QVBoxLayout *filterLayout;
 	QList<QWidget*> settingWidgets;
+	ImageFilterBase *filter;
 };
 
 #endif
