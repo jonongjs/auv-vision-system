@@ -90,8 +90,8 @@ void FilterCamWidget::setCurrentFilter(int index)
 	if (chain.empty()) {
 		//TODO: Clear out the screen
 	} else {
-		if (index < chain.size()) {
-			if (prevSelection >= 0 && prevSelection < chain.size()) {
+		if (index < (int)chain.size()) {
+			if (prevSelection >= 0 && prevSelection < (int)chain.size()) {
 				disconnect(chain[prevSelection], SIGNAL(imageUpdated(const cv::Mat&)),
 						camWidget, SLOT(setImage(const cv::Mat&)));
 			}
