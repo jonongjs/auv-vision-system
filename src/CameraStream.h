@@ -11,14 +11,18 @@
 namespace cv {
     class VideoCapture;
 };
+class QTimer;
 
 class CameraStream : public QObject
 {
     Q_OBJECT
 
 public:
-    CameraStream(int cameraIndex=0);
+    CameraStream(int cameraIndex = 0);
     ~CameraStream();
+
+    bool useVideo(const std::string& filename);
+    bool useCamera(int cameraIndex = 0);
 
 public slots:
     void retrieveFrame();
@@ -29,6 +33,8 @@ signals:
 private:
     cv::VideoCapture *vidCapture;
     cv::Mat currentFrame;
+
+    QTimer *timer;
 };
 
 #endif//CAMERASTREAM_H

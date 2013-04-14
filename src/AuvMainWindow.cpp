@@ -31,27 +31,22 @@ void AuvMainWindow::createStatusBar()
 
 void AuvMainWindow::open()
 {
-  
-	QString fileName = QFileDialog::getOpenFileName(this,tr("Open existing videos"),".",tr("(*.wmv);(*.mpg);Any image files (*)"));
+	QString fileName = QFileDialog::getOpenFileName(this,
+				tr("Open existing videos"),".",
+				tr( "MPG videos (*.mpg *.mp4);;"
+					"Any file (*)"));
 	if (!fileName.isEmpty())
-	loadFile(fileName);
-  
+		loadFile(fileName);
 }
 
 void AuvMainWindow::loadFile(const QString &fileName)
 {
-	QFile file(fileName);
-	if (!file.open(QFile::ReadOnly | QFile::Text))
+	if (!stream.useVideo(fileName.toStdString()))
 	{
-		QMessageBox::warning(this, tr("MyEditor"),tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()));
+		QMessageBox::warning(this, tr("AUV Vision System"),tr("Cannot read file %1.").arg(fileName));
 		return;
 	}
-	QTextStream in(&file);
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-	//textEdit->setPlainText(in.readAll());
-	QApplication::restoreOverrideCursor();
-	//setCurrentFile(fileName);
-	//statusBar()->showMessage(tr("File loaded"), 2000);
+	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
 void AuvMainWindow::createMainLayout()
