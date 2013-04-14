@@ -26,52 +26,48 @@ void FilterSettingWidget::createLayout(){
 }
 
 
-void FilterSettingWidget::filterChanged(int index){
-	printf("%d filter changed\n",index);
-	/*
-	 if (filter) {
-	 
-	 	//	Clear filter settings
-	 	QList<QWidget *> widgets = filterLayout->findChildren<QWidget *>();
-	 	foreach(QWidget * widget, widgets)
-   			delete widget;
-		
-		//	Add new filter name
-		QLabel *label = new QLabel(QString::number(index+1)+" "+it->getName());
-        filterLayout->addWidget(label, Qt::AlignCenter);
-        	
-		
-		
-	 	//	Add new filter properties
-        const FilterProperties& properties = backend->filters[index]->getFilterProperties();
-        for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
-        	QLabel *label = new QLabel(it->name);
-        	filterLayout->addWidget(label, Qt::AlignCenter);
-        
-            QWidget *tmp;
-            switch (it->type) {
-                case INT_RANGE:
-                    {
-             l          QSpinBox *spin = new QSpinBox(this);
-                        tmp = spin;
-                        spin->setMinimum(it->intMin);
-                        spin->setMaximum(it-ll>intMax);
-                        spin->setSingleStep(it->intStep);
-                    }
-                    break;
-                case FLOAT_RANGE:
-                    {
-                        QDoubleSpinBox *spin = new QDoubleSpinBox(this);
-                        tmp = spin;
-                        spin->setMinimum(it->floatMin);
-                        spin->setMaximum(it->floatMax);
-                        spin->setSingleStep(it->floatStep);
-                    }
-                    break;
-            }
-            filterLayout->addWidget(tmp);
+void FilterSettingWidget::filterChanged(int index, FilterChain::Chain filters){
+ 	//	Clear filter settings
+ 	QList<QWidget *> widgets = filterLayout->findChildren<QWidget *>();
+ 	foreach(QWidget * widget, widgets)
+		delete widget;
+	
+	//	Add new filter name
+	ImageFilterBase *filter = filters[index];
+	QLabel *label = new QLabel(QString::number(index+1)+" "+ QString::qstr(filter->name));
+    filterLayout->addWidget(label, Qt::AlignCenter);
+    	
+	
+	
+ 	//	Add new filter properties
+    const FilterProperties& properties =  filter->getFilterProperties();
+    for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
+    	QLabel *label = new QLabel(QString::fromStdString(it->name));
+    	filterLayout->addWidget(label, Qt::AlignCenter);
+    
+        QWidget *tmp;
+        switch (it->type) {
+            case INT_RANGE:
+                {
+                    QSpinBox *spin = new QSpinBox(this);
+                    tmp = spin;
+                    spin->setMinimum(it->intMin);
+                    spin->setMaximum(it->intMax);
+                    spin->setSingleStep(it->intStep);
+                }
+                break;
+            case FLOAT_RANGE:
+                {
+                    QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+                    tmp = spin;
+                    spin->setMinimum(it->floatMin);
+                    spin->setMaximum(it->floatMax);
+                    spin->setSingleStep(it->floatStep);
+                }
+                break;
         }
-    }*/
+        filterLayout->addWidget(tmp);
+    }
 }
 	
 
