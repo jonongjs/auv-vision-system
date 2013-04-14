@@ -15,7 +15,7 @@
         directoryComboBox = createComboBox(QDir::currentPath());
         browseButton = createButton(tr("&Browse..."), SLOT(browse()));
         okButton = createButton(tr("&OK"), SLOT(close()));
-        okButton->setStyleSheet("QPushButton{color:black;background-color:#FF9147;border-radius:4px;height:25px;}");
+        okButton->setDefault(true);
         cancelButton = createButton(tr("&Cancel"), SLOT(close()));
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
@@ -23,7 +23,6 @@
 	mainLayout->addWidget(directoryComboBox, 0, 1);
 	mainLayout->addWidget(browseButton, 0, 2);
         mainLayout->addWidget(okButton,1,2);
-       // mainLayout->addWidget(cancelButton, 1, 2);
 	setLayout(mainLayout);
 
  }

@@ -161,6 +161,8 @@ void AuvMainWindow::createMiddleLayout()
 	QPixmap pixmap(":/images/plusbutton.png");
 	QIcon ButtonIcon(pixmap);
         addFilterButton->setToolTip(tr("Add Filters To Your Video"));
+        addFilterButton->setShortcut(tr("Ctrl+N"));
+        addFilterButton->setStatusTip(tr("Add Filters To Your Video"));
 	addFilterButton->setIcon(ButtonIcon);
 	addFilterButton->setIconSize(pixmap.rect().size());
 	//addFilterButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
@@ -273,7 +275,9 @@ void AuvMainWindow::createButtons()
 	QPixmap pixmap(":/images/record.jpg");
 	recordButton->setIcon(QIcon(pixmap));
 	recordButton->setIconSize(pixmap.rect().size()*0.7);
-	recordButton->setToolTip(tr("Start Recording Your Live Stream "));
+	recordButton->setToolTip(tr("Record Your Video Stream "));
+        recordButton->setShortcut(tr("Alt+R"));
+        recordButton->setStatusTip(tr("Record Your Video Stream"));
 	recordButton->setStyleSheet("QPushButton {height:37px;width:37px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 //	connect(recordButton, SIGNAL(clicked()), this, SLOT(startRecording()));
 
@@ -282,6 +286,8 @@ void AuvMainWindow::createButtons()
 	QPixmap snapshotPixmap(":/images/snapshot.png");
 	snapshotButton->setIcon(QIcon(snapshotPixmap));
 	snapshotButton->setToolTip(tr("Take a Snapshot Of Your Live Stream "));
+        snapshotButton->setShortcut(tr("Alt+S"));
+        snapshotButton->setStatusTip(tr("Take a Snapshot Of Your Live Stream "));
 	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
 	snapshotButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	connect(snapshotButton, SIGNAL(clicked()), this, SLOT(takeSnapshot()));
@@ -291,6 +297,8 @@ void AuvMainWindow::createButtons()
 	QPixmap openPixmap(":/images/open.png");
 	openButton->setIcon(QIcon(openPixmap));
 	openButton->setToolTip(tr("Open An Existing Video "));
+        openButton->setShortcut(tr("Ctrl+O"));
+        openButton->setStatusTip(tr("Open An Existing Video Or Reset To Camera Stream "));
 	openButton->setIconSize(openPixmap.rect().size());
 	openButton->setStyleSheet("QToolButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createOpenMenu();
@@ -306,7 +314,7 @@ void AuvMainWindow::createButtons()
     
     //	Settings widget
 	settingWidget->chain = filterChain;
-    connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
+	connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
 	connect(this, SIGNAL(filterTypeChanged(int)),
 			settingWidget, SLOT(filterChanged()));
 
@@ -324,6 +332,8 @@ void AuvMainWindow::createButtons()
 	menuButton->setIconSize(QSize(20, 20));
 	menuButton->setCheckable(false);
 	menuButton->setToolTip(tr("Additional Options "));
+        menuButton->setShortcut(tr("Ctrl+M"));
+        menuButton->setStatusTip(tr("Additional Options "));
 	menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	menuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createSettingsMenu();
