@@ -13,7 +13,7 @@ FilterButton::FilterButton(const QString& name, const QStringList& options, QWid
 	filtersComboBox = createComboBox(options);
 
 	numberLabel = new QLabel(name);
-	numberLabel->setStyleSheet("QLabel{color:black;height:20px;length:20px;background-color: #FFFFCC;}");
+	numberLabel->setStyleSheet("QLabel{color:black;height:20px;width:20px;background-color: #FFFFCC;}");
 
 	//QVBoxLayout *rightLayout = new QVBoxLayout;
 	//rightLayout->addWidget(deleteButton);
