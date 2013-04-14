@@ -58,7 +58,7 @@ void AuvMainWindow::createMainLayout()
 	centralWidget = new QWidget;
 	centralWidgetLayout = new QHBoxLayout;
 	centralWidget->setLayout(centralWidgetLayout);
-	centralWidget->setStyleSheet("QWidget { background-color: #FFFFCC; }");
+	centralWidget->setStyleSheet("QWidget { background-color: #D6C299; }");
 	setCentralWidget(centralWidget);
 	
 	//Set centralWidget left, middle, right widget/layout (vertical)
@@ -66,7 +66,7 @@ void AuvMainWindow::createMainLayout()
 	centralLeftWidgetLayout = new QVBoxLayout;
 	centralLeftWidget->setLayout(centralLeftWidgetLayout);
 	centralLeftWidgetLayout->setAlignment(Qt::AlignTop);
-	centralLeftWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
+	centralLeftWidget->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
 	centralLeftScrollArea = new QScrollArea;
 	centralLeftScrollArea->setWidget(centralLeftWidget);
 	centralLeftScrollArea->setWidgetResizable(true);
@@ -76,7 +76,7 @@ void AuvMainWindow::createMainLayout()
 	centralMiddleWidgetLayout = new QVBoxLayout;
 	centralMiddleWidget->setLayout(centralMiddleWidgetLayout);
 	centralMiddleWidgetLayout->setAlignment(Qt::AlignTop);
-	centralMiddleWidget->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
+	centralMiddleWidget->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
 	centralMiddleScrollArea = new QScrollArea;
 	centralMiddleScrollArea->setWidget(centralMiddleWidget);
 	centralMiddleScrollArea->setWidgetResizable(true);
@@ -85,7 +85,7 @@ void AuvMainWindow::createMainLayout()
 	centralRightWidget = new QWidget;
 	centralRightWidgetLayout = new QVBoxLayout;
 	centralRightWidget->setLayout(centralRightWidgetLayout);
-	centralRightWidget->setStyleSheet("QWidget { background-color: #E6E6E0; }");
+	centralRightWidget->setStyleSheet("QWidget { background-color: #F3E6E0; }");
 	centralWidgetLayout->addWidget(centralRightWidget);
 	centralRightWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	
@@ -153,13 +153,14 @@ void AuvMainWindow::createMiddleLayout()
 	QPushButton *addFilterButton = new QPushButton;
 	QPixmap pixmap(":/images/plusbutton.png");
 	QIcon ButtonIcon(pixmap);
+        addFilterButton->setToolTip(tr("Add Filters To Your Video"));
 	addFilterButton->setIcon(ButtonIcon);
 	addFilterButton->setIconSize(pixmap.rect().size());
-	addFilterButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
-	//addFilterButton->setStyleSheet( "QPushButton:pressed {height:40px;border-style:inset;border-radius:10px;border-color: grey;border-width: 2px;}");
+	//addFilterButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
+	addFilterButton->setStyleSheet("QPushButton {height:40px;border: 2px solid gray;border-style:outset;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 
 	filterList = new QListWidgetWithDrop;
-	filterList->setStyleSheet("QWidget { background-color: #E6E6E0;  }");
+	filterList->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
 
 	//	Drag and drop
 	filterList->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -188,15 +189,15 @@ void AuvMainWindow::createMiddleLayout()
 void AuvMainWindow::createRightLayout(){
 	//	Create Frames
 	menuContents = new QWidget(centralRightWidget);
-	menuContents->setStyleSheet("QWidget { background-color: #E6E6E0; }");
+	menuContents->setStyleSheet("QWidget { background-color:#F3E6E0;}");
 	menuContents->setMaximumHeight(60);
 	menuContentsLayout = new QHBoxLayout;
 	menuContentsLayout->setAlignment(Qt::AlignRight);
 	menuContents->setLayout(menuContentsLayout);
 	rawVideoContents = new QWidget(centralRightWidget);
-	rawVideoContents->setStyleSheet("QWidget { background-color: #E6E6E0; }");
+	rawVideoContents->setStyleSheet("QWidget { background-color: #F3E6E0; }");
 	settingsContents = new QWidget(centralRightWidget);
-	settingsContents->setStyleSheet("QWidget { background-color: #E6E6E0; }");
+	settingsContents->setStyleSheet("QWidget { background-color: #F3E6E0; }");
 	centralRightWidgetLayout->addWidget(menuContents);
 	centralRightWidgetLayout->addWidget(rawVideoContents);
 	centralRightWidgetLayout->addWidget(settingsContents);
@@ -207,25 +208,26 @@ void AuvMainWindow::createRightLayout(){
 	QIcon ButtonIcon(pixmap);
 	recordButton->setIcon(ButtonIcon);
 	recordButton->setIconSize(pixmap.rect().size()*0.7);
-        recordButton->setStyleSheet("QPushButton{color:black;height:35px;width:37px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
-
-        
+        recordButton->setToolTip(tr("Start Recording Your Live Stream "));
+        recordButton->setStyleSheet("QPushButton {height:37px;width:37px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
   
         //snapshot button
         snapshotButton = new QPushButton;
 	QPixmap snapshotPixmap(":/images/snapshot.png");
 	QIcon snapshotButtonIcon(snapshotPixmap);
 	snapshotButton->setIcon(snapshotButtonIcon);
+        snapshotButton->setToolTip(tr("Take a Snapshot Of Your Live Stream "));
 	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
-        snapshotButton->setStyleSheet("QPushButton{color:black;height:35px;width:35px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+        snapshotButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 
         //open button
         openButton = new QPushButton;
 	QPixmap openPixmap(":/images/open.png");
 	QIcon openButtonIcon(openPixmap);
 	openButton->setIcon(openButtonIcon);
+        openButton->setToolTip(tr("Open An Existing Video "));
 	openButton->setIconSize(openPixmap.rect().size());
-        openButton->setStyleSheet("QPushButton{color:black;height:35px;width:35px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+        openButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
         connect(openButton,SIGNAL(clicked()),this,SLOT(open()));
   
         menuContentsLayout->addWidget(recordButton);
@@ -245,8 +247,9 @@ void AuvMainWindow::createRightLayout(){
     menuButton->setFont(font);
     menuButton->setIconSize(QSize(20, 20));
     menuButton->setCheckable(false);
+    menuButton->setToolTip(tr("Additional Options "));
     menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
-    menuButton->setStyleSheet("QPushButton{color:black;height:40px;width:40px;border-style:outset;border-color: grey;border-radius: 5px;border-width:2px;background-color: #FFFFCC;}");
+    menuButton->setStyleSheet("QPushButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
     connect(menuButton,SIGNAL(clicked()),this,SLOT(displaySaveSettings()));	
     menuContentsLayout->addWidget(menuButton);
         
