@@ -299,26 +299,6 @@ void AuvMainWindow::createButtons()
 	menuContentsLayout->addWidget(snapshotButton);  
 	menuContentsLayout->addWidget(openButton);       
  
-    //Create menu button
-    menuButton = new QPushButton(menuContents);
-    menuButton->setGeometry(QRect(0, 0, 40, 40));
-    menuButton->setMaximumWidth(40);
-    menuButton->setMaximumHeight(40);
-    QFont font;
-    font.setPointSize(20);
-    font.setBold(true);
-    font.setItalic(false);
-    font.setWeight(75);
-    menuButton->setFont(font);
-    menuButton->setIconSize(QSize(20, 20));
-    menuButton->setCheckable(false);
-    menuButton->setToolTip(tr("Additional Options "));
-    menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
-    menuButton->setStyleSheet("QPushButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
-    //connect(menuButton,SIGNAL(clicked()),this,SLOT(displaySaveSettings()));	
-//    connect(menuButton,SIGNAL(clicked()),this,SLOT(displayMenu()));	
-    menuContentsLayout->addWidget(menuButton);
-        
 	//	Create raw video feed widget
 	rawCamWidget = new CamWidget;
     rawCamWidget->setParent(rawVideoContents);
