@@ -37,7 +37,8 @@ FilterChain::~FilterChain()
 
 ImageFilterBase* FilterChain::appendNewFilter()
 {
-	ImageFilterBase *filter = filterCreator->createFilter("GaussianBlur");
+	std::string firstName = filterCreator->getFilterNames()[0]; //HACK: get the first filter name
+	ImageFilterBase *filter = filterCreator->createFilter(firstName);
 	appendFilter(filter);
 
 	return filter;
