@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include "ImageFilterBase.h"
+#include "FilterChain.h"
 
 class FilterSettingWidget: public QWidget
 {
@@ -18,14 +19,15 @@ class FilterSettingWidget: public QWidget
 
 public:
 	FilterSettingWidget();
+	FilterChain* chain;
 
 public slots:
 	void filterChanged(int index);
-	
 
 private:
 	void createLayout();	
 	QVBoxLayout *filterLayout;
+	QList<QWidget*> settingWidgets;
 };
 
 #endif

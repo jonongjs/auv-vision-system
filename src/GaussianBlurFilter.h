@@ -13,7 +13,6 @@ class GaussianBlurFilter : public ImageFilterBase
 
 public:
     GaussianBlurFilter();
-
     void setProperty(const std::string& propertyName, const std::string& value);
     std::string getProperty(const std::string& propertyName);
 

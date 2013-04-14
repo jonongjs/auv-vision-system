@@ -16,6 +16,7 @@ GaussianBlurFilter::GaussianBlurFilter()
 
     FilterProperty sigmaP("sigma", FLOAT_RANGE);
     filterProperties.push_back(sigmaP);
+
 }
 
 void GaussianBlurFilter::setProperty(const std::string& propertyName, const std::string& value)

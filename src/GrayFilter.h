@@ -22,4 +22,4 @@ private:
     cv::Mat output;
 };
 
-#endif//GRAYFILTER_H
+#endif//GRAYFILTER_H	

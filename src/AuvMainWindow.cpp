@@ -283,13 +283,14 @@ void AuvMainWindow::createRightLayout(){
     //	Settings widget
     settingWidget = new FilterSettingWidget;
     settingWidget->setParent(settingsContents);
+	settingWidget->chain = filterChain;
     connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
 }
 
 void AuvMainWindow::displaySaveSettings()
 {
 
-        popup = new SavePopup;
+    popup = new SavePopup;
 	popup->show();
 }
 
