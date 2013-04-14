@@ -15,12 +15,18 @@ void FilterSettingWidget::createLayout(){
 	filterLayout = new QVBoxLayout;
 	this->setLayout(filterLayout);
 
-	
 	//setStyleSheet("QWidget { background-color: #FFFFCC; }");
-        
-	for (int i = 0; i < 100; i++){
+
+	for (int i = 0; i < 100; i++)
+        {
+		if(i==0)
+		{
+			QLabel *labelHeading=new QLabel("Settings");
+			labelHeading->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
+			filterLayout->addWidget(labelHeading);
+		}
 		QLabel *label = new QLabel(QString::number(i)+" asd");
-                label->setStyleSheet("QLabel{color:black;font-size:14px;}");
+		label->setStyleSheet("QLabel{color:black;font-size:14px;}");
 		filterLayout->addWidget(label);
 	}
 }
