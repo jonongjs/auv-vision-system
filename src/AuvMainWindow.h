@@ -89,10 +89,11 @@ private:
     FilterChain *filterChain;
    
 public slots:
-        void open();
+	void open();
 	void appendFilterButton();
 	void displaySaveSettings();
 	void listChanged();
+	void listItemMoved(int fromRow, int toRow);
 	void deleteItem(QListWidgetItem*);
 	void changeFilterType(const QString& text);
 

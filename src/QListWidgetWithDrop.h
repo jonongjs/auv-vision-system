@@ -16,7 +16,7 @@ public slots:
 	void deleteItem(QListWidgetItem *item);
 	
 signals:
-	void listItemSwapped(int, int);
+	void listItemMoved(int fromRow, int toRow);
 	void listItemAdded();
 	void listItemDeleted(int);
 };

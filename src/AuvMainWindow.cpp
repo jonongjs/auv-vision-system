@@ -183,8 +183,10 @@ void AuvMainWindow::createMiddleLayout()
 //	connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
 //	connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
 //	connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
-	connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listChanged()));
-	connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listChanged()));
+	connect(filterList, SIGNAL(listItemMoved(int, int)),
+			this, SLOT(listItemMoved(int, int)));
+	connect(filterList, SIGNAL(listItemAdded()), this, SLOT(listChanged()));
+	connect(filterList, SIGNAL(listItemDeleted(int)), this, SLOT(listChanged()));
 }
 
 
@@ -290,10 +292,16 @@ void AuvMainWindow::listChanged()
 	emit filterListChanged(list);
 }
 
+void AuvMainWindow::listItemMoved(int fromRow, int toRow)
+{
+	filterChain->moveFilter(fromRow, toRow);
+}
+
+
 void AuvMainWindow::deleteItem(QListWidgetItem *item)
 {
 	int row = filterList->row(item);
-	filterChain->removeFilter(filterChain->getChain()[row]);
+	filterChain->removeFilter(row);
 }
 
 void AuvMainWindow::changeFilterType(const QString& text)
