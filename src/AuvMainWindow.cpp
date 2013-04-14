@@ -295,6 +295,7 @@ void AuvMainWindow::listChanged()
 void AuvMainWindow::listItemMoved(int fromRow, int toRow)
 {
 	filterChain->moveFilter(fromRow, toRow);
+	listChanged();
 }
 
 
