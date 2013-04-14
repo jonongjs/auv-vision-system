@@ -39,6 +39,7 @@ void FilterSettingWidget::filterChanged(int i){
 		return;
 
 	//	Add new filter name
+	if (index >= 0) {
 	ImageFilterBase *filter = chain->getChain()[index];
 	QLabel *label = new QLabel("Settings: "+QString::number(index+1)+" "+ QString::fromStdString(filter->name));
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
