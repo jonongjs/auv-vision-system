@@ -35,7 +35,9 @@ FilterCreator::FilterCreator()
 ImageFilterBase* FilterCreator::createFilter(const std::string& filterName)
 {
     if (filterMap.find(filterName) != filterMap.end()) {
-        return filterMap[filterName]();
+		ImageFilterBase* filter = filterMap[filterName]();
+		filter->name = filterName;
+		return filter;
     }
     return NULL;
 }
