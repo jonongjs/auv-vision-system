@@ -17,6 +17,7 @@ include(opencv.pro)
 HEADERS += src/AuvMainWindow.h \
            src/CameraStream.h \
            src/CamWidget.h \
+           src/EqualizeHistFilter.h \
            src/FilterButton.h \
            src/FilterCamWidget.h \
            src/FilterChain.h \
@@ -26,11 +27,14 @@ HEADERS += src/AuvMainWindow.h \
            src/GrayFilter.h \
            src/HSVFilter.h \
            src/ImageFilterBase.h \
+           src/InvertFilter.h \
            src/QListWidgetWithDrop.h \
-           src/SavePopup.h
+           src/SavePopup.h \
+           src/SobelFilter.h
 SOURCES += src/AuvMainWindow.cpp \
            src/CameraStream.cpp \
            src/CamWidget.cpp \
+           src/EqualizeHistFilter.cpp \
            src/FilterButton.cpp \
            src/FilterCamWidget.cpp \
            src/FilterChain.cpp \
@@ -39,6 +43,8 @@ SOURCES += src/AuvMainWindow.cpp \
            src/GaussianBlurFilter.cpp \
            src/GrayFilter.cpp \
            src/HSVFilter.cpp \
+           src/InvertFilter.cpp \
            src/main.cpp \
            src/QListWidgetWithDrop.cpp \
-           src/SavePopup.cpp
+           src/SavePopup.cpp \
+           src/SobelFilter.cpp

@@ -7,7 +7,7 @@
 
 void HSVFilter::setImage(const cv::Mat& image)
 {
-    // Convert to grayscale
+    // Convert to HSV
     cv::cvtColor(image, output, CV_BGR2HSV);
 
     emit imageUpdated(output);
