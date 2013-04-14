@@ -231,6 +231,7 @@ void AuvMainWindow::createRightLayout(){
 	recordButton->setIconSize(pixmap.rect().size()*0.7);
 	recordButton->setToolTip(tr("Start Recording Your Live Stream "));
 	recordButton->setStyleSheet("QPushButton {height:37px;width:37px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+//	connect(recordButton, SIGNAL(clicked()), this, SLOT(startRecording()));
   
 	// snapshot button
 	snapshotButton = new QPushButton;
@@ -240,6 +241,7 @@ void AuvMainWindow::createRightLayout(){
 	snapshotButton->setToolTip(tr("Take a Snapshot Of Your Live Stream "));
 	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
 	snapshotButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	connect(snapshotButton, SIGNAL(clicked()), this, SLOT(takeSnapshot()));
 
 	//open button
 	openButton = new QPushButton;
@@ -333,4 +335,15 @@ void AuvMainWindow::changeFilterType(const QString& text)
 	filterChain->changeFilterType(row, text.toStdString());
 
 	emit filterTypeChanged(row);
+}
+
+void AuvMainWindow::takeSnapshot()
+{
+	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
+	stream.writeImage((timestamp+".jpg").toStdString());
+}
+
+void AuvMainWindow::startRecording()
+{
+	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
 }

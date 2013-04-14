@@ -97,6 +97,9 @@ public slots:
 	void deleteItem(QListWidgetItem*);
 	void changeFilterType(const QString& text);
 
+	void takeSnapshot();
+	void startRecording();
+
 signals:
 	void filterListChanged(QStringList& filterList);
 	void filterTypeChanged(int index);
