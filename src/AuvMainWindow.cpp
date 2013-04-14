@@ -283,7 +283,8 @@ void AuvMainWindow::createRightLayout(){
     //	Settings widget
     settingWidget = new FilterSettingWidget;
     settingWidget->setParent(settingsContents);
-    connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int, filterChain->getChain())));
+	settingWidget->chain = filterChain;
+    connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
 }
 
 void AuvMainWindow::displaySaveSettings()
