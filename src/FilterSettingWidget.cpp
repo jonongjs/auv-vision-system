@@ -34,6 +34,7 @@ void FilterSettingWidget::filterChanged(int index){
 	settingWidgets.clear();
 
 	//	Add new filter name
+	if (index >= 0) {
 	ImageFilterBase *filter = chain->getChain()[index];
 	QLabel *label = new QLabel(QString::number(index+1)+" "+ QString::fromStdString(filter->name));
     filterLayout->addWidget(label, Qt::AlignCenter);
@@ -70,6 +71,7 @@ void FilterSettingWidget::filterChanged(int index){
         filterLayout->addWidget(tmp);
     }
 	printf("done\n");
+	}
 }
 	
 
