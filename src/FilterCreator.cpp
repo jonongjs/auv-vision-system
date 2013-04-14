@@ -7,16 +7,23 @@
 // Headers for all the filters
 #include "GaussianBlurFilter.h"
 #include "GrayFilter.h"
+#include "EqualizeHistFilter.h"
 #include "HSVFilter.h"
+#include "InvertFilter.h"
+#include "SobelFilter.h"
 
 // Functions to create the filters
 template<class T> ImageFilterBase* filterCreator() { return new T; }
 
 FilterCreator::FilterCreator()
 {
+	// Build up a list of methods to create the filters
     filterMap["GaussianBlur"] = &filterCreator<GaussianBlurFilter>;
-    filterMap["Gray"] = &filterCreator<GrayFilter>;
-    filterMap["HSV"] =  &filterCreator<HSVFilter>;
+    filterMap["EqualizeHist"] =  &filterCreator<EqualizeHistFilter>;
+    filterMap["Gray"] =  &filterCreator<GrayFilter>;
+    filterMap["HSV"]  =  &filterCreator<HSVFilter>;
+    filterMap["Invert"]= &filterCreator<InvertFilter>;
+    filterMap["Sobel"] = &filterCreator<SobelFilter>;
 
     for (FilterMap::iterator it=filterMap.begin(); it!=filterMap.end(); ++it) {
         filterNames.push_back(it->first);
@@ -24,14 +31,18 @@ FilterCreator::FilterCreator()
     std::sort(filterNames.begin(), filterNames.end());
 }
 
+// Creates filter when given its name, or NULL if not found
 ImageFilterBase* FilterCreator::createFilter(const std::string& filterName)
 {
     if (filterMap.find(filterName) != filterMap.end()) {
-        return filterMap[filterName]();
+		ImageFilterBase* filter = filterMap[filterName]();
+		filter->name = filterName;
+		return filter;
     }
     return NULL;
 }
 
+// Returns the list of filter names available
 const FilterCreator::StringList& FilterCreator::getFilterNames() const
 {
     return filterNames;

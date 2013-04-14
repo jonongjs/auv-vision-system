@@ -37,12 +37,9 @@ void FilterButton::buttonDelete()
 QPushButton* FilterButton::createDeleteButton()
 {
 	deleteButton = new QPushButton;
-	//QPixmap pixmap("uparrow.png");
-	//QIcon ButtonIcon(pixmap);
-	//deleteButton->setIcon(ButtonIcon);
-	//deleteButton->setIconSize(pixmap.rect().size());
 	deleteButton->setText("X");
-	deleteButton->setStyleSheet("QPushButton{color:white;height:20px;length:20px;border-style:outset;border-color: grey;border-radius: 1px;border-width: 2px;background-color: #FF8080;}");
+	deleteButton->setToolTip(tr("Add Filters To Your Video"));
+        deleteButton->setStyleSheet("QPushButton {color:white;border: 2px solid gray;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FF4D4D, stop: 1 #FFB8B8);min-width: 18px;}QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}QPushButton:flat {border: none;}QPushButton:default {border-color: navy;}");
 	return deleteButton;
 }
 
@@ -63,9 +60,14 @@ QComboBox* FilterButton::createComboBox(const QStringList& options)
         
 
 	filtersComboBox->setView(listView);
-	// filtersComboBox->lineEdit()->setReadOnly(true);
-	filtersComboBox->setStyleSheet("QComboBox{background-color:white;width:30px;selection-background-color: lightgray;}");
-	//filtersComboBox->setStyleSheet("QComboBox QAbstractItemView { outline:none;}");
+        filtersComboBox->setStyleSheet(
+				"QComboBox {border: 1px solid gray;border-radius: 3px;padding: 1px 18px 1px 3px;min-width: 6em;}"
+				"QComboBox:editable {background: white;}"
+				"QComboBox:!editable, QComboBox::drop-down:editable {background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFFF, stop: 0.4 #FFFFFF,stop: 0.5 #FFFFFF, stop: 1.0 #FFFFFF);}"
+				"QComboBox:on { padding-top: 3px;padding-left: 4px;}"
+				"QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: darkgray;border-left-style: solid; border-top-right-radius: 3px; border-bottom-right-radius: 3px;}"
+				"QComboBox::down-arrow {image: url(:/images/downarrow.png);}"
+				"QComboBox::down-arrow:on { top: 2px;left: 1px;}");
 
 	// Connect the combobox's signal to our own
 	connect(filtersComboBox, SIGNAL(currentIndexChanged(const QString&)),

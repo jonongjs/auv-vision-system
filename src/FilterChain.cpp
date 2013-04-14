@@ -37,7 +37,8 @@ FilterChain::~FilterChain()
 
 ImageFilterBase* FilterChain::appendNewFilter()
 {
-	ImageFilterBase *filter = filterCreator->createFilter("GaussianBlur");
+	std::string firstName = filterCreator->getFilterNames()[0]; //HACK: get the first filter name
+	ImageFilterBase *filter = filterCreator->createFilter(firstName);
 	appendFilter(filter);
 
 	return filter;
@@ -71,7 +72,7 @@ void FilterChain::removeFilter(int index)
 	delete filter;
 
 	// Manage connections
-	if (index < filterList.size()) {
+	if (index < (int)filterList.size()) {
 		if (index == 0) {
 			if (stream) {
 				connectStreams(stream, filterList[index]);
@@ -80,7 +81,7 @@ void FilterChain::removeFilter(int index)
 			connectStreams(filterList[index-1], filterList[index]);
 		}
 		
-		if (index < filterList.size()-1) {
+		if (index < (int)filterList.size()-1) {
 			connectStreams(filterList[index], filterList[index+1]);
 		}
 	}
@@ -115,7 +116,7 @@ void FilterChain::changeFilterType(int index, const std::string& type)
 		connectStreams(filterList[index-1], filterList[index]);
 	}
 
-	if (index != filterList.size()-1) {
+	if (index != (int)filterList.size()-1) {
 		connectStreams(filterList[index], filterList[index+1]);
 	}
 }

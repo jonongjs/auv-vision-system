@@ -5,16 +5,13 @@
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
 #include "FilterCreator.h"
-#include "CameraStream.h"
 #include "ImageFilterBase.h"
-#include <iostream>
 
 //HACK: temporary stuff
 #include <QSpinBox>
 
 using namespace std;
 
-//TODO: This class shouldn't need to know about CameraStream
 FilterCamWidget::FilterCamWidget(FilterChain *chain)
 	: filterChain(chain), prevSelection(-1)
 {
@@ -44,7 +41,7 @@ void FilterCamWidget::createLayout()
 
 
 
-        filterLayout->addWidget(filterComboBox);
+	filterLayout->addWidget(filterComboBox);
 	connect(filterComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(filterDidChange(int)));
 }
 
@@ -77,6 +74,7 @@ void FilterCamWidget::filterTypeChanged(int index)
 	}
 }
 
+// Selection index changed
 void FilterCamWidget::filterDidChange(int index)
 {
 	setCurrentFilter(index);
@@ -87,14 +85,13 @@ void FilterCamWidget::setCurrentFilter(int index)
 {
 	if (index >= filterComboBox->count())
 		return;
-	cout << "Setting filter to index " << index << endl;
 
 	const FilterChain::Chain& chain = filterChain->getChain();
 	if (chain.empty()) {
 		//TODO: Clear out the screen
 	} else {
-		if (index < chain.size()) {
-			if (prevSelection >= 0 && prevSelection < chain.size()) {
+		if (index < (int)chain.size()) {
+			if (prevSelection >= 0 && prevSelection < (int)chain.size()) {
 				disconnect(chain[prevSelection], SIGNAL(imageUpdated(const cv::Mat&)),
 						camWidget, SLOT(setImage(const cv::Mat&)));
 			}

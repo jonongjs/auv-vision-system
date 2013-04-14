@@ -97,13 +97,20 @@ void AuvMainWindow::createMainLayout()
 
 void AuvMainWindow::createLeftLayout()
 {
-	//	Add 2 filter widgets
+	//Add 2 filter widgets
+	QLabel *label=new QLabel("    Selected Filter");
+	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
+	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
+	centralLeftWidgetLayout->addWidget(label);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 
+	QLabel *label2=new QLabel("    Cumulative Filters");
+	label2->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
+	centralLeftWidgetLayout->addWidget(label2);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
 	
 	//	Connect filterWidget to backend
@@ -160,7 +167,8 @@ void AuvMainWindow::createMiddleLayout()
 	addFilterButton->setStyleSheet("QPushButton {height:40px;border: 2px solid gray;border-style:outset;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 
 	filterList = new QListWidgetWithDrop;
-	filterList->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
+	//filterList->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
+	filterList->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
 
 	//	Drag and drop
 	filterList->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -169,6 +177,9 @@ void AuvMainWindow::createMiddleLayout()
 	filterList->viewport()->setAcceptDrops(true);
 	filterList->setDropIndicatorShown(true);
 
+	QLabel *label=new QLabel("    Add Filters");
+	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
+	centralMiddleWidgetLayout->addWidget(label);
 	centralMiddleWidgetLayout->addWidget(filterList);
 	centralMiddleWidgetLayout->addWidget(addFilterButton);
 
@@ -188,16 +199,26 @@ void AuvMainWindow::createMiddleLayout()
 
 void AuvMainWindow::createRightLayout(){
 	//	Create Frames
+	/*QVBoxLayout *labelLayout = new QVBoxLayout;
+	  labelLayout->setAlignment(Qt::AlignRight);
+	  QLabel *labelHeading=new QLabel("Video Stream");
+	  labelHeading->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
+	  labelHeading->setLayout(labelLayout);
+	  centralRightWidgetLayout->addWidget(labelHeading);*/
+
 	menuContents = new QWidget(centralRightWidget);
-	menuContents->setStyleSheet("QWidget { background-color:#F3E6E0;}");
+	menuContents->setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
 	menuContents->setMaximumHeight(60);
 	menuContentsLayout = new QHBoxLayout;
 	menuContentsLayout->setAlignment(Qt::AlignRight);
 	menuContents->setLayout(menuContentsLayout);
+        
 	rawVideoContents = new QWidget(centralRightWidget);
-	rawVideoContents->setStyleSheet("QWidget { background-color: #F3E6E0; }");
+	rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
+
 	settingsContents = new QWidget(centralRightWidget);
-	settingsContents->setStyleSheet("QWidget { background-color: #F3E6E0; }");
+	settingsContents->setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
+
 	centralRightWidgetLayout->addWidget(menuContents);
 	centralRightWidgetLayout->addWidget(rawVideoContents);
 	centralRightWidgetLayout->addWidget(settingsContents);
@@ -229,7 +250,7 @@ void AuvMainWindow::createRightLayout(){
 	openButton->setIconSize(openPixmap.rect().size());
         openButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
         connect(openButton,SIGNAL(clicked()),this,SLOT(open()));
-  
+ 
         menuContentsLayout->addWidget(recordButton);
         menuContentsLayout->addWidget(snapshotButton);  
         menuContentsLayout->addWidget(openButton);       
@@ -250,7 +271,8 @@ void AuvMainWindow::createRightLayout(){
     menuButton->setToolTip(tr("Additional Options "));
     menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
     menuButton->setStyleSheet("QPushButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
-    connect(menuButton,SIGNAL(clicked()),this,SLOT(displaySaveSettings()));	
+    //connect(menuButton,SIGNAL(clicked()),this,SLOT(displaySaveSettings()));	
+    connect(menuButton,SIGNAL(clicked()),this,SLOT(displayMenu()));	
     menuContentsLayout->addWidget(menuButton);
         
 	//	Create raw video feed widget

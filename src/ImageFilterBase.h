@@ -38,6 +38,8 @@ public:
 
     virtual const FilterProperties& getFilterProperties() { return filterProperties; };
 
+	std::string name;
+
 public slots:
     virtual void setImage(const cv::Mat& image) = 0;
 
