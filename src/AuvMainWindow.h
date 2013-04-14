@@ -9,6 +9,7 @@
 #include <QMainWindow>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QToolButton>
 #include "CamWidget.h"
 #include "FilterCamWidget.h"
 #include "CameraStream.h"
@@ -42,6 +43,9 @@ private:
     void createLeftLayout();	//	used by createMainLayout
     void createMiddleLayout();
     void createRightLayout();	//	used by createMainLayout
+	void createButtons();
+	void createSettingsMenu();
+	void createOpenMenu();
     void createNewChain();
     void loadFile(const QString &fileName);
 
@@ -70,10 +74,10 @@ private:
     QVBoxLayout *rawVideoLayout;
     QWidget *rawVideoContents;
     QWidget *settingsContents;
-    QPushButton *menuButton;
+    QToolButton *menuButton;
     QPushButton *recordButton;
     QPushButton *snapshotButton;
-    QPushButton *openButton;
+    QToolButton *openButton;
     CamWidget *rawCamWidget;
     QListWidgetWithDrop *filterList;
     FilterSettingWidget *settingWidget;
@@ -88,6 +92,7 @@ private:
     FilterCreator *filterCreator;
     FilterChain *filterChain;
    
+   
 public slots:
 	void open();
 	void appendFilterButton();
@@ -96,6 +101,10 @@ public slots:
 	void listItemMoved(int fromRow, int toRow);
 	void deleteItem(QListWidgetItem*);
 	void changeFilterType(const QString& text);
+
+	void useCamera();
+	void takeSnapshot();
+	void startRecording();
 
 signals:
 	void filterListChanged(QStringList& filterList);
