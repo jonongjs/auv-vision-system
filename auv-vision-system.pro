@@ -28,6 +28,7 @@ HEADERS += src/AuvMainWindow.h \
            src/HSVFilter.h \
            src/ImageFilterBase.h \
            src/InvertFilter.h \
+           src/PropertyAdaptor.h \
            src/QListWidgetWithDrop.h \
            src/SavePopup.h \
            src/SobelFilter.h

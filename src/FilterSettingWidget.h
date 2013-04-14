@@ -13,6 +13,8 @@
 #include "ImageFilterBase.h"
 #include "FilterChain.h"
 
+class PropertyAdaptor;
+
 class FilterSettingWidget: public QWidget
 {
     Q_OBJECT
@@ -28,8 +30,10 @@ public slots:
 
 private:
 	void createLayout();	
+
 	QVBoxLayout *filterLayout;
 	QList<QWidget*> settingWidgets;
+	QList<PropertyAdaptor*> adaptors;
 	ImageFilterBase *filter;
 };
 

@@ -2,11 +2,10 @@
 //
 // Widget for displaying settings of a filter
 
-
 #include "FilterSettingWidget.h"
-#include <cstdio>
 #include <iostream>
 #include <QLabel>
+#include "PropertyAdaptor.h"
 using namespace std;
 
 FilterSettingWidget::FilterSettingWidget(QWidget * parent): QWidget(parent) {
@@ -33,6 +32,10 @@ void FilterSettingWidget::filterChanged(int i){
  	foreach(QWidget *widget, settingWidgets)
 		delete widget;
 	settingWidgets.clear();
+
+	foreach(PropertyAdaptor *adaptor, adaptors)
+		delete adaptor;
+	adaptors.clear();
 	
 	//	Ensure size
 	if ((int) chain->getChain().size() <= index)
@@ -53,6 +56,10 @@ void FilterSettingWidget::filterChanged(int i){
 			filterLayout->addWidget(label);
 			settingWidgets.append(label);
 
+			PropertyAdaptor *adaptor = new PropertyAdaptor(filter, it->name);
+			adaptors.append(adaptor);
+
+			QString curValue(QString::fromStdString(filter->getProperty(it->name)));
 			QWidget *tmp;
 			switch (it->type) {
 				case INT_RANGE:
@@ -63,6 +70,7 @@ void FilterSettingWidget::filterChanged(int i){
 						spin->setMinimum(it->intMin);
 						spin->setMaximum(it->intMax);
 						spin->setSingleStep(it->intStep);
+						spin->setValue(curValue.toInt());
 					}
 					break;
 				case FLOAT_RANGE:
@@ -73,9 +81,12 @@ void FilterSettingWidget::filterChanged(int i){
 						spin->setMinimum(it->floatMin);
 						spin->setMaximum(it->floatMax);
 						spin->setSingleStep(it->floatStep);
+						spin->setValue(curValue.toDouble());
 					}
 					break;
 			}
+			connect(tmp, SIGNAL(valueChanged(const QString&)),
+					adaptor, SLOT(valueChanged(const QString&)));
 
 			tmp->setMinimumHeight(30);
 			filterLayout->addWidget(tmp);
