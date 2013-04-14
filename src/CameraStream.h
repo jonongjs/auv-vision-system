@@ -10,6 +10,7 @@
 
 namespace cv {
     class VideoCapture;
+    class VideoWriter;
 };
 class QTimer;
 
@@ -24,6 +25,10 @@ public:
     bool useVideo(const std::string& filename);
     bool useCamera(int cameraIndex = 0);
 
+	bool writeImage(const std::string& filename);
+	void startRecording(const std::string& filename);
+	void stopRecording();
+
 public slots:
     void retrieveFrame();
 
@@ -32,9 +37,11 @@ signals:
 
 private:
     cv::VideoCapture *vidCapture;
+    cv::VideoWriter  *vidWriter;
     cv::Mat currentFrame;
 
     QTimer *timer;
+	double fps;
 };
 
 #endif//CAMERASTREAM_H

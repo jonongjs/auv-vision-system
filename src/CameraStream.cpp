@@ -9,6 +9,7 @@
 const int TIMEOUT = 42;
 
 CameraStream::CameraStream(int cameraIndex)
+    : vidWriter(0)
 {
     vidCapture = new cv::VideoCapture(cameraIndex);
 
@@ -17,6 +18,7 @@ CameraStream::CameraStream(int cameraIndex)
     connect(timer, SIGNAL(timeout()), this, SLOT(retrieveFrame()));
 
     timer->start(TIMEOUT);
+    fps = 1.0 / TIMEOUT;
 }
 
 CameraStream::~CameraStream()
@@ -34,6 +36,11 @@ void CameraStream::retrieveFrame()
     // Retrieve the image from the capture device
     (*vidCapture) >> currentFrame;
 
+    // Write frame to file if we're recording
+    if (vidWriter) {
+        (*vidWriter) << currentFrame;
+    }
+
     emit imageUpdated(currentFrame);
 }
 
@@ -50,7 +57,8 @@ bool CameraStream::useVideo(const std::string& filename)
         vidCapture->set(CV_CAP_PROP_POS_AVI_RATIO, 1.0);
         double totalTime = vidCapture->get(CV_CAP_PROP_POS_MSEC);
         double frameCount = vidCapture->get(CV_CAP_PROP_FRAME_COUNT);
-        int timeout = (int)(totalTime/frameCount);
+        fps = totalTime / frameCount;
+        int timeout = (int)fps;
         // Now rewind
         vidCapture->set(CV_CAP_PROP_POS_AVI_RATIO, 0.0);
         //END HACK
@@ -64,5 +72,26 @@ bool CameraStream::useCamera(int cameraIndex)
 {
     vidCapture->release();
     timer->start(TIMEOUT);
+    fps = 1.0 / TIMEOUT;
+
     return vidCapture->open(cameraIndex);
+}
+
+bool CameraStream::writeImage(const std::string& filename)
+{
+    return cv::imwrite(filename, currentFrame);
+}
+
+void CameraStream::startRecording(const std::string& filename)
+{
+    vidWriter = new cv::VideoWriter(filename,
+                            CV_FOURCC('M','J','P','G'),
+                            fps,
+                            currentFrame.size());
+}
+
+void CameraStream::stopRecording()
+{
+    delete vidWriter;
+    vidWriter = 0;
 }
