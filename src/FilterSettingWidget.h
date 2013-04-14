@@ -18,11 +18,13 @@ class FilterSettingWidget: public QWidget
     Q_OBJECT
 
 public:
-	FilterSettingWidget();
+	FilterSettingWidget(QWidget * parent = 0);
 	FilterChain* chain;
+	int index;
 
 public slots:
-	void filterChanged(int index);
+	void filterChanged(int i);
+	void filterChanged();
 
 private:
 	void createLayout();	

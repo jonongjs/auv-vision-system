@@ -216,12 +216,11 @@ void AuvMainWindow::createRightLayout(){
 	rawVideoContents = new QWidget(centralRightWidget);
 	rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
 
-	settingsContents = new QWidget(centralRightWidget);
-	settingsContents->setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
+	settingWidget = new FilterSettingWidget(centralRightWidget);
 
 	centralRightWidgetLayout->addWidget(menuContents);
 	centralRightWidgetLayout->addWidget(rawVideoContents);
-	centralRightWidgetLayout->addWidget(settingsContents);
+	centralRightWidgetLayout->addWidget(settingWidget);
 
 	// videorecording button
 	recordButton = new QPushButton;
@@ -281,10 +280,10 @@ void AuvMainWindow::createRightLayout(){
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
     
     //	Settings widget
-    settingWidget = new FilterSettingWidget;
-    settingWidget->setParent(settingsContents);
 	settingWidget->chain = filterChain;
     connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
+	connect(this, SIGNAL(filterTypeChanged(int)),
+			settingWidget, SLOT(filterChanged()));
 }
 
 void AuvMainWindow::displaySaveSettings()

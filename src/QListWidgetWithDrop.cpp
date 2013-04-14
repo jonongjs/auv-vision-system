@@ -14,6 +14,8 @@ void QListWidgetWithDrop::dropEvent(QDropEvent *e){
 QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
 	QListWidgetItem *listitem = new QListWidgetItem();
 	QListWidget::addItem(listitem);
+	if (count() == 1)
+		setCurrentRow(0);
 	setItemWidget(listitem, item);
 	listitem->setSizeHint(item->size());
 
@@ -24,9 +26,9 @@ QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
 
 
 void QListWidgetWithDrop::deleteItem(QListWidgetItem *item){
-	int index = row(item);
+	int index = row(item);	
 	delete item;
-	emit listItemDeleted(index);
+	emit listItemDeleted(index);	
 }
 
 
