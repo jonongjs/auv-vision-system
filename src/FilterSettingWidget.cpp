@@ -49,16 +49,24 @@ void FilterSettingWidget::filterChanged(int i){
 
 		QString name = ((FilterButton*)list->itemWidget(list->item(index)))->getName();
 
-		QLabel *label = new QLabel(name+": "+ QString::fromStdString(filter->name));
+		QLabel *label = new QLabel(name+") "+ QString::fromStdString(filter->name));
 		label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;padding:3px;}");
 		filterLayout->addWidget(label);
 		settingWidgets.append(label);
 
 		//	Add new filter properties
 		const FilterProperties& properties =  filter->getFilterProperties();
+	
+		if (properties.empty()){
+			QLabel *label = new QLabel("No settings available.");
+			label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;padding:3px;}");
+			filterLayout->addWidget(label);
+			settingWidgets.append(label);
+		}
+
 		for (FilterProperties::const_iterator it=properties.begin(); it!=properties.end(); ++it) {
 			QLabel *label = new QLabel(QString::fromStdString(it->name));
-			label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;}");
+			label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 
 			filterLayout->addWidget(label);
 			settingWidgets.append(label);

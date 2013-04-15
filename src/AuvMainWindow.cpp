@@ -101,7 +101,7 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout()
 {
 	//Add 2 filter widgets
-	QLabel *label=new QLabel("    Selected Filter");
+	QLabel *label=new QLabel("Filter Output 1");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
 	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
@@ -109,7 +109,7 @@ void AuvMainWindow::createLeftLayout()
 	centralLeftWidgetLayout->addWidget(label);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 
-	QLabel *label2=new QLabel("    Cumulative Filters");
+	QLabel *label2=new QLabel("Filter Output 2");
 	label2->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
@@ -309,7 +309,12 @@ void AuvMainWindow::createRightLayout()
 
 	createButtons();
 
-	//	Create raw video feed widget
+	//	Create raw video feed widget and heading
+	QLabel *rawLabel = new QLabel("Raw Video Input");
+	rawLabel->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;height:30px}");
+		
+	rawVideoLayout->setAlignment(Qt::AlignTop);
+	rawVideoLayout->addWidget(rawLabel);
 	rawCamWidget = new CamWidget;
 	rawVideoLayout->addWidget(rawCamWidget);
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
