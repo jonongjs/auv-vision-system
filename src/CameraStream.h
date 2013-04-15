@@ -42,6 +42,7 @@ private:
 
     QTimer *timer;
 	double fps;
+	bool isVideo;
 };
 
 #endif//CAMERASTREAM_H

@@ -12,6 +12,7 @@ CameraStream::CameraStream(int cameraIndex)
     : vidWriter(0)
 {
     vidCapture = new cv::VideoCapture(cameraIndex);
+	isVideo = false;
 
     //TODO: use a thread instead?
     timer = new QTimer(this);
@@ -34,7 +35,13 @@ void CameraStream::retrieveFrame()
     }
 
     // Retrieve the image from the capture device
-    (*vidCapture) >> currentFrame;
+    if (!vidCapture->read(currentFrame)) {
+		if (isVideo) {
+			// Rewind the video
+			vidCapture->set(CV_CAP_PROP_POS_FRAMES, 0.0);
+			vidCapture->read(currentFrame);
+		}
+	}
 
     // Write frame to file if we're recording
     if (vidWriter) {
@@ -64,7 +71,10 @@ bool CameraStream::useVideo(const std::string& filename)
         //END HACK
  
         timer->start(timeout);
-    }
+		isVideo = true;
+    } else {
+		useCamera(0);
+	}
     return success;
 }
 
@@ -73,6 +83,7 @@ bool CameraStream::useCamera(int cameraIndex)
     vidCapture->release();
     timer->start(TIMEOUT);
     fps = 1.0 / TIMEOUT;
+	isVideo = false;
 
     return vidCapture->open(cameraIndex);
 }
