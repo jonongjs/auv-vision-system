@@ -4,6 +4,8 @@
 #include <QHBoxLayout>
 #include <QPixmap>
 #include "FilterButton.h"
+#include <iostream>
+using namespace std;
 
 FilterButton::FilterButton(const QString& name, const QStringList& options, QWidget *parent)
 	: QWidget(parent)
@@ -13,7 +15,7 @@ FilterButton::FilterButton(const QString& name, const QStringList& options, QWid
 	filtersComboBox = createComboBox(options);
 
 	numberLabel = new QLabel(name);
-	numberLabel->setStyleSheet("QLabel{color:black;height:20px;width:20px;background-color: #FFFFCC;}");
+	numberLabel->setStyleSheet("QLabel{color:black;height:20px;width:20px;background-color: #FFFFCC;padding:3px;}");
 
 	//QVBoxLayout *rightLayout = new QVBoxLayout;
 	//rightLayout->addWidget(deleteButton);
@@ -39,9 +41,9 @@ QPushButton* FilterButton::createDeleteButton()
 	deleteButton = new QPushButton;
 	deleteButton->setText("X");
 	deleteButton->setToolTip(tr("Remove This Filter"));
-        deleteButton->setShortcut(tr("Del"));
-        deleteButton->setStatusTip(tr("Remove This Filter"));
-        deleteButton->setStyleSheet("QPushButton {color:white;border: 2px solid gray;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FF4D4D, stop: 1 #FFB8B8);min-width: 18px;}QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}QPushButton:flat {border: none;}QPushButton:default {border-color: navy;}");
+    deleteButton->setShortcut(tr("Del"));
+    deleteButton->setStatusTip(tr("Remove This Filter"));
+    deleteButton->setStyleSheet("QPushButton {color:white;border: 2px solid gray;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FF4D4D, stop: 1 #FFB8B8);min-width: 18px;}QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}QPushButton:flat {border: none;}QPushButton:default {border-color: navy;}");
 	return deleteButton;
 }
 
@@ -80,5 +82,7 @@ QComboBox* FilterButton::createComboBox(const QStringList& options)
 
 QString FilterButton::getName()
 {
+	cout << "name.." << endl;
+	cout << numberLabel->text().toStdString() << endl;
 	return numberLabel->text();
 }

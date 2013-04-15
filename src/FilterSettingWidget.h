@@ -12,6 +12,7 @@
 #include <QScrollArea>
 #include "ImageFilterBase.h"
 #include "FilterChain.h"
+#include "QListWidgetWithDrop.h"
 
 class PropertyAdaptor;
 
@@ -22,6 +23,7 @@ class FilterSettingWidget: public QWidget
 public:
 	FilterSettingWidget(QWidget * parent = 0);
 	FilterChain* chain;
+	QListWidgetWithDrop *list;
 	int index;
 
 public slots:

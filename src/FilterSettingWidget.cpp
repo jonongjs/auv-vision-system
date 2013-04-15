@@ -6,6 +6,8 @@
 #include <iostream>
 #include <QLabel>
 #include <QComboBox>
+#include <QString>
+#include "FilterButton.h"
 #include "PropertyAdaptor.h"
 using namespace std;
 
@@ -45,8 +47,14 @@ void FilterSettingWidget::filterChanged(int i){
 	if (index >= 0) {
 		//	Add new filter name
 		ImageFilterBase *filter = chain->getChain()[index];
-		QLabel *label = new QLabel("Settings: "+QString::number(index+1)+" "+ QString::fromStdString(filter->name));
-		label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
+
+		FilterButton *fb = ((FilterButton*)list->item(i));
+		cout  << "start" << endl;
+		QString name = fb->getName();
+
+		cout << "name: " << name.toStdString() << endl;
+		QLabel *label = new QLabel(name+" "+ QString::fromStdString(filter->name));
+		label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;padding:3px;}");
 		filterLayout->addWidget(label);
 		settingWidgets.append(label);
 

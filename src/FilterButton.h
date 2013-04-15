@@ -28,7 +28,6 @@ class FilterButton : public QWidget
 	private:
 		QPushButton *createDeleteButton();
 		QComboBox *createComboBox(const QStringList&);
-
 		QLabel *numberLabel;
 
 	signals:
