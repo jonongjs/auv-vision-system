@@ -46,6 +46,7 @@ private:
 	void createButtons();
 	void createSettingsMenu();
 	void createOpenMenu();
+	void createFiltersMenu();
     void createNewChain();
     void loadFile(const QString &fileName);
 
@@ -64,11 +65,15 @@ private:
     //	CentralMiddle Layout Variables
     QScrollArea *centralMiddleScrollArea;
     QVBoxLayout *centralMiddleWidgetLayout;
+	QHBoxLayout *middleMenuContentsLayout;
+    QToolButton *middleMenuButton;
+    QMenu *filtersMenu;
     
     //	CentralRight Layout Variables
     QVBoxLayout *centralRightWidgetLayout;
 
     QWidget *menuContents;
+	QWidget *middleMenuContents;
     QHBoxLayout *menuContentsLayout;
     QScrollArea *rawVideoScrollArea;
     QVBoxLayout *rawVideoLayout;

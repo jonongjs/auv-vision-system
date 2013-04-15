@@ -99,7 +99,7 @@ void AuvMainWindow::createLeftLayout()
 {
 	//Add 2 filter widgets
 	QLabel *label=new QLabel("    Selected Filter");
-	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
+	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
 	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
@@ -179,9 +179,42 @@ void AuvMainWindow::createMiddleLayout()
 	filterList->viewport()->setAcceptDrops(true);
 	filterList->setDropIndicatorShown(true);
 
+	middleMenuContents = new QWidget(centralRightWidget);
+	//middleMenuContents->setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
+	middleMenuContents->setMaximumHeight(60);
+	middleMenuContentsLayout = new QHBoxLayout; 
+	middleMenuContentsLayout->setAlignment(Qt::AlignTop);
+	middleMenuContents->setLayout(middleMenuContentsLayout);
+
 	QLabel *label=new QLabel("    Add Filters");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
-	centralMiddleWidgetLayout->addWidget(label);
+	
+	middleMenuButton = new QToolButton(middleMenuContents);
+	middleMenuButton->setGeometry(QRect(0, 0, 40, 40));
+	middleMenuButton->setMaximumWidth(40);
+	middleMenuButton->setMaximumHeight(40);
+	QFont font;
+	font.setPointSize(20);
+	font.setBold(true);
+	font.setItalic(false);
+	font.setWeight(75);
+	middleMenuButton->setFont(font);
+	middleMenuButton->setIconSize(QSize(20, 20));
+	middleMenuButton->setCheckable(false);
+	middleMenuButton->setToolTip(tr("Additional Options "));
+    middleMenuButton->setShortcut(tr("Ctrl+M"));
+    middleMenuButton->setStatusTip(tr("Additional Options "));
+	middleMenuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
+	middleMenuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	createFiltersMenu();
+
+        middleMenuContentsLayout->addWidget(label);
+	middleMenuContentsLayout->addWidget(middleMenuButton);
+	
+        centralMiddleWidgetLayout->addWidget(middleMenuContents);
+      //  centralMiddleWidgetLayout->addWidget(menuButton);
+
+
 	centralMiddleWidgetLayout->addWidget(filterList);
 	centralMiddleWidgetLayout->addWidget(addFilterButton);
 
@@ -210,6 +243,20 @@ void AuvMainWindow::createSettingsMenu()
 	menuButton->setMenu(popupMenu);
 }
 
+void AuvMainWindow::createFiltersMenu()
+{
+	filtersMenu = new QMenu;
+
+	QAction *act1 = new QAction("Save Current Filter List         ",this);
+	filtersMenu->addAction(act1);
+	QAction *act2 = new QAction("Load Existing Filter List         ",this);
+	filtersMenu->addAction(act2);
+
+	middleMenuButton->setPopupMode(QToolButton::InstantPopup);
+	middleMenuButton->setMenu(filtersMenu);
+}
+
+
 
 void AuvMainWindow::createOpenMenu()
 {
@@ -230,23 +277,18 @@ void AuvMainWindow::createOpenMenu()
 
 void AuvMainWindow::createRightLayout()
 {     
-	//	Create Frames
-	/*QVBoxLayout *labelLayout = new QVBoxLayout;
-	labelLayout->setAlignment(Qt::AlignRight);
-	QLabel *labelHeading=new QLabel("Video Stream");
-	labelHeading->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
-	labelHeading->setLayout(labelLayout);
-	centralRightWidgetLayout->addWidget(labelHeading);*/
-
 	menuContents = new QWidget(centralRightWidget);
 	menuContents->setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
 	menuContents->setMaximumHeight(60);
 	menuContentsLayout = new QHBoxLayout;
 	menuContentsLayout->setAlignment(Qt::AlignRight);
 	menuContents->setLayout(menuContentsLayout);
+	
 
 	rawVideoContents = new QWidget(centralRightWidget);
-	rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
+	rawVideoLayout = new QVBoxLayout;
+	//rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
+	rawVideoContents->setLayout(rawVideoLayout);	
 
     //	Settings widget
 	settingWidget = new FilterSettingWidget(centralRightWidget);
@@ -264,7 +306,7 @@ void AuvMainWindow::createRightLayout()
 
 	//	Create raw video feed widget
 	rawCamWidget = new CamWidget;
-    rawCamWidget->setParent(rawVideoContents);
+	rawVideoLayout->addWidget(rawCamWidget);
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
 }
 
@@ -307,11 +349,6 @@ void AuvMainWindow::createButtons()
 	menuContentsLayout->addWidget(snapshotButton);  
 	menuContentsLayout->addWidget(openButton);       
  
-	//	Create raw video feed widget
-	rawCamWidget = new CamWidget;
-    rawCamWidget->setParent(rawVideoContents);
-    QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
-    
 	//Create menu button
 	menuButton = new QToolButton(menuContents);
 	menuButton->setGeometry(QRect(0, 0, 40, 40));
