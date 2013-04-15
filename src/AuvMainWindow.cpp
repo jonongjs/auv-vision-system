@@ -23,6 +23,7 @@ AuvMainWindow::AuvMainWindow(void)
 	createNewChain();
 	createStatusBar();
 	createMainLayout();
+	videoFlag=0;
 }
 
 void AuvMainWindow::createStatusBar()
@@ -248,6 +249,11 @@ void AuvMainWindow::createSettingsMenu()
 	popupMenu->addAction(act1);
 	connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
 
+    QAction *act2 = new QAction("Help!         ",this);
+	popupMenu->addAction(act2);
+	//connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
+
+
 	menuButton->setPopupMode(QToolButton::InstantPopup);
 	menuButton->setMenu(popupMenu);
 }
@@ -297,6 +303,7 @@ void AuvMainWindow::createRightLayout()
 	rawVideoContents = new QWidget(centralRightWidget);
 	rawVideoLayout = new QVBoxLayout;
 	//rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
+
 	rawVideoContents->setLayout(rawVideoLayout);	
 
     //	Settings widget
@@ -321,15 +328,21 @@ void AuvMainWindow::createRightLayout()
 void AuvMainWindow::createButtons()
 {
 	// videorecording button
-	recordButton = new QPushButton;
+	recordButton = new QToolButton;
+	ico = new QIcon();
+	ico->addPixmap(QPixmap(":/images/record.jpg"),QIcon::Normal,QIcon::Off);
+	ico->addPixmap(QPixmap(":/images/stop.png"),QIcon::Normal,QIcon::On);
+	recordButton->setIcon(*ico);
+	recordButton->setCheckable(true);
+
 	QPixmap pixmap(":/images/record.jpg");
-	recordButton->setIcon(QIcon(pixmap));
 	recordButton->setIconSize(pixmap.rect().size()*0.7);
 	recordButton->setToolTip(tr("Record Your Video Stream "));
-        recordButton->setShortcut(tr("Alt+R"));
-        recordButton->setStatusTip(tr("Record Your Video Stream"));
-	recordButton->setStyleSheet("QPushButton {height:37px;width:37px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
-//	connect(recordButton, SIGNAL(clicked()), this, SLOT(startRecording()));
+    recordButton->setShortcut(tr("Alt+R"));
+    recordButton->setStatusTip(tr("Record Your Video Stream"));
+	recordButton->setStyleSheet("QToolButton {height:32px;width:32px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	connect(recordButton, SIGNAL(clicked()), this, SLOT(toggleRecording()));
+
 
 	// snapshot button
 	snapshotButton = new QPushButton;
@@ -438,7 +451,19 @@ void AuvMainWindow::takeSnapshot()
 	stream.writeImage((timestamp+".jpg").toStdString());
 }
 
-void AuvMainWindow::startRecording()
+void AuvMainWindow::toggleRecording()
 {
+        if(videoFlag==0)
+        {
+        videoFlag=1;
 	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
+        stream.startRecording((timestamp+".mpg").toStdString());
+        }
+        else if(videoFlag==1)
+        {
+        videoFlag=0;
+        stream.stopRecording();
+        }
 }
+
+
