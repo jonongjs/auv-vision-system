@@ -3,14 +3,15 @@
 ######################################################################
 
 CONFIG += debug
-RESOURCES = auv-vision-system.qrc
 TEMPLATE = app
 TARGET = bin/auv-vision-system
 DEPENDPATH += . src
-INCLUDEPATH += . src
+INCLUDEPATH += . src src/jsmn
+
 MOC_DIR = tmp
 OBJECTS_DIR = tmp
 RCC_DIR = tmp
+
 include(opencv.pro)
 
 # Input
@@ -30,7 +31,8 @@ HEADERS += src/AuvMainWindow.h \
            src/PropertyAdaptor.h \
            src/QListWidgetWithDrop.h \
            src/SavePopup.h \
-           src/SobelFilter.h
+           src/SobelFilter.h \
+	   src/jsmn/jsmn.h
 SOURCES += src/AuvMainWindow.cpp \
            src/CameraStream.cpp \
            src/CamWidget.cpp \
@@ -46,4 +48,6 @@ SOURCES += src/AuvMainWindow.cpp \
            src/main.cpp \
            src/QListWidgetWithDrop.cpp \
            src/SavePopup.cpp \
-           src/SobelFilter.cpp
+           src/SobelFilter.cpp \
+	   src/jsmn/jsmn.c
+RESOURCES += auv-vision-system.qrc
