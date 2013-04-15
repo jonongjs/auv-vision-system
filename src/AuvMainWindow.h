@@ -103,6 +103,7 @@ public slots:
 	void open();
 	void appendFilterButton();
 	void displaySaveSettings();
+	void displayHelp();
 	void listChanged();
 	void listItemMoved(int fromRow, int toRow);
 	void deleteItem(QListWidgetItem*);

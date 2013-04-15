@@ -131,16 +131,6 @@ void AuvMainWindow::createLeftLayout()
 // Add a filter (and button) to the chain
 void AuvMainWindow::appendFilterButton()
 {
-/* helpwidget
-	HelpWidget *help = new HelpWidget;
-	help->setWindowFlags(Qt::Popup);
-	help->show();
-
-	int x = window()->geometry().size().width()/2 + window()->geometry().x() - help->size().width()/2;
-	int y = window()->geometry().size().height()/2 + window()->geometry().y() - help->size().height()/2;
-	help->move(x, y);
-*/
-
 	// Create the filter
 	filterChain->appendNewFilter();
 
@@ -249,9 +239,9 @@ void AuvMainWindow::createSettingsMenu()
 	popupMenu->addAction(act1);
 	connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
 
-    QAction *act2 = new QAction("Help!         ",this);
+    QAction *act2 = new QAction("Help          ",this);
 	popupMenu->addAction(act2);
-	//connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
+	connect(act2, SIGNAL(triggered()), this, SLOT(displayHelp()));
 
 
 	menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -396,6 +386,17 @@ void AuvMainWindow::displaySaveSettings()
 {
 	popup = new SavePopup;
 	popup->show();
+}
+
+void AuvMainWindow::displayHelp()
+{
+	HelpWidget *help = new HelpWidget;
+	help->setWindowFlags(Qt::Popup);
+	help->show();
+
+	int x = window()->geometry().size().width()/2 + window()->geometry().x() - help->size().width()/2;
+	int y = window()->geometry().size().height()/2 + window()->geometry().y() - help->size().height()/2;
+	help->move(x, y);
 }
 
 
