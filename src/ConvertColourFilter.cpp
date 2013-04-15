@@ -39,7 +39,7 @@ ConvertColourFilter::ConvertColourFilter()
 		ss << it->first << '\n';
 		conversionMap[it->first] = it->second;
 	}
-    FilterProperty conversionP("conversion", STR_SELECTION);
+    FilterProperty conversionP("Conversion", STR_SELECTION);
 	conversionP.options = ss.str();
 
 	filterProperties.push_back(conversionP);
@@ -50,14 +50,14 @@ ConvertColourFilter::ConvertColourFilter()
 
 void ConvertColourFilter::setProperty(const std::string& propertyName, const std::string& value)
 {
-    if (propertyName == "conversion") {
+    if (propertyName == "Conversion") {
 		conversionType = conversionMap[value];
     }
 }
 
 std::string ConvertColourFilter::getProperty(const std::string& propertyName)
 {
-    if (propertyName == "conversion") {
+    if (propertyName == "Conversion") {
 		for (map<string, int>::iterator it=conversionMap.begin(); it!=conversionMap.end(); ++it) {
 			if (it->second == conversionType) {
 				return it->first;

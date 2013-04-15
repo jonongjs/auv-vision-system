@@ -9,22 +9,22 @@
 GaussianBlurFilter::GaussianBlurFilter()
     : sigma(1.5f), kernelSize(5,5)
 {
-    FilterProperty kernelSizeP("kernelSize", INT_RANGE);
+    FilterProperty kernelSizeP("Kernel Size", INT_RANGE);
     kernelSizeP.intMin = 3;
     kernelSizeP.intStep = 2;
     filterProperties.push_back(kernelSizeP);
 
-    FilterProperty sigmaP("sigma", FLOAT_RANGE);
+    FilterProperty sigmaP("Sigma", FLOAT_RANGE);
     filterProperties.push_back(sigmaP);
 
 }
 
 void GaussianBlurFilter::setProperty(const std::string& propertyName, const std::string& value)
 {
-    if (propertyName == "kernelSize") {
+    if (propertyName == "Kernel Size") {
         int size = atoi(value.c_str());
         kernelSize = cv::Size(size, size);
-    } else if (propertyName == "sigma") {
+    } else if (propertyName == "Sigma") {
         sigma = atof(value.c_str());
     }
 }
@@ -32,9 +32,9 @@ void GaussianBlurFilter::setProperty(const std::string& propertyName, const std:
 std::string GaussianBlurFilter::getProperty(const std::string& propertyName)
 {
     std::ostringstream ss;
-    if (propertyName == "kernelSize") {
+    if (propertyName == "Kernel Size") {
         ss << kernelSize.width;
-    } else if (propertyName == "sigma") {
+    } else if (propertyName == "Sigma") {
         ss << sigma;
     }
     return ss.str();
