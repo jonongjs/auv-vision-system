@@ -17,9 +17,8 @@ void CamWidget::setImage(const cv::Mat &updatedImage)
 {
     // Perform conversion from cv::Mat to QImage
     cv::Mat tmpImage;
-    cv::flip(updatedImage, tmpImage, 1); // Original image is inverted
 	// Assume the image has 3 channels and is in BGR format
-	cv::cvtColor(tmpImage, tmpImage, CV_BGR2RGB);
+	cv::cvtColor(updatedImage, tmpImage, CV_BGR2RGB);
 	QImage qImage(tmpImage.data, tmpImage.cols, tmpImage.rows, QImage::Format_RGB888);
 	pixmap.convertFromImage(qImage);
     
