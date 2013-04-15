@@ -412,6 +412,7 @@ void AuvMainWindow::changeFilterType(const QString& text)
 	filterChain->changeFilterType(row, text.toStdString());
 
 	emit filterTypeChanged(row);
+	listChanged();
 }
 
 void AuvMainWindow::useCamera()
