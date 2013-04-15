@@ -22,7 +22,7 @@ class FilterButton : public QWidget
 		QPushButton *deleteButton;
 		QListWidgetItem *listItem;
 		QComboBox *filtersComboBox;
-
+		void setName(const QString& text);
 		QString getName();
 
 	private:

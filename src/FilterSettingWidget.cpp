@@ -30,7 +30,6 @@ void FilterSettingWidget::filterChanged(){
 
 void FilterSettingWidget::filterChanged(int i){
 	index = i;
-
  	//	Clear filter settings
  	foreach(QWidget *widget, settingWidgets)
 		delete widget;
@@ -48,9 +47,9 @@ void FilterSettingWidget::filterChanged(int i){
 		//	Add new filter name
 		ImageFilterBase *filter = chain->getChain()[index];
 
-		QString name = ((FilterButton*)list->itemWidget(list->item(i)))->getName();
+		QString name = ((FilterButton*)list->itemWidget(list->item(index)))->getName();
 
-		QLabel *label = new QLabel(name+" "+ QString::fromStdString(filter->name));
+		QLabel *label = new QLabel(name+": "+ QString::fromStdString(filter->name));
 		label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;padding:3px;}");
 		filterLayout->addWidget(label);
 		settingWidgets.append(label);
