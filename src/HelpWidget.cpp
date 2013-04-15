@@ -14,7 +14,9 @@ HelpWidget::HelpWidget()
 }
 
 void HelpWidget::createText(){
-	layout->addWidget(createLabel(QString("Shortcuts")));
+	QLabel *label = new QLabel("Shortcuts");
+	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
+	layout->addWidget(label);
 	layout->addWidget(createLabel(QString("Ctrl+N: Add new filters ")));
 	layout->addWidget(createLabel(QString("Ctrl+O: Open Video")));
 	layout->addWidget(createLabel(QString("Ctrl+M: Additional Menu")));
@@ -29,7 +31,7 @@ void HelpWidget::createText(){
 
 QLabel* HelpWidget::createLabel(QString str){
 	QLabel *label = new QLabel(str);
-	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
+	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;margin-top:18px;}");
 	return label;
 }
 
