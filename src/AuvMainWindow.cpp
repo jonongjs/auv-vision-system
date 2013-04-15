@@ -248,10 +248,13 @@ void AuvMainWindow::createRightLayout()
 	rawVideoContents = new QWidget(centralRightWidget);
 	rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
 
+    //	Settings widget
 	settingWidget = new FilterSettingWidget(centralRightWidget);
 	settingWidget->list = filterList;
 	settingWidget->chain = filterChain;
     connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
+	connect(this, SIGNAL(filterTypeChanged(int)),
+			settingWidget, SLOT(filterChanged()));
 
 	centralRightWidgetLayout->addWidget(menuContents);
 	centralRightWidgetLayout->addWidget(rawVideoContents);
@@ -309,12 +312,6 @@ void AuvMainWindow::createButtons()
     rawCamWidget->setParent(rawVideoContents);
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
     
-    //	Settings widget
-	settingWidget->chain = filterChain;
-	connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
-	connect(this, SIGNAL(filterTypeChanged(int)),
-			settingWidget, SLOT(filterChanged()));
-
 	//Create menu button
 	menuButton = new QToolButton(menuContents);
 	menuButton->setGeometry(QRect(0, 0, 40, 40));

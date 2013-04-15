@@ -14,10 +14,11 @@ void QListWidgetWithDrop::dropEvent(QDropEvent *e){
 QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
 	QListWidgetItem *listitem = new QListWidgetItem();
 	QListWidget::addItem(listitem);
-	if (count() == 1)
-		setCurrentRow(0);
 	setItemWidget(listitem, item);
 	listitem->setSizeHint(item->size());
+
+	if (count() == 1)
+		setCurrentRow(0);
 
 	emit listItemAdded();
 

@@ -48,11 +48,8 @@ void FilterSettingWidget::filterChanged(int i){
 		//	Add new filter name
 		ImageFilterBase *filter = chain->getChain()[index];
 
-		FilterButton *fb = ((FilterButton*)list->item(i));
-		cout  << "start" << endl;
-		QString name = fb->getName();
+		QString name = ((FilterButton*)list->itemWidget(list->item(i)))->getName();
 
-		cout << "name: " << name.toStdString() << endl;
 		QLabel *label = new QLabel(name+" "+ QString::fromStdString(filter->name));
 		label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;padding:3px;}");
 		filterLayout->addWidget(label);
