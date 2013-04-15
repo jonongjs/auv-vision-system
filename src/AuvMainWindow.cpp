@@ -7,6 +7,8 @@
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
 #include "FilterCreator.h"
+#include "HelpWidget.h"
+#include <QRect>
 #include <QtGui>
 #include <QHBoxLayout>
 #include <QFileDialog>
@@ -128,6 +130,16 @@ void AuvMainWindow::createLeftLayout()
 // Add a filter (and button) to the chain
 void AuvMainWindow::appendFilterButton()
 {
+/* helpwidget
+	HelpWidget *help = new HelpWidget;
+	help->setWindowFlags(Qt::Popup);
+	help->show();
+
+	int x = window()->geometry().size().width()/2 + window()->geometry().x() - help->size().width()/2;
+	int y = window()->geometry().size().height()/2 + window()->geometry().y() - help->size().height()/2;
+	help->move(x, y);
+*/
+
 	// Create the filter
 	filterChain->appendNewFilter();
 

@@ -30,7 +30,8 @@ HEADERS += src/AuvMainWindow.h \
            src/PropertyAdaptor.h \
            src/QListWidgetWithDrop.h \
            src/SavePopup.h \
-           src/SobelFilter.h
+           src/SobelFilter.h \
+	   src/HelpWidget.h
 SOURCES += src/AuvMainWindow.cpp \
            src/CameraStream.cpp \
            src/CamWidget.cpp \
@@ -46,4 +47,5 @@ SOURCES += src/AuvMainWindow.cpp \
            src/main.cpp \
            src/QListWidgetWithDrop.cpp \
            src/SavePopup.cpp \
-           src/SobelFilter.cpp
+           src/SobelFilter.cpp \
+	   src/HelpWidget.cpp
