@@ -82,7 +82,5 @@ QComboBox* FilterButton::createComboBox(const QStringList& options)
 
 QString FilterButton::getName()
 {
-	cout << "name.." << endl;
-	cout << numberLabel->text().toStdString() << endl;
 	return numberLabel->text();
 }
