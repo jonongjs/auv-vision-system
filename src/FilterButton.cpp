@@ -84,3 +84,8 @@ QString FilterButton::getName()
 {
 	return numberLabel->text();
 }
+
+void FilterButton::setName(const QString& text)
+{
+	return numberLabel->setText(text);
+}

@@ -1,11 +1,18 @@
 #include "QListWidgetWithDrop.h"
 #include <cstdio>
 #include <QDropEvent>
+#include "FilterButton.h"
+#include <QLabel>
 
 void QListWidgetWithDrop::dropEvent(QDropEvent *e){
 	int fromRow = currentRow();
 	QListWidget::dropEvent(e);
 	int toRow = currentRow();
+
+	for (int i = 0; i < count(); i++){
+		FilterButton *fb = (FilterButton*) itemWidget(this->item(i));
+		fb->setName(QString::number(i+1));
+	}
 
 	emit listItemMoved(fromRow, toRow);
 }
@@ -27,9 +34,15 @@ QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
 
 
 void QListWidgetWithDrop::deleteItem(QListWidgetItem *item){
-	int index = row(item);	
+	int index = row(item);
+	for (int i = index + 1; i < count(); i++){
+		FilterButton *fb = (FilterButton*) itemWidget(this->item(i));
+		fb->setName(QString::number(i));
+	}
 	delete item;
-	emit listItemDeleted(index);	
+	
+	emit listItemDeleted(index);
+	emit currentRowChanged(index);
 }
 
 

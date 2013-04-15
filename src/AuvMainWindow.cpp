@@ -138,7 +138,7 @@ void AuvMainWindow::appendFilterButton()
 	for (FilterCreator::StringList::const_iterator it=filterNames.begin(); it!=filterNames.end(); ++it) {
 		filters << (*it).c_str();
 	}
-	QString btnName = QString("Filter") + QString::number(filterChain->getChain().size());
+	QString btnName = QString::number(filterChain->getChain().size());
 	FilterButton *filterButton = new FilterButton(btnName, filters);
 
 	filterButton->listItem = filterList->addItem(filterButton);
@@ -160,9 +160,9 @@ void AuvMainWindow::createMiddleLayout()
 	QPushButton *addFilterButton = new QPushButton;
 	QPixmap pixmap(":/images/plusbutton.png");
 	QIcon ButtonIcon(pixmap);
-        addFilterButton->setToolTip(tr("Add Filters To Your Video"));
-        addFilterButton->setShortcut(tr("Ctrl+N"));
-        addFilterButton->setStatusTip(tr("Add Filters To Your Video"));
+    addFilterButton->setToolTip(tr("Add Filters To Your Video"));
+    addFilterButton->setShortcut(tr("Ctrl+N"));
+    addFilterButton->setStatusTip(tr("Add Filters To Your Video"));
 	addFilterButton->setIcon(ButtonIcon);
 	addFilterButton->setIconSize(pixmap.rect().size());
 	//addFilterButton->setStyleSheet( "QPushButton{height:40px;border-style:outset;border-radius:10px;border-color: grey;border-width: 2px;background-color: #FFFFCC;}");
@@ -222,9 +222,6 @@ void AuvMainWindow::createMiddleLayout()
 			this, SLOT(appendFilterButton()));
 
 	//	Connect filterList to backend
-//	connect(filterList,SIGNAL(listItemSwapped(int, int)),this,SLOT(listItemSwapped(int, int)));
-//	connect(filterList,SIGNAL(listItemAdded()),this,SLOT(listItemAdded()));
-//	connect(filterList,SIGNAL(listItemDeleted(int)),this,SLOT(listItemDeleted(int)));
 	connect(filterList, SIGNAL(listItemMoved(int, int)),
 			this, SLOT(listItemMoved(int, int)));
 	connect(filterList, SIGNAL(listItemAdded()), this, SLOT(listChanged()));
@@ -295,8 +292,7 @@ void AuvMainWindow::createRightLayout()
 	settingWidget->list = filterList;
 	settingWidget->chain = filterChain;
     connect(filterList, SIGNAL(currentRowChanged(int)), settingWidget, SLOT(filterChanged(int)));
-	connect(this, SIGNAL(filterTypeChanged(int)),
-			settingWidget, SLOT(filterChanged()));
+	connect(this, SIGNAL(filterTypeChanged(int)), settingWidget, SLOT(filterChanged()));
 
 	centralRightWidgetLayout->addWidget(menuContents);
 	centralRightWidgetLayout->addWidget(rawVideoContents);
@@ -391,7 +387,7 @@ void AuvMainWindow::listChanged()
 	for (int i=0; i<filterList->count(); ++i) {
 		QListWidgetItem *item = filterList->item(i);
 		FilterButton *filterBtn = (FilterButton*)filterList->itemWidget(item);
-		list << filterBtn->getName();
+		list << filterBtn->getName() + ": " + filterBtn->filtersComboBox->currentText();
 	}
 	emit filterListChanged(list);
 }
