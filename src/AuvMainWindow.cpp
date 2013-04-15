@@ -346,7 +346,7 @@ void AuvMainWindow::createButtons()
 	snapshotButton->setToolTip(tr("Take a Snapshot Of Your Live Stream "));
         snapshotButton->setShortcut(tr("Alt+S"));
         snapshotButton->setStatusTip(tr("Take a Snapshot Of Your Live Stream "));
-	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
+	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.8);
 	snapshotButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	connect(snapshotButton, SIGNAL(clicked()), this, SLOT(takeSnapshot()));
 
@@ -357,9 +357,10 @@ void AuvMainWindow::createButtons()
 	openButton->setToolTip(tr("Open An Existing Video "));
         openButton->setShortcut(tr("Ctrl+O"));
         openButton->setStatusTip(tr("Open An Existing Video Or Reset To Camera Stream "));
-	openButton->setIconSize(openPixmap.rect().size());
-	openButton->setStyleSheet("QToolButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	openButton->setIconSize(openPixmap.rect().size()*0.5);
+	openButton->setStyleSheet("QToolButton {height:32px;width:32px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createOpenMenu();
+
 
 	menuContentsLayout->addWidget(recordButton);
 	menuContentsLayout->addWidget(snapshotButton);  
@@ -371,16 +372,23 @@ void AuvMainWindow::createButtons()
 	menuButton->setMaximumWidth(40);
 	menuButton->setMaximumHeight(40);
 	QFont font;
-	font.setPointSize(20);
+	font.setPointSize(18);
 	font.setBold(true);
 	font.setItalic(false);
 	font.setWeight(75);
 	menuButton->setFont(font);
 	menuButton->setIconSize(QSize(20, 20));
+
+	 QPixmap menuPixmap(":/images/settings.png");
+     menuButton->setIcon(QIcon(menuPixmap));
+     menuButton->setIconSize(menuPixmap.rect().size()*2);
+	//menuButton->setIconSize(QSize(32, 32));
+
+
 	menuButton->setCheckable(false);
 	menuButton->setToolTip(tr("Additional Options "));
-        menuButton->setShortcut(tr("Ctrl+M"));
-        menuButton->setStatusTip(tr("Additional Options "));
+    menuButton->setShortcut(tr("Ctrl+M"));
+    menuButton->setStatusTip(tr("Additional Options "));
 	menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	menuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createSettingsMenu();
