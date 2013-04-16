@@ -2,7 +2,6 @@
 //
 // Main Window for AUV software
 
-
 #ifndef AUVMAINWINDOW_H
 #define AUVMAINWINDOW_H
 
@@ -17,7 +16,7 @@
 #include "QListWidgetWithDrop.h"
 #include "FilterSettingWidget.h"
 
-//	Class declaration without loading .h files. Faster compilation.
+// Class declaration without loading .h files. Faster compilation.
 class QHBoxLayout;
 class QVBoxLayout;
 class QScrollArea;
@@ -34,74 +33,70 @@ class AuvMainWindow: public QMainWindow
 
 	public:
 		AuvMainWindow();
-		void print();
-		int videoFlag;
 
 	private:
-		//	Init methods
+		// Widget creation methods
 		void createStatusBar();
+
 		void createMainLayout();
-		void createLeftLayout();	//	used by createMainLayout
+		void createLeftLayout();	// used by createMainLayout
 		void createMiddleLayout();
-		void createRightLayout();	//	used by createMainLayout
+		void createRightLayout();	// used by createMainLayout
+
 		void createButtons();
 		void createSettingsMenu();
-		void createOpenMenu();
 		void createFiltersMenu();
+		void createOpenMenu();
+
+		// Helper methods
 		void createNewChain();
+		void createNewFilterButton(int index);
 		void loadFile(const QString &fileName);
 
-		void createNewFilterButton(int index);
-
-
-		//	Main Layout variables
+		// Main Layout variables
 		QWidget *centralWidget;
 		QWidget *centralLeftWidget;
 		QWidget *centralMiddleWidget;
 		QWidget *centralRightWidget;
 		QHBoxLayout *centralWidgetLayout;
 
-		//	CentralLeft Layout Variables
+		// CentralLeft Layout Variables
 		QScrollArea *centralLeftScrollArea;
 		QVBoxLayout *centralLeftWidgetLayout;
+		FilterCamWidget *filterWidget;
+		FilterCamWidget *filterWidget2;
 
-		//	CentralMiddle Layout Variables
+		// CentralMiddle Layout Variables
 		QScrollArea *centralMiddleScrollArea;
 		QVBoxLayout *centralMiddleWidgetLayout;
 		QHBoxLayout *middleMenuContentsLayout;
 		QToolButton *middleMenuButton;
-		QMenu *filtersMenu;
-		FilterCamWidget *filterWidget;
-		FilterCamWidget *filterWidget2;
-
-		//	CentralRight Layout Variables
-		QVBoxLayout *centralRightWidgetLayout;
-		QIcon *ico;
-		QWidget *menuContents;
 		QWidget *middleMenuContents;
+		QMenu *filtersMenu;
+
+		// CentralRight Layout Variables
+		QWidget *menuContents;
 		QHBoxLayout *menuContentsLayout;
-		QScrollArea *rawVideoScrollArea;
+		QVBoxLayout *centralRightWidgetLayout;
 		QVBoxLayout *rawVideoLayout;
 		QWidget *rawVideoContents;
-		QWidget *settingsContents;
+		CamWidget *rawCamWidget;
+		FilterSettingWidget *settingWidget;
+
 		QToolButton *menuButton;
 		QToolButton *recordButton;
 		QPushButton *snapshotButton;
 		QToolButton *openButton;
-		CamWidget *rawCamWidget;
+
 		QListWidgetWithDrop *filterList;
-		FilterSettingWidget *settingWidget;
-		QVBoxLayout *filterLayout;
-		QScrollArea *filterSettingScrollArea;
 		SavePopup *popup;
-		QMenu *popupMenu;
 
-
-		//	Other Variables
+		// Other Variables
 		CameraStream stream;
 		FilterCreator *filterCreator;
 		FilterChain *filterChain;
 
+		int isRecording;
 
 	public slots:
 		void open();
@@ -122,8 +117,8 @@ class AuvMainWindow: public QMainWindow
 		void clearChain();
 
 	signals:
-			void filterListChanged(QStringList& filterList);
-			void filterTypeChanged(int index);
+		void filterListChanged(QStringList& filterList);
+		void filterTypeChanged(int index);
 };
 
 #endif

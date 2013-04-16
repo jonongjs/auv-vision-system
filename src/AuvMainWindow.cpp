@@ -9,49 +9,35 @@
 #include "FilterChain.h"
 #include "FilterCreator.h"
 #include "HelpWidget.h"
-#include <QRect>
-#include <QtGui>
-#include <QHBoxLayout>
+
+#include <QApplication>
+#include <QDateTime>
 #include <QFileDialog>
+#include <QHBoxLayout>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QRect>
+#include <QStatusBar>
 #include <iostream>
 
 using namespace std;
 
 AuvMainWindow::AuvMainWindow(void)
-	: filterChain(NULL)
+	: filterChain(NULL), isRecording(0)
 {
 	filterCreator = new FilterCreator;
+
 	createNewChain();
 	createStatusBar();
 	createMainLayout();
-	videoFlag=0;
 }
+
+// Widget creation methods
 
 void AuvMainWindow::createStatusBar()
 {
 	statusBar()->showMessage(tr(""));
-}
-
-void AuvMainWindow::open()
-{
-	QString fileName = QFileDialog::getOpenFileName(this,
-				tr("Open existing videos"),".",
-				tr( "MPG videos (*.mpg *.mp4);;"
-					"Any file (*)"));
-	if (!fileName.isEmpty()) {
-		loadFile(fileName);
-	}
-}
-
-void AuvMainWindow::loadFile(const QString &fileName)
-{
-	if (!stream.useVideo(fileName.toStdString())) {
-		QMessageBox::warning(this,
-				tr("AUV Vision System"),
-				tr("Cannot read file %1.").arg(fileName));
-		return;
-	}
-	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
 void AuvMainWindow::createMainLayout()
@@ -103,7 +89,7 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout()
 {
 	//Add 2 filter widgets
-	QLabel *label=new QLabel("Filter Output 1");
+	QLabel *label = new QLabel("Filter Output 1");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
 	filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
@@ -111,7 +97,7 @@ void AuvMainWindow::createLeftLayout()
 	centralLeftWidgetLayout->addWidget(label);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 
-	QLabel *label2=new QLabel("Filter Output 2");
+	QLabel *label2 = new QLabel("Filter Output 2");
 	label2->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 	filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
@@ -128,41 +114,6 @@ void AuvMainWindow::createLeftLayout()
 	connect(this, SIGNAL(filterTypeChanged(int)),
 			filterWidget2, SLOT(filterTypeChanged(int)));
 }
-
-
-// Add a filter (and button) to the chain
-void AuvMainWindow::appendFilterButton()
-{
-	// Create the filter
-	filterChain->appendNewFilter();
-	createNewFilterButton(filterChain->getChain().size()-1);
-}
-
-void AuvMainWindow::createNewFilterButton(int index)
-{
-	// Create the widgets
-	const FilterCreator::StringList& filterNames = filterCreator->getFilterNames();
-	QStringList filters;
-	// Stupid hack to convert vector of strings to QStringList
-	for (FilterCreator::StringList::const_iterator it=filterNames.begin(); it!=filterNames.end(); ++it) {
-		filters << (*it).c_str();
-	}
-	QString btnName = QString::number(index+1);
-	QString filterName = QString::fromStdString(filterChain->getChain()[index]->name);
-	FilterButton *filterButton = new FilterButton(btnName, filters, filterName);
-
-	filterButton->listItem = filterList->addItem(filterButton);
-
-	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
-			this, SLOT(deleteItem(QListWidgetItem *)));
-	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
-			filterList, SLOT(deleteItem(QListWidgetItem *)));
-	connect(filterButton, SIGNAL(selectionChanged(const QString&)),
-			this, SLOT(changeFilterType(const QString&)));
-}
-
-
-
 
 void AuvMainWindow::createMiddleLayout()
 {
@@ -196,7 +147,7 @@ void AuvMainWindow::createMiddleLayout()
 	middleMenuContentsLayout->setAlignment(Qt::AlignTop);
 	middleMenuContents->setLayout(middleMenuContentsLayout);
 
-	QLabel *label=new QLabel("    Add Filters");
+	QLabel *label = new QLabel("    Add Filters");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 
 	middleMenuButton = new QToolButton(middleMenuContents);
@@ -216,14 +167,14 @@ void AuvMainWindow::createMiddleLayout()
 	middleMenuButton->setStatusTip(tr("Additional Options "));
 	middleMenuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	middleMenuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+
 	createFiltersMenu();
 
 	middleMenuContentsLayout->addWidget(label);
 	middleMenuContentsLayout->addWidget(middleMenuButton);
 
 	centralMiddleWidgetLayout->addWidget(middleMenuContents);
-	//  centralMiddleWidgetLayout->addWidget(menuButton);
-
+	//centralMiddleWidgetLayout->addWidget(menuButton);
 
 	centralMiddleWidgetLayout->addWidget(filterList);
 	centralMiddleWidgetLayout->addWidget(addFilterButton);
@@ -231,66 +182,11 @@ void AuvMainWindow::createMiddleLayout()
 	connect(addFilterButton, SIGNAL(clicked()),
 			this, SLOT(appendFilterButton()));
 
-	//	Connect filterList to backend
+	// Connect filterList to backend
 	connect(filterList, SIGNAL(listItemMoved(int, int)),
 			this, SLOT(listItemMoved(int, int)));
 	connect(filterList, SIGNAL(listItemAdded()), this, SLOT(listChanged()));
 	connect(filterList, SIGNAL(listItemDeleted(int)), this, SLOT(listChanged()));
-}
-
-void AuvMainWindow::createSettingsMenu()
-{
-	popupMenu = new QMenu;
-
-	/*
-	   QAction *act1 = new QAction("Choose Directory to Save         ",this);
-	   popupMenu->addAction(act1);
-	   connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
-	 */
-
-	QAction *act2 = new QAction("Help          ",this);
-	popupMenu->addAction(act2);
-	connect(act2, SIGNAL(triggered()), this, SLOT(displayHelp()));
-
-
-	menuButton->setPopupMode(QToolButton::InstantPopup);
-	menuButton->setMenu(popupMenu);
-}
-
-void AuvMainWindow::createFiltersMenu()
-{
-	filtersMenu = new QMenu;
-
-	QAction *act1 = new QAction("Save Current Filter List         ",this);
-	filtersMenu->addAction(act1);
-	connect(act1, SIGNAL(triggered()), this, SLOT(saveChain()));
-
-	QAction *act2 = new QAction("Load Existing Filter List         ",this);
-	filtersMenu->addAction(act2);
-	connect(act2, SIGNAL(triggered()), this, SLOT(loadChain()));
-
-
-	middleMenuButton->setPopupMode(QToolButton::InstantPopup);
-	middleMenuButton->setMenu(filtersMenu);
-}
-
-
-
-void AuvMainWindow::createOpenMenu()
-{
-	popupMenu = new QMenu;
-
-	QAction *act1 = new QAction("Upload Existing Video         ",this);
-	popupMenu->addAction(act1);
-	connect(act1, SIGNAL(triggered()), this, SLOT(open()));
-
-	QAction *act2 = new QAction("Use Camera Stream(Default)       ",this);
-	popupMenu->addAction(act2);
-
-	openButton->setPopupMode(QToolButton::InstantPopup);
-	openButton->setMenu(popupMenu);
-
-	connect(act2, SIGNAL(triggered()), this, SLOT(useCamera()));
 }
 
 void AuvMainWindow::createRightLayout()
@@ -330,16 +226,17 @@ void AuvMainWindow::createRightLayout()
 	rawVideoLayout->addWidget(rawLabel);
 	rawCamWidget = new CamWidget;
 	rawVideoLayout->addWidget(rawCamWidget);
-	QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
+	connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)),
+			rawCamWidget, SLOT(setImage(const cv::Mat&)));
 }
 
 void AuvMainWindow::createButtons()
 {
 	// videorecording button
 	recordButton = new QToolButton;
-	ico = new QIcon();
-	ico->addPixmap(QPixmap(":/images/record.png"),QIcon::Normal,QIcon::Off);
-	ico->addPixmap(QPixmap(":/images/stop.png"),QIcon::Normal,QIcon::On);
+	QIcon *ico = new QIcon();
+	ico->addPixmap(QPixmap(":/images/record.png"), QIcon::Normal, QIcon::Off);
+	ico->addPixmap(QPixmap(":/images/stop.png"), QIcon::Normal, QIcon::On);
 	recordButton->setIcon(*ico);
 	recordButton->setCheckable(true);
 	QPixmap pixmap(":/images/record.png");
@@ -370,6 +267,7 @@ void AuvMainWindow::createButtons()
 	openButton->setStatusTip(tr("Open An Existing Video Or Reset To Camera Stream "));
 	openButton->setIconSize(openPixmap.rect().size()*0.5);
 	openButton->setStyleSheet("QToolButton {height:32px;width:32px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+
 	createOpenMenu();
 
 	menuContentsLayout->addWidget(recordButton);
@@ -403,8 +301,128 @@ void AuvMainWindow::createButtons()
 	menuButton->setStatusTip(tr("Additional Options "));
 	menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	menuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+
 	createSettingsMenu();
 	menuContentsLayout->addWidget(menuButton);
+}
+
+void AuvMainWindow::createSettingsMenu()
+{
+	QMenu *popupMenu = new QMenu;
+
+	/*
+	   QAction *act1 = new QAction("Choose Directory to Save         ",this);
+	   popupMenu->addAction(act1);
+	   connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
+	 */
+
+	QAction *act2 = new QAction("Help          ",this);
+	popupMenu->addAction(act2);
+	connect(act2, SIGNAL(triggered()), this, SLOT(displayHelp()));
+
+	menuButton->setPopupMode(QToolButton::InstantPopup);
+	menuButton->setMenu(popupMenu);
+}
+
+void AuvMainWindow::createFiltersMenu()
+{
+	filtersMenu = new QMenu;
+
+	QAction *act1 = new QAction("Save Current Filter List         ",this);
+	filtersMenu->addAction(act1);
+	connect(act1, SIGNAL(triggered()), this, SLOT(saveChain()));
+
+	QAction *act2 = new QAction("Load Existing Filter List         ",this);
+	filtersMenu->addAction(act2);
+	connect(act2, SIGNAL(triggered()), this, SLOT(loadChain()));
+
+	middleMenuButton->setPopupMode(QToolButton::InstantPopup);
+	middleMenuButton->setMenu(filtersMenu);
+}
+
+void AuvMainWindow::createOpenMenu()
+{
+	QMenu *popupMenu = new QMenu;
+
+	QAction *act1 = new QAction("Upload Existing Video         ",this);
+	popupMenu->addAction(act1);
+	connect(act1, SIGNAL(triggered()), this, SLOT(open()));
+
+	QAction *act2 = new QAction("Use Camera Stream(Default)       ",this);
+	popupMenu->addAction(act2);
+
+	openButton->setPopupMode(QToolButton::InstantPopup);
+	openButton->setMenu(popupMenu);
+
+	connect(act2, SIGNAL(triggered()), this, SLOT(useCamera()));
+}
+
+
+// Helper methods
+
+void AuvMainWindow::createNewChain()
+{
+	//TODO: make new chains?
+	filterChain = new FilterChain(filterCreator);
+	filterChain->setStream(&stream);
+}
+
+// Put a button in the filterList for an existing filter
+void AuvMainWindow::createNewFilterButton(int index)
+{
+	// Create the widgets
+	const FilterCreator::StringList& filterNames = filterCreator->getFilterNames();
+	QStringList filters;
+	// Stupid hack to convert vector of strings to QStringList
+	FilterCreator::StringList::const_iterator it;
+	for (it=filterNames.begin(); it!=filterNames.end(); ++it) {
+		filters << (*it).c_str();
+	}
+	QString btnName = QString::number(index+1);
+	QString filterName = QString::fromStdString(filterChain->getChain()[index]->name);
+	FilterButton *filterButton = new FilterButton(btnName, filters, filterName);
+
+	filterButton->listItem = filterList->addItem(filterButton);
+
+	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
+			this, SLOT(deleteItem(QListWidgetItem *)));
+	connect(filterButton, SIGNAL(deleteFilterButton(QListWidgetItem *)),
+			filterList, SLOT(deleteItem(QListWidgetItem *)));
+	connect(filterButton, SIGNAL(selectionChanged(const QString&)),
+			this, SLOT(changeFilterType(const QString&)));
+}
+
+void AuvMainWindow::loadFile(const QString &fileName)
+{
+	if (!stream.useVideo(fileName.toStdString())) {
+		QMessageBox::warning(this,
+				tr("AUV Vision System"),
+				tr("Cannot read file %1.").arg(fileName));
+		return;
+	}
+	statusBar()->showMessage(tr("File loaded"), 2000);
+}
+
+
+// Slots
+
+void AuvMainWindow::open()
+{
+	QString fileName = QFileDialog::getOpenFileName(this,
+				tr("Open existing videos"),".",
+				tr( "MPG videos (*.mpg *.mp4);;"
+					"Any file (*)"));
+	if (!fileName.isEmpty()) {
+		loadFile(fileName);
+	}
+}
+
+// Add a filter (and button) to the chain
+void AuvMainWindow::appendFilterButton()
+{
+	// Create the filter
+	filterChain->appendNewFilter();
+	createNewFilterButton(filterChain->getChain().size()-1);
 }
 
 void AuvMainWindow::displaySaveSettings()
@@ -424,14 +442,6 @@ void AuvMainWindow::displayHelp()
 	help->move(x, y);
 }
 
-
-void AuvMainWindow::createNewChain()
-{
-	//TODO: make new chains?
-	filterChain = new FilterChain(filterCreator);
-	filterChain->setStream(&stream);
-}
-
 void AuvMainWindow::listChanged()
 {
 	QStringList list;
@@ -449,7 +459,6 @@ void AuvMainWindow::listItemMoved(int fromRow, int toRow)
 	listChanged();
 	settingWidget->filterChanged(toRow);
 }
-
 
 void AuvMainWindow::deleteItem(QListWidgetItem *item)
 {
@@ -480,12 +489,12 @@ void AuvMainWindow::takeSnapshot()
 
 void AuvMainWindow::toggleRecording()
 {
-	if(videoFlag==0) {
-		videoFlag=1;
+	if(isRecording == 0) {
+		isRecording = 1;
 		QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
 		stream.startRecording((timestamp+".mpg").toStdString());
-	} else if(videoFlag==1) {
-		videoFlag=0;
+	} else if(isRecording == 1) {
+		isRecording = 0;
 		stream.stopRecording();
 	}
 }
@@ -521,7 +530,7 @@ void AuvMainWindow::loadChain()
 			filterWidget->filterChain = f;
 			filterWidget2->filterChain = f;
 
-			for (int i=0; i<filterChain->getChain().size(); ++i) {
+			for (unsigned i=0; i<filterChain->getChain().size(); ++i) {
 				createNewFilterButton(i);
 			}
 			listChanged();

@@ -6,6 +6,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "CameraStream.h"
 
+// Timeout in milliseconds to give an FPS of 24
 const int TIMEOUT = 42;
 
 CameraStream::CameraStream(int cameraIndex)

@@ -1,6 +1,8 @@
 // CameraStream.h
 //
-// Handles the camera stream
+// Handles the camera stream.
+// Signals:
+//   - imageUpdated(const Mat& updatedImage): updated image from the video feed
 
 #ifndef CAMERASTREAM_H
 #define CAMERASTREAM_H
@@ -33,6 +35,7 @@ class CameraStream : public QObject
 		void retrieveFrame();
 
 	signals:
+		// Triggered when an updated image is available
 		void imageUpdated(const cv::Mat &updatedImage);
 
 	private:
