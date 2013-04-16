@@ -3,6 +3,7 @@
 // Main Window for AUV software
 
 #include "AuvMainWindow.h"
+#include "ChainSerializer.h"
 #include "FilterButton.h"
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
@@ -246,8 +247,12 @@ void AuvMainWindow::createFiltersMenu()
 
 	QAction *act1 = new QAction("Save Current Filter List         ",this);
 	filtersMenu->addAction(act1);
+	connect(act1, SIGNAL(triggered()), this, SLOT(saveChain()));
+
 	QAction *act2 = new QAction("Load Existing Filter List         ",this);
 	filtersMenu->addAction(act2);
+	connect(act2, SIGNAL(triggered()), this, SLOT(loadChain()));
+
 
 	middleMenuButton->setPopupMode(QToolButton::InstantPopup);
 	middleMenuButton->setMenu(filtersMenu);
@@ -429,4 +434,39 @@ void AuvMainWindow::takeSnapshot()
 void AuvMainWindow::startRecording()
 {
 	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
+}
+
+void AuvMainWindow::saveChain()
+{
+	QString fileName = QFileDialog::getSaveFileName(this,
+				tr("Save filter chain"),".",
+				tr( "Filter chains (*.chain);;"
+					"Any file (*)"));
+	if (!fileName.isEmpty()) {
+		ChainSerializer serializer;
+		serializer.saveChain(fileName.toStdString(), filterChain);
+	}
+}
+
+void AuvMainWindow::loadChain()
+{
+	QString fileName = QFileDialog::getOpenFileName(this,
+				tr("Open existing filter chains"),".",
+				tr( "Filter chains (*.chain);;"
+					"Any file (*)"));
+	if (!fileName.isEmpty()) {
+		ChainSerializer serializer;
+		FilterChain *f = serializer.loadChain(fileName.toStdString(), filterCreator);
+		if (f) {
+			clearChain();
+			cout << "New chain: " << f << endl;
+		}
+	}
+}
+
+void AuvMainWindow::clearChain()
+{
+	for (int i=filterList->count(); i>=0; --i) {
+		deleteItem(filterList->item(i));
+	}
 }

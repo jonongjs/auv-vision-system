@@ -24,6 +24,7 @@ class FilterChain : public QObject
 		~FilterChain();
 
 		ImageFilterBase* appendNewFilter();
+		ImageFilterBase* appendNewFilter(const std::string& type);
 		void appendFilter(ImageFilterBase*);
 		void removeFilter(ImageFilterBase*);
 		void removeFilter(int index);

@@ -38,7 +38,13 @@ FilterChain::~FilterChain()
 ImageFilterBase* FilterChain::appendNewFilter()
 {
 	std::string firstName = filterCreator->getFilterNames()[0]; //HACK: get the first filter name
-	ImageFilterBase *filter = filterCreator->createFilter(firstName);
+
+	return appendNewFilter(firstName);
+}
+
+ImageFilterBase* FilterChain::appendNewFilter(const std::string& type)
+{
+	ImageFilterBase *filter = filterCreator->createFilter(type);
 	appendFilter(filter);
 
 	return filter;

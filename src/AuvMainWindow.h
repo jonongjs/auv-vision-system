@@ -111,6 +111,10 @@ public slots:
 	void takeSnapshot();
 	void startRecording();
 
+	void saveChain();
+	void loadChain();
+	void clearChain();
+
 signals:
 	void filterListChanged(QStringList& filterList);
 	void filterTypeChanged(int index);
