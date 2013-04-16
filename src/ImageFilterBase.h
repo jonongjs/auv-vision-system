@@ -1,6 +1,15 @@
 // ImageFilterBase.h
 //
 // Base class that all filters must implement
+//
+// ImageFilterBase
+// Slots:
+//   - setImage(const Mat& image): set this to update the image
+// Signals:
+//   - imageUpdated(const Mat& image): triggered once an image is updated
+//
+// FilterProperty
+// Class representing the properties of a filter
 
 #ifndef IMAGEFILTERBASE_H
 #define IMAGEFILTERBASE_H
@@ -10,15 +19,21 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 
-enum FilterPropertyType { INT_RANGE, FLOAT_RANGE, STR_SELECTION };
+enum FilterPropertyType {
+	INT_RANGE,    // Integer range (intMin, intMax, intStep represent the
+	              //   minimum, maximum and step in spinboxes respectively).
+	FLOAT_RANGE,  // Float range (floatMin, floatMax, floatStep represent the
+	              //   minimum, maximum and step in spinboxes respectively).
+	STR_SELECTION // Selection of strings (combobox of string options).
+};
 
 struct FilterProperty
 {
-	std::string name;
-	FilterPropertyType type;
-	int intMin, intMax, intStep;
-	float floatMin, floatMax, floatStep;
-	std::string options; // Newline-separated options
+	std::string name; // Name of the property
+	FilterPropertyType type; // Type of the property
+	int intMin, intMax, intStep; // Used by INT_RANGE
+	float floatMin, floatMax, floatStep; // Used by FLOAT_RANGE
+	std::string options; // Used by STR_SELECTION; newline-separated options
 
 	FilterProperty(const std::string& propertyName, FilterPropertyType _type)
 		: name(propertyName), type(_type),
@@ -48,6 +63,7 @@ class ImageFilterBase : public QObject
 		void imageUpdated(const cv::Mat& image);
 
 	protected:
+		// Implementing classes should fill this list up with FilterProperty(s) (if any)
 		FilterProperties filterProperties;
 };
 

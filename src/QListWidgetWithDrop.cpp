@@ -1,10 +1,15 @@
+// QListWidgetWithDrop.h
+//
+// Class for holding FilterButtons and drag-n-drop
+
 #include "QListWidgetWithDrop.h"
 #include <cstdio>
 #include <QDropEvent>
 #include "FilterButton.h"
 #include <QLabel>
 
-void QListWidgetWithDrop::dropEvent(QDropEvent *e){
+void QListWidgetWithDrop::dropEvent(QDropEvent *e)
+{
 	int fromRow = currentRow();
 	QListWidget::dropEvent(e);
 	int toRow = currentRow();
@@ -18,7 +23,8 @@ void QListWidgetWithDrop::dropEvent(QDropEvent *e){
 }
 
 
-QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
+QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item)
+{
 	QListWidgetItem *listitem = new QListWidgetItem();
 	QListWidget::addItem(listitem);
 	setItemWidget(listitem, item);
@@ -33,7 +39,8 @@ QListWidgetItem* QListWidgetWithDrop::addItem(QWidget *item){
 }
 
 
-void QListWidgetWithDrop::deleteItem(QListWidgetItem *item){
+void QListWidgetWithDrop::deleteItem(QListWidgetItem *item)
+{
 	int index = row(item);
 	for (int i = index + 1; i < count(); i++){
 		FilterButton *fb = (FilterButton*) itemWidget(this->item(i));
@@ -44,5 +51,4 @@ void QListWidgetWithDrop::deleteItem(QListWidgetItem *item){
 	emit listItemDeleted(index);
 	emit currentRowChanged(index);
 }
-
 
