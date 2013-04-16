@@ -9,5 +9,6 @@
 	<file>images/stop.png</file>
 	<file>images/uparrow.png</file>
 	<file>images/settings.png</file>
+	<file>qss/buttonstyles.qss</file>
 </qresource>
 </RCC>
