@@ -8,6 +8,8 @@
 #include "FilterCamWidget.h"
 #include "FilterChain.h"
 #include "FilterCreator.h"
+#include "HelpWidget.h"
+#include <QRect>
 #include <QtGui>
 #include <QHBoxLayout>
 #include <QFileDialog>
@@ -22,6 +24,7 @@ AuvMainWindow::AuvMainWindow(void)
 	createNewChain();
 	createStatusBar();
 	createMainLayout();
+	videoFlag=0;
 }
 
 void AuvMainWindow::createStatusBar()
@@ -99,7 +102,7 @@ void AuvMainWindow::createMainLayout()
 void AuvMainWindow::createLeftLayout()
 {
 	//Add 2 filter widgets
-	QLabel *label=new QLabel("    Selected Filter");
+	QLabel *label=new QLabel("Filter Output 1");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
 	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
@@ -107,7 +110,7 @@ void AuvMainWindow::createLeftLayout()
 	centralLeftWidgetLayout->addWidget(label);
 	centralLeftWidgetLayout->addWidget(filterWidget);
 
-	QLabel *label2=new QLabel("    Cumulative Filters");
+	QLabel *label2=new QLabel("Filter Output 2");
 	label2->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
 	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
@@ -237,6 +240,11 @@ void AuvMainWindow::createSettingsMenu()
 	popupMenu->addAction(act1);
 	connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
 
+    QAction *act2 = new QAction("Help          ",this);
+	popupMenu->addAction(act2);
+	connect(act2, SIGNAL(triggered()), this, SLOT(displayHelp()));
+
+
 	menuButton->setPopupMode(QToolButton::InstantPopup);
 	menuButton->setMenu(popupMenu);
 }
@@ -290,6 +298,7 @@ void AuvMainWindow::createRightLayout()
 	rawVideoContents = new QWidget(centralRightWidget);
 	rawVideoLayout = new QVBoxLayout;
 	//rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
+
 	rawVideoContents->setLayout(rawVideoLayout);	
 
     //	Settings widget
@@ -305,7 +314,12 @@ void AuvMainWindow::createRightLayout()
 
 	createButtons();
 
-	//	Create raw video feed widget
+	//	Create raw video feed widget and heading
+	QLabel *rawLabel = new QLabel("Raw Video Input");
+	rawLabel->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;height:30px}");
+		
+	rawVideoLayout->setAlignment(Qt::AlignTop);
+	rawVideoLayout->addWidget(rawLabel);
 	rawCamWidget = new CamWidget;
 	rawVideoLayout->addWidget(rawCamWidget);
     QObject::connect(&stream, SIGNAL(imageUpdated(const cv::Mat&)), rawCamWidget, SLOT(setImage(const cv::Mat&)));
@@ -314,15 +328,21 @@ void AuvMainWindow::createRightLayout()
 void AuvMainWindow::createButtons()
 {
 	// videorecording button
-	recordButton = new QPushButton;
+	recordButton = new QToolButton;
+	ico = new QIcon();
+	ico->addPixmap(QPixmap(":/images/record.jpg"),QIcon::Normal,QIcon::Off);
+	ico->addPixmap(QPixmap(":/images/stop.png"),QIcon::Normal,QIcon::On);
+	recordButton->setIcon(*ico);
+	recordButton->setCheckable(true);
+
 	QPixmap pixmap(":/images/record.jpg");
-	recordButton->setIcon(QIcon(pixmap));
 	recordButton->setIconSize(pixmap.rect().size()*0.7);
 	recordButton->setToolTip(tr("Record Your Video Stream "));
-        recordButton->setShortcut(tr("Alt+R"));
-        recordButton->setStatusTip(tr("Record Your Video Stream"));
-	recordButton->setStyleSheet("QPushButton {height:37px;width:37px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
-//	connect(recordButton, SIGNAL(clicked()), this, SLOT(startRecording()));
+    recordButton->setShortcut(tr("Alt+R"));
+    recordButton->setStatusTip(tr("Record Your Video Stream"));
+	recordButton->setStyleSheet("QToolButton {height:32px;width:32px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	connect(recordButton, SIGNAL(clicked()), this, SLOT(toggleRecording()));
+
 
 	// snapshot button
 	snapshotButton = new QPushButton;
@@ -331,7 +351,7 @@ void AuvMainWindow::createButtons()
 	snapshotButton->setToolTip(tr("Take a Snapshot Of Your Live Stream "));
         snapshotButton->setShortcut(tr("Alt+S"));
         snapshotButton->setStatusTip(tr("Take a Snapshot Of Your Live Stream "));
-	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.7);
+	snapshotButton->setIconSize(snapshotPixmap.rect().size()*0.8);
 	snapshotButton->setStyleSheet("QPushButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	connect(snapshotButton, SIGNAL(clicked()), this, SLOT(takeSnapshot()));
 
@@ -342,9 +362,10 @@ void AuvMainWindow::createButtons()
 	openButton->setToolTip(tr("Open An Existing Video "));
         openButton->setShortcut(tr("Ctrl+O"));
         openButton->setStatusTip(tr("Open An Existing Video Or Reset To Camera Stream "));
-	openButton->setIconSize(openPixmap.rect().size());
-	openButton->setStyleSheet("QToolButton {height:35px;width:35px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	openButton->setIconSize(openPixmap.rect().size()*0.5);
+	openButton->setStyleSheet("QToolButton {height:32px;width:32px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createOpenMenu();
+
 
 	menuContentsLayout->addWidget(recordButton);
 	menuContentsLayout->addWidget(snapshotButton);  
@@ -356,16 +377,23 @@ void AuvMainWindow::createButtons()
 	menuButton->setMaximumWidth(40);
 	menuButton->setMaximumHeight(40);
 	QFont font;
-	font.setPointSize(20);
+	font.setPointSize(18);
 	font.setBold(true);
 	font.setItalic(false);
 	font.setWeight(75);
 	menuButton->setFont(font);
 	menuButton->setIconSize(QSize(20, 20));
+
+	 QPixmap menuPixmap(":/images/settings.png");
+     menuButton->setIcon(QIcon(menuPixmap));
+     menuButton->setIconSize(menuPixmap.rect().size()*2);
+	//menuButton->setIconSize(QSize(32, 32));
+
+
 	menuButton->setCheckable(false);
 	menuButton->setToolTip(tr("Additional Options "));
-        menuButton->setShortcut(tr("Ctrl+M"));
-        menuButton->setStatusTip(tr("Additional Options "));
+    menuButton->setShortcut(tr("Ctrl+M"));
+    menuButton->setStatusTip(tr("Additional Options "));
 	menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	menuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createSettingsMenu();
@@ -376,6 +404,17 @@ void AuvMainWindow::displaySaveSettings()
 {
 	popup = new SavePopup;
 	popup->show();
+}
+
+void AuvMainWindow::displayHelp()
+{
+	HelpWidget *help = new HelpWidget;
+	help->setWindowFlags(Qt::Popup);
+	help->show();
+
+	int x = window()->geometry().size().width()/2 + window()->geometry().x() - help->size().width()/2;
+	int y = window()->geometry().size().height()/2 + window()->geometry().y() - help->size().height()/2;
+	help->move(x, y);
 }
 
 
@@ -431,9 +470,19 @@ void AuvMainWindow::takeSnapshot()
 	stream.writeImage((timestamp+".jpg").toStdString());
 }
 
-void AuvMainWindow::startRecording()
+void AuvMainWindow::toggleRecording()
 {
+        if(videoFlag==0)
+        {
+        videoFlag=1;
 	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
+        stream.startRecording((timestamp+".mpg").toStdString());
+        }
+        else if(videoFlag==1)
+        {
+        videoFlag=0;
+        stream.stopRecording();
+        }
 }
 
 void AuvMainWindow::saveChain()

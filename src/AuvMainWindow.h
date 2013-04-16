@@ -35,6 +35,7 @@ class AuvMainWindow: public QMainWindow
 public:
     AuvMainWindow();
     void print();
+	int videoFlag;
     
 private:
 	//	Init methods
@@ -71,7 +72,7 @@ private:
     
     //	CentralRight Layout Variables
     QVBoxLayout *centralRightWidgetLayout;
-
+	QIcon *ico;
     QWidget *menuContents;
 	QWidget *middleMenuContents;
     QHBoxLayout *menuContentsLayout;
@@ -80,7 +81,7 @@ private:
     QWidget *rawVideoContents;
     QWidget *settingsContents;
     QToolButton *menuButton;
-    QPushButton *recordButton;
+    QToolButton *recordButton;
     QPushButton *snapshotButton;
     QToolButton *openButton;
     CamWidget *rawCamWidget;
@@ -102,6 +103,7 @@ public slots:
 	void open();
 	void appendFilterButton();
 	void displaySaveSettings();
+	void displayHelp();
 	void listChanged();
 	void listItemMoved(int fromRow, int toRow);
 	void deleteItem(QListWidgetItem*);
@@ -109,7 +111,7 @@ public slots:
 
 	void useCamera();
 	void takeSnapshot();
-	void startRecording();
+	void toggleRecording();
 
 	void saveChain();
 	void loadChain();
