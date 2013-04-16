@@ -241,9 +241,11 @@ void AuvMainWindow::createSettingsMenu()
 {
 	popupMenu = new QMenu;
 
+	/*
 	QAction *act1 = new QAction("Choose Directory to Save         ",this);
 	popupMenu->addAction(act1);
 	connect(act1, SIGNAL(triggered()), this, SLOT(displaySaveSettings()));
+	*/
 
     QAction *act2 = new QAction("Help          ",this);
 	popupMenu->addAction(act2);
@@ -380,7 +382,7 @@ void AuvMainWindow::createButtons()
 			settingWidget, SLOT(filterChanged()));
 
 	//Create menu button
-	/*menuButton = new QToolButton(menuContents);
+	menuButton = new QToolButton(menuContents);
 	menuButton->setGeometry(QRect(0, 0, 40, 40));
 	menuButton->setMaximumWidth(40);
 	menuButton->setMaximumHeight(40);
@@ -401,7 +403,7 @@ void AuvMainWindow::createButtons()
 	menuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
 	menuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
 	createSettingsMenu();
-	menuContentsLayout->addWidget(menuButton);*/
+	menuContentsLayout->addWidget(menuButton);
 }
 
 void AuvMainWindow::displaySaveSettings()
@@ -444,6 +446,7 @@ void AuvMainWindow::listItemMoved(int fromRow, int toRow)
 {
 	filterChain->moveFilter(fromRow, toRow);
 	listChanged();
+	settingWidget->filterChanged(toRow);
 }
 
 
