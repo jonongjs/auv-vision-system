@@ -7,12 +7,12 @@
 #include <iostream>
 using namespace std;
 
-FilterButton::FilterButton(const QString& name, const QStringList& options, QWidget *parent)
+FilterButton::FilterButton(const QString& name, const QStringList& options, const QString& currentOption, QWidget *parent)
 	: QWidget(parent)
 {
 	deleteButton = createDeleteButton();
 
-	filtersComboBox = createComboBox(options);
+	filtersComboBox = createComboBox(options, currentOption);
 
 	numberLabel = new QLabel(name);
 	numberLabel->setStyleSheet("QLabel{color:black;height:20px;width:20px;background-color: #FFFFCC;padding:3px;}");
@@ -48,7 +48,7 @@ QPushButton* FilterButton::createDeleteButton()
 }
 
 
-QComboBox* FilterButton::createComboBox(const QStringList& options)
+QComboBox* FilterButton::createComboBox(const QStringList& options, const QString& currentOption)
 {
 	filtersComboBox = new QComboBox;
 
@@ -72,6 +72,9 @@ QComboBox* FilterButton::createComboBox(const QStringList& options)
 				"QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: darkgray;border-left-style: solid; border-top-right-radius: 3px; border-bottom-right-radius: 3px;}"
 				"QComboBox::down-arrow {image: url(:/images/downarrow.png);}"
 				"QComboBox::down-arrow:on { top: 2px;left: 1px;}");
+
+	// Filter
+	filtersComboBox->setCurrentIndex(options.indexOf(currentOption));
 
 	// Connect the combobox's signal to our own
 	connect(filtersComboBox, SIGNAL(currentIndexChanged(const QString&)),

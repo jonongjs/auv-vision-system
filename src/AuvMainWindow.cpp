@@ -104,7 +104,7 @@ void AuvMainWindow::createLeftLayout()
 	//Add 2 filter widgets
 	QLabel *label=new QLabel("Filter Output 1");
 	label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;margin-top:18px;}");
-	FilterCamWidget *filterWidget = new FilterCamWidget(filterChain);
+	filterWidget = new FilterCamWidget(filterChain);
 	filterWidget->setStyleSheet("QWidget {background-color:#F9F2F0;border-radius:10px;}");
 	filterWidget->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	centralLeftWidgetLayout->addWidget(label);
@@ -112,7 +112,7 @@ void AuvMainWindow::createLeftLayout()
 
 	QLabel *label2=new QLabel("Filter Output 2");
 	label2->setStyleSheet("QLabel{color:#8E5316;font-size:15px;font:bold;}");
-	FilterCamWidget *filterWidget2 = new FilterCamWidget(filterChain);
+	filterWidget2 = new FilterCamWidget(filterChain);
 	filterWidget2->setSizePolicy(centralMiddleScrollArea->sizePolicy());
 	centralLeftWidgetLayout->addWidget(label2);
 	centralLeftWidgetLayout->addWidget(filterWidget2);
@@ -134,7 +134,11 @@ void AuvMainWindow::appendFilterButton()
 {
 	// Create the filter
 	filterChain->appendNewFilter();
+	createNewFilterButton(filterChain->getChain().size()-1);
+}
 
+void AuvMainWindow::createNewFilterButton(int index)
+{
 	// Create the widgets
 	const FilterCreator::StringList& filterNames = filterCreator->getFilterNames();
 	QStringList filters;
@@ -142,8 +146,9 @@ void AuvMainWindow::appendFilterButton()
 	for (FilterCreator::StringList::const_iterator it=filterNames.begin(); it!=filterNames.end(); ++it) {
 		filters << (*it).c_str();
 	}
-	QString btnName = QString::number(filterChain->getChain().size());
-	FilterButton *filterButton = new FilterButton(btnName, filters);
+	QString btnName = QString::number(index+1);
+	QString filterName = QString::fromStdString(filterChain->getChain()[index]->name);
+	FilterButton *filterButton = new FilterButton(btnName, filters, filterName);
 
 	filterButton->listItem = filterList->addItem(filterButton);
 
@@ -508,14 +513,27 @@ void AuvMainWindow::loadChain()
 		FilterChain *f = serializer.loadChain(fileName.toStdString(), filterCreator);
 		if (f) {
 			clearChain();
-			cout << "New chain: " << f << endl;
+
+			delete filterChain;
+			filterChain = f;
+			f->setStream(&stream);
+			settingWidget->chain = f;
+			filterWidget->filterChain = f;
+			filterWidget2->filterChain = f;
+
+			for (int i=0; i<filterChain->getChain().size(); ++i) {
+				createNewFilterButton(i);
+			}
+			listChanged();
 		}
 	}
 }
 
 void AuvMainWindow::clearChain()
 {
-	for (int i=filterList->count(); i>=0; --i) {
-		deleteItem(filterList->item(i));
+	for (int i=filterList->count()-1; i>=0; --i) {
+		QListWidgetItem *btn = filterList->item(i);
+		deleteItem(btn);
+		filterList->deleteItem(btn);
 	}
 }

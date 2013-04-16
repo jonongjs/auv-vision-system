@@ -24,15 +24,15 @@ public:
 	void setFilterList(QStringList& filterList);
 	void setCurrentFilter(int index);
 
+	FilterChain *filterChain;
+
 public slots:
     void filterDidChange(int index);
     void filterTypeChanged(int index);
     void filterListChanged(QStringList& filterList);
-	
+
 private:
 	CamWidget *camWidget;
-
-	FilterChain *filterChain;
 
 	QVBoxLayout *filterLayout;
 	QComboBox *filterComboBox;
@@ -40,9 +40,6 @@ private:
 	int prevSelection;
 	
 	void createLayout();
-
-    //TODO: shift this out somewhere else
-    std::vector<QWidget*> settingsList;
 };
 
 #endif//FILTERCAMWIDGET_H

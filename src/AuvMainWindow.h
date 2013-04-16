@@ -51,6 +51,8 @@ private:
     void createNewChain();
     void loadFile(const QString &fileName);
 
+    void createNewFilterButton(int index);
+
      
     //	Main Layout variables
     QWidget *centralWidget;
@@ -69,6 +71,8 @@ private:
 	QHBoxLayout *middleMenuContentsLayout;
     QToolButton *middleMenuButton;
     QMenu *filtersMenu;
+    FilterCamWidget *filterWidget;
+    FilterCamWidget *filterWidget2;
     
     //	CentralRight Layout Variables
     QVBoxLayout *centralRightWidgetLayout;

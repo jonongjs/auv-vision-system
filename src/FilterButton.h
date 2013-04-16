@@ -17,7 +17,7 @@ class FilterButton : public QWidget
 	Q_OBJECT
 
 	public:
-		FilterButton(const QString& name, const QStringList& options, QWidget *parent = 0);
+		FilterButton(const QString& name, const QStringList& options, const QString& currentOption, QWidget *parent = 0);
 
 		QPushButton *deleteButton;
 		QListWidgetItem *listItem;
@@ -27,7 +27,7 @@ class FilterButton : public QWidget
 
 	private:
 		QPushButton *createDeleteButton();
-		QComboBox *createComboBox(const QStringList&);
+		QComboBox *createComboBox(const QStringList&, const QString&);
 		QLabel *numberLabel;
 
 	signals:

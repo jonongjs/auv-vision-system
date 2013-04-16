@@ -27,7 +27,6 @@ FilterChain* ChainSerializer::loadChain(const string& filename, FilterCreator *c
 
 	string jsonstr;
 	getline(fin, jsonstr, '\0');
-	cout << jsonstr << endl;
 
 	jsmn_parser p;
 	jsmn_init(&p);
@@ -50,23 +49,23 @@ FilterChain* ChainSerializer::loadChain(const string& filename, FilterCreator *c
 		assert(tokens[0].type == JSMN_OBJECT);
 		assert(tokens[0].size >= 2);
 		// Child should be an array of filters
-		if (jsonstr.substr(tokens[1].start, tokens[1].end) == "filter") {
+		if (jsonstr.substr(tokens[1].start, tokens[1].end-tokens[1].start) == "filters") {
 			assert(tokens[2].type == JSMN_ARRAY);
 			int numChildren = tokens[2].size;
 			int n = 0;
 			while (n < numChildren) {
 				int index = 3 + n++;
 
-				string type = jsonstr.substr(tokens[index].start, tokens[index].end);
+				string type = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
 				ImageFilterBase *f = fChain->appendNewFilter(type);
 
 				index = 3 + n++;
 				assert(tokens[index].type == JSMN_OBJECT);
 				for (int i=0; i<tokens[index].size; ++i) {
 					index = 3 + n++;
-					string propName = jsonstr.substr(tokens[index].start, tokens[index].end);
+					string propName = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
 					index = 3 + n++;
-					string value = jsonstr.substr(tokens[index].start, tokens[index].end);
+					string value = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
 
 					f->setProperty(propName, value);
 				}
