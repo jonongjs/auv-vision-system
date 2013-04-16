@@ -18,9 +18,7 @@ class SavePopup : public QWidget
 		QPushButton *createButton(const QString &text, const char *member);
 		QComboBox *createComboBox(const QString &text = QString());
 
-
 	private:
-
 		QLabel *saveLabel;
 		QPushButton *browseButton;
 		QPushButton *okButton;

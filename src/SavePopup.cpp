@@ -1,4 +1,5 @@
-#include <QtGui>
+#include <QComboBox>
+#include <QPushButton>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QGridLayout>

@@ -1,4 +1,5 @@
-CONFIG += debug
+# CONFIG += debug
+CONFIG +=
 TEMPLATE = app
 TARGET = bin/auv-vision-system
 DEPENDPATH += . src src/jsmn
