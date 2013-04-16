@@ -4,10 +4,12 @@
 	<file>images/open.png</file>
 	<file>images/plusbutton.png</file>
 	<file>images/plus.jpg</file>
-	<file>images/record.jpg</file>
+	<file>images/record.png</file>
+	<file>images/record.gif</file>
 	<file>images/save.png</file>
 	<file>images/snapshot.png</file>
 	<file>images/stop.png</file>
 	<file>images/uparrow.png</file>
+    <file>images/settings.png</file>
 </qresource>
 </RCC>
