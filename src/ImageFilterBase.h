@@ -46,7 +46,6 @@ public slots:
 
 signals:
     void imageUpdated(const cv::Mat& image);
-	void changed();
 
 protected:
     FilterProperties filterProperties;

@@ -52,19 +52,22 @@ FilterChain* ChainSerializer::loadChain(const string& filename, FilterCreator *c
 		if (jsonstr.substr(tokens[1].start, tokens[1].end-tokens[1].start) == "filters") {
 			assert(tokens[2].type == JSMN_ARRAY);
 			int numChildren = tokens[2].size;
-			int n = 0;
-			while (n < numChildren) {
-				int index = 3 + n++;
+			int child = 0;
+			int n = 3;
+			while (child < numChildren) {
+				++child;
+				int index = n++;
 
 				string type = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
 				ImageFilterBase *f = fChain->appendNewFilter(type);
 
-				index = 3 + n++;
+				index = n++; ++child;
+				int size = tokens[index].size;
 				assert(tokens[index].type == JSMN_OBJECT);
-				for (int i=0; i<tokens[index].size; ++i) {
-					index = 3 + n++;
+				for (int i=0; i<size; i+=2) {
+					index = n++;
 					string propName = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
-					index = 3 + n++;
+					index = n++;
 					string value = jsonstr.substr(tokens[index].start, tokens[index].end-tokens[index].start);
 
 					f->setProperty(propName, value);
