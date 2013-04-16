@@ -11,11 +11,13 @@
 #include "PropertyAdaptor.h"
 using namespace std;
 
-FilterSettingWidget::FilterSettingWidget(QWidget * parent): QWidget(parent) {
+FilterSettingWidget::FilterSettingWidget(QWidget * parent): QWidget(parent)
+{
 	createLayout();
 }
 
-void FilterSettingWidget::createLayout(){
+void FilterSettingWidget::createLayout()
+{
 	filterLayout = new QVBoxLayout;
 	filterLayout->setAlignment(Qt::AlignTop);
 	this->setLayout(filterLayout);
@@ -23,13 +25,16 @@ void FilterSettingWidget::createLayout(){
 	setStyleSheet("QWidget { background-color:#F9F2F0;border-radius:10px;}");
 }
 
-void FilterSettingWidget::filterChanged(){
+void FilterSettingWidget::filterChanged()
+{
 	if (index >= 0)
 		filterChanged(index);
 }
 
-void FilterSettingWidget::filterChanged(int i){
-	index = i;
+void FilterSettingWidget::filterChanged(int _index)
+{
+	index = _index;
+
 	// Clear filter settings
 	foreach(QWidget *widget, settingWidgets)
 		delete widget;
@@ -58,7 +63,7 @@ void FilterSettingWidget::filterChanged(int i){
 		const FilterProperties& properties =  filter->getFilterProperties();
 
 		if (properties.empty()){
-			QLabel *label = new QLabel("No settings available.");
+			QLabel *label = new QLabel(tr("No settings available."));
 			label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;padding:3px;}");
 			filterLayout->addWidget(label);
 			settingWidgets.append(label);
@@ -75,60 +80,9 @@ void FilterSettingWidget::filterChanged(int i){
 			adaptors.append(adaptor);
 
 			QString curValue(QString::fromStdString(filter->getProperty(it->name)));
-			QWidget *tmp;
-			switch (it->type) {
-				case INT_RANGE:
-					{
-						QSpinBox *spin = new QSpinBox(this);
-						tmp = spin;
-						//tmp->setStyleSheet("QSpinBox{margin-left:30px;}");
-						spin->setMinimum(it->intMin);
-						spin->setMaximum(it->intMax);
-						spin->setSingleStep(it->intStep);
-						spin->setValue(curValue.toInt());
 
-						connect(spin, SIGNAL(valueChanged(const QString&)),
-								adaptor, SLOT(valueChanged(const QString&)));
-					}
-					break;
-				case FLOAT_RANGE:
-					{
-						QDoubleSpinBox *spin = new QDoubleSpinBox(this);
-						tmp = spin;
-						//tmp->setStyleSheet("QDoubleSpinBox{margin-left:30px;}");
-						spin->setMinimum(it->floatMin);
-						spin->setMaximum(it->floatMax);
-						spin->setSingleStep(it->floatStep);
-						spin->setValue(curValue.toDouble());
-
-						connect(spin, SIGNAL(valueChanged(const QString&)),
-								adaptor, SLOT(valueChanged(const QString&)));
-					}
-					break;
-				case STR_SELECTION:
-					{
-						QComboBox *combo = new QComboBox(this);
-						tmp = combo;
-						QStringList options =
-							QString::fromStdString(it->options)
-							.split("\n", QString::SkipEmptyParts);
-
-						combo->addItems(options);
-
-						int index = 0;
-						foreach (QString option, options) {
-							if (option == curValue) {
-								combo->setCurrentIndex(index);
-								break;
-							}
-							++index;
-						}
-
-						connect(combo, SIGNAL(currentIndexChanged(const QString&)),
-								adaptor, SLOT(valueChanged(const QString&)));
-					}
-					break;
-			}
+			// Create the property widget
+			QWidget *tmp = createPropertyWidget(*it, curValue, adaptor);
 
 			tmp->setStyleSheet(
 					"QSpinBox, QDoubleSpinBox, QComboBox {color:black; selection-color:black; border: 1px solid gray;border-radius: 3px;padding: 1px 18px 1px 3px;min-width: 6em;}"
@@ -148,3 +102,66 @@ void FilterSettingWidget::filterChanged(int i){
 	}
 }
 
+// Creates the property widgets
+//NOTE: Add to the switch statement below if you need to add
+//      new property types
+QWidget* FilterSettingWidget::createPropertyWidget(
+		const FilterProperty& p,
+		const QString& curValue,
+		PropertyAdaptor* adaptor)
+{
+	QWidget *tmp = 0;
+
+	switch (p.type) {
+		case INT_RANGE:
+			{
+				QSpinBox *spin = new QSpinBox(this);
+				tmp = spin;
+				spin->setMinimum(p.intMin);
+				spin->setMaximum(p.intMax);
+				spin->setSingleStep(p.intStep);
+				spin->setValue(curValue.toInt());
+
+				connect(spin, SIGNAL(valueChanged(const QString&)),
+						adaptor, SLOT(valueChanged(const QString&)));
+			}
+			break;
+		case FLOAT_RANGE:
+			{
+				QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+				tmp = spin;
+				spin->setMinimum(p.floatMin);
+				spin->setMaximum(p.floatMax);
+				spin->setSingleStep(p.floatStep);
+				spin->setValue(curValue.toDouble());
+
+				connect(spin, SIGNAL(valueChanged(const QString&)),
+						adaptor, SLOT(valueChanged(const QString&)));
+			}
+			break;
+		case STR_SELECTION:
+			{
+				QComboBox *combo = new QComboBox(this);
+				tmp = combo;
+				QStringList options =
+					QString::fromStdString(p.options)
+					.split("\n", QString::SkipEmptyParts);
+
+				combo->addItems(options);
+
+				int index = 0;
+				foreach (QString option, options) {
+					if (option == curValue) {
+						combo->setCurrentIndex(index);
+						break;
+					}
+					++index;
+				}
+
+				connect(combo, SIGNAL(currentIndexChanged(const QString&)),
+						adaptor, SLOT(valueChanged(const QString&)));
+			}
+			break;
+	}
+	return tmp;
+}

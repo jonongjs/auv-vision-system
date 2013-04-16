@@ -1,7 +1,9 @@
 // FilterSettingWidget.h
 //
 // Widget for displaying settings of a filter
-
+// Slots:
+//   - filterChanged(): to notify the widget of a change in the currently selected filter
+//   - filterChanged(int _index): to notify the widget of a change in the filter selection
 
 #ifndef FILTERSETTINGWIDGET_H
 #define FILTERSETTINGWIDGET_H
@@ -14,6 +16,7 @@
 #include "FilterChain.h"
 #include "QListWidgetWithDrop.h"
 
+class FilterProperty;
 class PropertyAdaptor;
 
 class FilterSettingWidget: public QWidget
@@ -22,21 +25,26 @@ class FilterSettingWidget: public QWidget
 
 	public:
 		FilterSettingWidget(QWidget * parent = 0);
-		FilterChain* chain;
+
+		FilterChain *chain;
 		QListWidgetWithDrop *list;
-		int index;
 
 	public slots:
-		void filterChanged(int i);
+		void filterChanged(int _index);
 		void filterChanged();
 
 	private:
-		void createLayout();	
+		void createLayout();
+		QWidget* createPropertyWidget(
+				const FilterProperty& p,
+				const QString& curValue,
+				PropertyAdaptor* adaptor);
 
 		QVBoxLayout *filterLayout;
 		QList<QWidget*> settingWidgets;
 		QList<PropertyAdaptor*> adaptors;
 		ImageFilterBase *filter;
+		int index;
 };
 
 #endif
