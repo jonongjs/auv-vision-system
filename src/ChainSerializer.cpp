@@ -2,6 +2,17 @@
 //
 // Responsible for serialization of the filter chains
 
+//NOTE: FilterChains are serialized as follows:
+//  {
+//    "filters": [
+//      "filter_type1": {
+//        "filter_property1": "value",
+//        ...
+//      },
+//      ...
+//    ]
+//  }
+
 #include "ChainSerializer.h"
 #include "ImageFilterBase.h"
 #include "FilterChain.h"
@@ -28,6 +39,8 @@ FilterChain* ChainSerializer::loadChain(const string& filename, FilterCreator *c
 	string jsonstr;
 	getline(fin, jsonstr, '\0');
 
+	// Use jsmn to parse the JSON string
+	//TODO: perform proper error handling
 	jsmn_parser p;
 	jsmn_init(&p);
 

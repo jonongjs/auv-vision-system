@@ -5,7 +5,6 @@
 #include <QPainter>
 #include "CamWidget.h"
 #include <opencv2/imgproc/imgproc.hpp>
-#include <iostream>
 
 CamWidget::CamWidget(QWidget *parent)
 	: QWidget(parent)
@@ -21,8 +20,6 @@ void CamWidget::setImage(const cv::Mat &updatedImage)
 	cv::cvtColor(updatedImage, tmpImage, CV_BGR2RGB);
 	QImage qImage(tmpImage.data, tmpImage.cols, tmpImage.rows, QImage::Format_RGB888);
 	pixmap.convertFromImage(qImage);
-
-	//std::cout << "Widget size: " << size().width() << " " << size().height() << std::endl;
 
 	QSize newSize = calcZoom(pixmap.size()) * pixmap.size();
 	pixmap = pixmap.scaled(newSize);

@@ -1,7 +1,8 @@
 // CamWidget.h
 //
 // Widget for displaying a video feed
-
+// Slots:
+//   - setImage(const Mat& updatedImage): set this to update the image
 
 #ifndef CAMWIDGET_H
 #define CAMWIDGET_H
