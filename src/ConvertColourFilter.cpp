@@ -12,6 +12,8 @@ using namespace std;
 
 ConvertColourFilter::ConvertColourFilter()
 {
+	// Construct a list of available conversions and their
+	// corresponding OpenCV enums
 	typedef vector< pair<string, int> > MAPPING;
 	MAPPING mappings;
 	mappings.push_back(make_pair("BGR to Gray", (int)CV_BGR2GRAY));
@@ -34,6 +36,7 @@ ConvertColourFilter::ConvertColourFilter()
 	mappings.push_back(make_pair("BGR to CIE L*u*v*", (int)CV_BGR2Luv));
 	mappings.push_back(make_pair("CIE L*u*v* to BGR", (int)CV_Luv2BGR));
 
+	// Create the FilterProperties list
 	ostringstream ss;
 	for (MAPPING::iterator it=mappings.begin(); it!=mappings.end(); ++it) {
 		ss << it->first << '\n';

@@ -1,7 +1,13 @@
-#include <QtGui>
+// FilterButton.cpp
+//
+// Button representing a filter in the list of filters
+
+#include <QComboBox>
+#include <QPushButton>
 #include <QLabel>
-#include <QVBoxLayout>
+#include <QListView>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPixmap>
 #include "FilterButton.h"
 #include <iostream>
