@@ -96,8 +96,8 @@ bool CameraStream::writeImage(const std::string& filename)
 void CameraStream::startRecording(const std::string& filename)
 {
     vidWriter = new cv::VideoWriter(filename,
-                            CV_FOURCC('M','J','P','G'),
-                            fps,
+                            CV_FOURCC('P','I','M','1'),
+                            24, //HACK: using the FPS variable does not seem to work
                             currentFrame.size());
 }
 
