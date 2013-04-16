@@ -9,21 +9,21 @@
 
 class SobelFilter : public ImageFilterBase
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-	SobelFilter();
+	public:
+		SobelFilter();
 
-    void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/) { }
-    std::string getProperty(const std::string& /*propertyName*/) { return ""; }
+		void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/) { }
+		std::string getProperty(const std::string& /*propertyName*/) { return ""; }
 
-public slots:
-    void setImage(const cv::Mat& image);
+	public slots:
+		void setImage(const cv::Mat& image);
 
-private:
-    cv::Mat output;
+	private:
+		cv::Mat output;
 
-	int dx, dy;
+		int dx, dy;
 };
 
 #endif//SOBELFILTER_H

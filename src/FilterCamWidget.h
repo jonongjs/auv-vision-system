@@ -16,30 +16,30 @@ class FilterChain;
 
 class FilterCamWidget: public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    FilterCamWidget(FilterChain *);
+	public:
+		FilterCamWidget(FilterChain *);
 
-	void setFilterList(QStringList& filterList);
-	void setCurrentFilter(int index);
+		void setFilterList(QStringList& filterList);
+		void setCurrentFilter(int index);
 
-	FilterChain *filterChain;
+		FilterChain *filterChain;
 
-public slots:
-    void filterDidChange(int index);
-    void filterTypeChanged(int index);
-    void filterListChanged(QStringList& filterList);
+	public slots:
+		void filterDidChange(int index);
+		void filterTypeChanged(int index);
+		void filterListChanged(QStringList& filterList);
 
-private:
-	CamWidget *camWidget;
+	private:
+		CamWidget *camWidget;
 
-	QVBoxLayout *filterLayout;
-	QComboBox *filterComboBox;
+		QVBoxLayout *filterLayout;
+		QComboBox *filterComboBox;
 
-	int prevSelection;
-	
-	void createLayout();
+		int prevSelection;
+
+		void createLayout();
 };
 
 #endif//FILTERCAMWIDGET_H

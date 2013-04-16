@@ -10,19 +10,19 @@
 
 class HelpWidget: public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-	HelpWidget();
-	void createText();
-	QLabel* createLabel(QString string);
+	public:
+		HelpWidget();
+		void createText();
+		QLabel* createLabel(QString string);
 
-public slots:
-	void end();
+	public slots:
+		void end();
 
-private:
-	QScrollArea *area;
-	QVBoxLayout *layout;
+	private:
+		QScrollArea *area;
+		QVBoxLayout *layout;
 
 };
 

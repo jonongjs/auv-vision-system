@@ -12,7 +12,7 @@ using namespace std;
 FilterCamWidget::FilterCamWidget(FilterChain *chain)
 	: filterChain(chain), prevSelection(-1)
 {
-    createLayout();
+	createLayout();
 
 	camWidget = new CamWidget;
 	filterLayout->addWidget(camWidget);
@@ -36,8 +36,6 @@ void FilterCamWidget::createLayout()
 			"QComboBox::down-arrow {image: url(:/images/downarrow.png);}"
 			"QComboBox::down-arrow:on { top: 2px;left: 1px;}");
 
-
-
 	filterLayout->addWidget(filterComboBox);
 	connect(filterComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(filterDidChange(int)));
 }
@@ -54,7 +52,7 @@ void FilterCamWidget::setFilterList(QStringList& filterList)
 	int index = filterComboBox->currentIndex();
 	filterComboBox->clear();
 	filterComboBox->addItems(filterList);
-       
+
 	if (index >= filterComboBox->count())
 		index = filterComboBox->count() - 1;
 	if (index == -1)
@@ -108,5 +106,5 @@ void FilterCamWidget::setCurrentFilter(int index)
 //HACK: helper function
 void removeWindow(QWidget* widget)
 {
-    delete widget;
+	delete widget;
 }

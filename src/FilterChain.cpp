@@ -13,7 +13,7 @@ template <class A, class B>
 inline void connectStreams(A* strA, B* strB)
 {
 	QObject::connect(strA, SIGNAL(imageUpdated(const cv::Mat&)),
-					strB, SLOT(setImage(const cv::Mat&)));
+			strB, SLOT(setImage(const cv::Mat&)));
 }
 
 template <class A, class B>
@@ -86,7 +86,7 @@ void FilterChain::removeFilter(int index)
 		} else {
 			connectStreams(filterList[index-1], filterList[index]);
 		}
-		
+
 		if (index >= 0 && index < (int)filterList.size()-1) {
 			connectStreams(filterList[index], filterList[index+1]);
 		}

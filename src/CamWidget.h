@@ -11,21 +11,21 @@
 
 class CamWidget: public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    CamWidget(QWidget *parent = 0);
+	public:
+		CamWidget(QWidget *parent = 0);
 
-public slots:
-    void setImage(const cv::Mat &updatedImage);
+	public slots:
+		void setImage(const cv::Mat &updatedImage);
 
-protected:
-    void paintEvent(QPaintEvent *event);
+	protected:
+		void paintEvent(QPaintEvent *event);
 
-    float calcZoom(const QSize &imageSize);
+		float calcZoom(const QSize &imageSize);
 
-private:
-    QPixmap pixmap;
+	private:
+		QPixmap pixmap;
 };
 
 #endif//CAMWIDGET_H

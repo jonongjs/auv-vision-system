@@ -17,5 +17,5 @@ void EqualizeHistFilter::setImage(const cv::Mat& image)
 
 	cv::merge(tmp, 3, output);
 
-    emit imageUpdated(output);
+	emit imageUpdated(output);
 }

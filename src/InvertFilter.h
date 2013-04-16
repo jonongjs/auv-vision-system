@@ -9,17 +9,17 @@
 
 class InvertFilter : public ImageFilterBase
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/) { }
-    std::string getProperty(const std::string& /*propertyName*/) { return ""; }
+	public:
+		void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/) { }
+		std::string getProperty(const std::string& /*propertyName*/) { return ""; }
 
-public slots:
-    void setImage(const cv::Mat& image);
+	public slots:
+		void setImage(const cv::Mat& image);
 
-private:
-    cv::Mat output;
+	private:
+		cv::Mat output;
 };
 
 #endif//INVERTFILTER_H

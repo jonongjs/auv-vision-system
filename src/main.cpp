@@ -9,10 +9,10 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
-    
-	AuvMainWindow *mainWindow = new AuvMainWindow;
-    mainWindow->show();
+	QApplication app(argc, argv);
 
-    return app.exec();
+	AuvMainWindow *mainWindow = new AuvMainWindow;
+	mainWindow->show();
+
+	return app.exec();
 }

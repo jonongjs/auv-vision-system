@@ -40,7 +40,7 @@ void QListWidgetWithDrop::deleteItem(QListWidgetItem *item){
 		fb->setName(QString::number(i));
 	}
 	delete item;
-	
+
 	emit listItemDeleted(index);
 	emit currentRowChanged(index);
 }

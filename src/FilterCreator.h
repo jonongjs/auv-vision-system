@@ -13,22 +13,22 @@ class ImageFilterBase;
 
 class FilterCreator
 {
-    public:
+	public:
 		typedef std::vector<std::string> StringList;
-        FilterCreator();
+		FilterCreator();
 
-        // Creates a filter based on its name.
-        // NOTE: The caller must delete the returned pointer.
-        ImageFilterBase* createFilter(const std::string& filterName);
+		// Creates a filter based on its name.
+		// NOTE: The caller must delete the returned pointer.
+		ImageFilterBase* createFilter(const std::string& filterName);
 
-        const StringList& getFilterNames() const;
+		const StringList& getFilterNames() const;
 
-    private:
-        typedef ImageFilterBase* (*FilterCreationFunc)();
-        typedef std::map<std::string, FilterCreationFunc> FilterMap;
+	private:
+		typedef ImageFilterBase* (*FilterCreationFunc)();
+		typedef std::map<std::string, FilterCreationFunc> FilterMap;
 
-        FilterMap filterMap;
-        StringList filterNames;
+		FilterMap filterMap;
+		StringList filterNames;
 };
 
 #endif//FILTERCREATOR_H

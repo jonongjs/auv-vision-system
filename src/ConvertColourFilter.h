@@ -10,21 +10,21 @@
 
 class ConvertColourFilter : public ImageFilterBase
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-	ConvertColourFilter();
+	public:
+		ConvertColourFilter();
 
-    void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/);
-    std::string getProperty(const std::string& /*propertyName*/);
+		void setProperty(const std::string& /*propertyName*/, const std::string& /*value*/);
+		std::string getProperty(const std::string& /*propertyName*/);
 
-public slots:
-    void setImage(const cv::Mat& image);
+	public slots:
+		void setImage(const cv::Mat& image);
 
-private:
-    cv::Mat output;
-	int conversionType;
-	std::map<std::string, int> conversionMap;
+	private:
+		cv::Mat output;
+		int conversionType;
+		std::map<std::string, int> conversionMap;
 };
 
 #endif//CONVERTCOLOURFILTER_H	

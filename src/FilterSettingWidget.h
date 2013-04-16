@@ -18,25 +18,25 @@ class PropertyAdaptor;
 
 class FilterSettingWidget: public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-	FilterSettingWidget(QWidget * parent = 0);
-	FilterChain* chain;
-	QListWidgetWithDrop *list;
-	int index;
+	public:
+		FilterSettingWidget(QWidget * parent = 0);
+		FilterChain* chain;
+		QListWidgetWithDrop *list;
+		int index;
 
-public slots:
-	void filterChanged(int i);
-	void filterChanged();
+	public slots:
+		void filterChanged(int i);
+		void filterChanged();
 
-private:
-	void createLayout();	
+	private:
+		void createLayout();	
 
-	QVBoxLayout *filterLayout;
-	QList<QWidget*> settingWidgets;
-	QList<PropertyAdaptor*> adaptors;
-	ImageFilterBase *filter;
+		QVBoxLayout *filterLayout;
+		QList<QWidget*> settingWidgets;
+		QList<PropertyAdaptor*> adaptors;
+		ImageFilterBase *filter;
 };
 
 #endif

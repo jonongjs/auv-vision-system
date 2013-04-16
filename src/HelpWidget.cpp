@@ -22,7 +22,7 @@ void HelpWidget::createText(){
 	layout->addWidget(createLabel(QString("Ctrl+M: Additional Menu")));
 	layout->addWidget(createLabel(QString("Alt+S: Snapshot")));
 	layout->addWidget(createLabel(QString("Alt+R: Record Video")));
-	
+
 	QPushButton *button = new QPushButton;
 	button->setText("Ok");
 	connect(button, SIGNAL(clicked()), this, SLOT(end()));

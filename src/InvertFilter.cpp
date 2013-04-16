@@ -7,9 +7,9 @@
 
 void InvertFilter::setImage(const cv::Mat& image)
 {
-    // Invert
-    cv::convertScaleAbs(image, output, -1, 255);
+	// Invert
+	cv::convertScaleAbs(image, output, -1, 255);
 
-    emit imageUpdated(output);
+	emit imageUpdated(output);
 }
 

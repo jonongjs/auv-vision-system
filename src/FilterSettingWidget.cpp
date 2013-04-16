@@ -30,21 +30,21 @@ void FilterSettingWidget::filterChanged(){
 
 void FilterSettingWidget::filterChanged(int i){
 	index = i;
- 	//	Clear filter settings
- 	foreach(QWidget *widget, settingWidgets)
+	// Clear filter settings
+	foreach(QWidget *widget, settingWidgets)
 		delete widget;
 	settingWidgets.clear();
 
 	foreach(PropertyAdaptor *adaptor, adaptors)
 		delete adaptor;
 	adaptors.clear();
-	
-	//	Ensure size
+
+	// Ensure size
 	if ((int) chain->getChain().size() <= index)
 		return;
 
 	if (index >= 0) {
-		//	Add new filter name
+		// Add new filter name
 		ImageFilterBase *filter = chain->getChain()[index];
 
 		QString name = ((FilterButton*)list->itemWidget(list->item(index)))->getName();
@@ -54,9 +54,9 @@ void FilterSettingWidget::filterChanged(int i){
 		filterLayout->addWidget(label);
 		settingWidgets.append(label);
 
-		//	Add new filter properties
+		// Add new filter properties
 		const FilterProperties& properties =  filter->getFilterProperties();
-	
+
 		if (properties.empty()){
 			QLabel *label = new QLabel("No settings available.");
 			label->setStyleSheet("QLabel{color:#8E5316;font-size:15px;padding:3px;}");
@@ -111,7 +111,7 @@ void FilterSettingWidget::filterChanged(int i){
 						tmp = combo;
 						QStringList options =
 							QString::fromStdString(it->options)
-								.split("\n", QString::SkipEmptyParts);
+							.split("\n", QString::SkipEmptyParts);
 
 						combo->addItems(options);
 
@@ -131,15 +131,15 @@ void FilterSettingWidget::filterChanged(int i){
 			}
 
 			tmp->setStyleSheet(
-				"QSpinBox, QDoubleSpinBox, QComboBox {color:black; selection-color:black; border: 1px solid gray;border-radius: 3px;padding: 1px 18px 1px 3px;min-width: 6em;}"
-				"QSpinBox:editable, QDoubleSpinBox:editable, QComboBox:editable {background: white;}"
-				"QSpinBox::drop-down:editable, QComboBox::drop-down:editable, QComboBox::drop-down:editable {background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFFF, stop: 0.4 #FFFFFF,stop: 0.5 #FFFFFF, stop: 1.0 #FFFFFF);}"
-				"QSpinBox:on, QDoubleSpinBox:on, QComboBox:on { padding-top: 3px;padding-left: 4px;}"
-				"QSpinBox::drop-down, QDoubleSpinBox::drop-down, QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: darkgray;border-left-style: solid; border-top-right-radius: 3px; border-bottom-right-radius: 3px;}"
-				"QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QComboBox::down-arrow {image: url(:/images/downarrow.png);}"
-				"QSpinBox::down-arrow:on, QDoubleSpinBox::down-arrow:on, QComboBox::down-arrow:on { top: 2px;left: 1px;}"
-				"QSpinBox::up-arrow, QDoubleSpinBox::up-arrow, QComboBox::up-arrow {image: url(:/images/uparrow.png);}"
-				"QSpinBox::up-arrow:on, QDoubleSpinBox::up-arrow:on, QComboBox::up-arrow:on { top: 2px;left: 1px;}");
+					"QSpinBox, QDoubleSpinBox, QComboBox {color:black; selection-color:black; border: 1px solid gray;border-radius: 3px;padding: 1px 18px 1px 3px;min-width: 6em;}"
+					"QSpinBox:editable, QDoubleSpinBox:editable, QComboBox:editable {background: white;}"
+					"QSpinBox::drop-down:editable, QComboBox::drop-down:editable, QComboBox::drop-down:editable {background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFFF, stop: 0.4 #FFFFFF,stop: 0.5 #FFFFFF, stop: 1.0 #FFFFFF);}"
+					"QSpinBox:on, QDoubleSpinBox:on, QComboBox:on { padding-top: 3px;padding-left: 4px;}"
+					"QSpinBox::drop-down, QDoubleSpinBox::drop-down, QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: darkgray;border-left-style: solid; border-top-right-radius: 3px; border-bottom-right-radius: 3px;}"
+					"QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QComboBox::down-arrow {image: url(:/images/downarrow.png);}"
+					"QSpinBox::down-arrow:on, QDoubleSpinBox::down-arrow:on, QComboBox::down-arrow:on { top: 2px;left: 1px;}"
+					"QSpinBox::up-arrow, QDoubleSpinBox::up-arrow, QComboBox::up-arrow {image: url(:/images/uparrow.png);}"
+					"QSpinBox::up-arrow:on, QDoubleSpinBox::up-arrow:on, QComboBox::up-arrow:on { top: 2px;left: 1px;}");
 
 			tmp->setMinimumHeight(30);
 			filterLayout->addWidget(tmp);

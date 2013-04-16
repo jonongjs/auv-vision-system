@@ -12,14 +12,14 @@ SobelFilter::SobelFilter()
 
 void SobelFilter::setImage(const cv::Mat& image)
 {
-    // Convert to grayscale
+	// Convert to grayscale
 	cv::Mat tmp;
 	cvtColor(image, tmp, CV_BGR2GRAY);
 
-    cv::Sobel(tmp, tmp, -1, dx, dy);
+	cv::Sobel(tmp, tmp, -1, dx, dy);
 
 	cv::Mat channels[] = { tmp, tmp, tmp };
 	cv::merge(channels, 3, output);
 
-    emit imageUpdated(output);
+	emit imageUpdated(output);
 }

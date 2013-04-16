@@ -36,13 +36,6 @@ class FilterChain : public QObject
 
 		void setStream(CameraStream *str);
 
-		/*
-	public slots:
-		void listItemSwapped(int, int);
-		void listItemAdded();
-		void listItemDeleted();
-		*/
-
 	private:
 		Chain filterList;
 		CameraStream  *stream;
