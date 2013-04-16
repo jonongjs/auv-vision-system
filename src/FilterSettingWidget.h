@@ -45,6 +45,8 @@ class FilterSettingWidget: public QWidget
 		QList<PropertyAdaptor*> adaptors;
 		ImageFilterBase *filter;
 		int index;
+
+		QString stylesheet;
 };
 
 #endif

@@ -9,6 +9,9 @@
 	<file>images/stop.png</file>
 	<file>images/uparrow.png</file>
 	<file>images/settings.png</file>
+	<file>qss/addfilterbutton.qss</file>
 	<file>qss/buttonstyles.qss</file>
+	<file>qss/filterbutton.qss</file>
+	<file>qss/settingwidget.qss</file>
 </qresource>
 </RCC>

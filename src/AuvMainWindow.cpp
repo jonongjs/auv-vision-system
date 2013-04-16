@@ -117,6 +117,12 @@ void AuvMainWindow::createLeftLayout()
 
 void AuvMainWindow::createMiddleLayout()
 {
+	// Stylesheets
+	QFile stylefile(":/qss/addfilterbutton.qss"); stylefile.open(QFile::ReadOnly);
+	QFile stylefile2(":/qss/buttonstyles.qss"); stylefile2.open(QFile::ReadOnly);
+	QString stylesheet(stylefile.readAll());
+	QString stylesheet2(stylefile2.readAll());
+
 	// Create the button for adding filters to the chain
 	QPushButton *addFilterButton = new QPushButton;
 	QPixmap pixmap(":/images/plusbutton.png");
@@ -126,7 +132,7 @@ void AuvMainWindow::createMiddleLayout()
 	addFilterButton->setStatusTip(tr("Add Filters To Your Video"));
 	addFilterButton->setIcon(ButtonIcon);
 	addFilterButton->setIconSize(pixmap.rect().size());
-	addFilterButton->setStyleSheet("QPushButton {height:40px;border: 2px solid gray;border-style:outset;border-radius: 6px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	addFilterButton->setStyleSheet(stylesheet);
 
 	filterList = new QListWidgetWithDrop;
 	//filterList->setStyleSheet("QWidget { background-color: #F3E6E0;  }");
@@ -164,7 +170,7 @@ void AuvMainWindow::createMiddleLayout()
 	middleMenuButton->setShortcut(tr("Ctrl+M"));
 	middleMenuButton->setStatusTip(tr("Additional Options "));
 	middleMenuButton->setText(QApplication::translate("AuvMainWindow", "\342\211\241", 0, QApplication::UnicodeUTF8));
-	middleMenuButton->setStyleSheet("QToolButton {height:40px;width:40px;border: 2px solid gray;border-style:outset;border-radius: 5px;background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #FFFFCC, stop: 1 #FFFFFF);} QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #dadbde, stop: 1 #f6f7fa);}");
+	middleMenuButton->setStyleSheet(stylesheet2);
 
 	createFiltersMenu();
 
@@ -199,7 +205,6 @@ void AuvMainWindow::createRightLayout()
 
 	rawVideoContents = new QWidget(centralRightWidget);
 	rawVideoLayout = new QVBoxLayout;
-	//rawVideoContents->setStyleSheet("QWidget { background-color: #FFFFFF; }");
 
 	rawVideoContents->setLayout(rawVideoLayout);	
 
