@@ -1,6 +1,10 @@
 // FilterCamWidget.h
 //
 // Widget for displaying a video feed with filter
+// Slots:
+//  - filterDidChange(int index): to register a change in viewing selection
+//  - filterTypeChanged(int index): to register a change in filter type
+//  - filterListChanged(QStringList& filterList): to register a change in the filter list
 
 
 #ifndef FILTERCAMWIDGET_H

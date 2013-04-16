@@ -35,6 +35,7 @@ FilterChain::~FilterChain()
 	}
 }
 
+// Add a new filter to the end of the chain
 ImageFilterBase* FilterChain::appendNewFilter()
 {
 	std::string firstName = filterCreator->getFilterNames()[0]; //HACK: get the first filter name
@@ -100,6 +101,7 @@ const FilterChain::Chain& FilterChain::getChain()
 
 void FilterChain::setStream(CameraStream *str)
 {
+	// If the list is not empty, we connect the stream to the first filter
 	if (!filterList.empty()) {
 		if (stream) {
 			disconnectStreams(stream, filterList.front());
@@ -111,9 +113,11 @@ void FilterChain::setStream(CameraStream *str)
 
 void FilterChain::changeFilterType(int index, const std::string& type)
 {
+	// Delete the filter...
 	delete filterList[index];
 	filterList[index] = filterCreator->createFilter(type);
 
+	// ...then fix back the connections for the new filter
 	if (index == 0) {
 		if (stream) {
 			connectStreams(stream, filterList[index]);

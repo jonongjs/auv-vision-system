@@ -101,10 +101,3 @@ void FilterCamWidget::setCurrentFilter(int index)
 	if (index != filterComboBox->currentIndex())
 		filterComboBox->setCurrentIndex(index);
 }
-
-
-//HACK: helper function
-void removeWindow(QWidget* widget)
-{
-	delete widget;
-}
